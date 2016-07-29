@@ -181,7 +181,7 @@ namespace gml
 
 		static mat44 look_at(const vec3& eye, const vec3& look, const vec3& up);
 
-		static mat44 perspective(float width, float height, float near, float far);
+		static mat44 perspective_lh(float fov, float aspect, float near, float far);
 
 	public:
 		union

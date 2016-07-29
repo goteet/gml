@@ -3,8 +3,8 @@
 
 namespace gml
 {
-	static const float a2r_factor = static_cast<float>(PI / 180.0);
-	static const float r2a_factor = 1.0f / a2r_factor;
+	constexpr static const float a2r_factor = static_cast<float>(PI / 180.0);
+	constexpr static const float r2a_factor = 1.0f / a2r_factor;
 
 	float a2r(float angle)
 	{
