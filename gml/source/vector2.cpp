@@ -168,12 +168,12 @@ namespace gml
 
 	vec2& vec2::normalize()
 	{
-		float lengthrev = length();
-		if (!fequal(lengthrev, 0.0f))
+		float length2 = length_sqr();
+		if (!fequal(length2, 0.0f))
 		{
-			lengthrev = 1.0f / lengthrev;
-			x *= lengthrev;
-			y *= lengthrev;
+			auto invLength = 1.0f / sqrtf(length2);
+			x *= invLength;
+			y *= invLength;
 		}
 		else
 		{

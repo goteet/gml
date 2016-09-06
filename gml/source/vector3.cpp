@@ -183,13 +183,13 @@ namespace gml
 
 	vec3& vec3::normalize()
 	{
-		float lengthrev = length();
-		if (!fequal(lengthrev, 0.0f))
+		float length2 = length_sqr();
+		if (!fequal(length2, 0.0f))
 		{
-			lengthrev = 1.0f / lengthrev;
-			this->x *= lengthrev;
-			this->y *= lengthrev;
-			this->z *= lengthrev;
+			float invLength = 1.0f / sqrtf(length2);
+			this->x *= invLength;
+			this->y *= invLength;
+			this->z *= invLength;
 		}
 		else
 		{

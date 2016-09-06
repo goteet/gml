@@ -2,18 +2,7 @@
 #include <gmlmatrix.h>
 #include <gmlcolor.h>
 #include <gmlutility.h>
-
-using namespace gml;
-
-void TestVector2();
-void TestVector3();
-void TestVector4();
-void TestVeoctorSwizzle();
-void TestMatrix22();
-void TestMatrix33();
-void TestMatrix44();
-void TestColor();
-void TestStructure();
+#include <gmlquaternion.h>
 
 //#define WRITE_TO_FILE
 #ifndef WRITE_TO_FILE
@@ -26,36 +15,39 @@ std::ofstream outFile(WRITE_LOG_FILENAME, std::ios_base::trunc);
 #define OUTPUT outFile
 #endif
 
+using namespace gml;
+
+#define DECL(name) const char* Test##name##Title = "# test "#name" \n";void Test##name##Func();
+#define USING(name) OUTPUT <<Test##name##Title; Test##name##Func();
+#define IMPL(name) void Test##name##Func()
+
+DECL(Vector2);
+DECL(Vector3);
+DECL(Vector4);
+DECL(VectorSwizzle);
+DECL(Matrix22);
+DECL(Matrix33);
+DECL(Matrix44);
+DECL(Color);
+DECL(AllStructure);
+DECL(Quaternion);
+
+
+
 #include <iomanip>
 
 int main()
 {
-	OUTPUT << "# test structure \n";
-	TestStructure();
-
-	OUTPUT << "# test vector2 \n";
-	TestVector2();
-
-	OUTPUT << "# test vector3 \n";
-	TestVector3();
-
-	OUTPUT << "# test vector4 \n";
-	TestVector4();
-
-	OUTPUT << "# test vector swizzle \n";
-	TestVeoctorSwizzle();
-
-	OUTPUT << "# test matrix22 \n";
-	TestMatrix22();
-
-	OUTPUT << "# test matrix33 \n";
-	TestMatrix33();
-
-	OUTPUT << "# test matrix44 \n";
-	TestMatrix44();
-
-	OUTPUT << "# test color\n";
-	TestColor();
+	USING(Vector2);
+	USING(Vector3);
+	USING(Vector4);
+	USING(VectorSwizzle);
+	USING(Matrix22);
+	USING(Matrix33);
+	USING(Matrix44);
+	USING(Color);
+	USING(AllStructure);
+	USING(Quaternion);
 
 #ifndef WRITE_TO_FILE
 	getchar();
@@ -66,7 +58,7 @@ int main()
 	return 0;
 }
 
-void TestVector2()
+IMPL(Vector2)
 {
 	OUTPUT << "## constructor:" << std::endl;
 
@@ -139,7 +131,7 @@ void TestVector2()
 	OUTPUT << "  minx_combine(b,vec2::one, 1.0f) = <" << a[0] << "," << a[1] << ">\n\n";
 }
 
-void TestVector3()
+IMPL(Vector3)
 {
 	vec3 a = vec3::one;
 	vec3 b(3, 4, 5);
@@ -187,12 +179,12 @@ void TestVector3()
 	OUTPUT << "  minx_combine(b,vec3::one, 1.0f) = <" << a[0] << "," << a[1] << "," << a[2] << ">\n\n";
 }
 
-void TestVector4()
+IMPL(Vector4)
 {
 
 }
 
-void TestVeoctorSwizzle()
+IMPL(VectorSwizzle)
 {
 	vec2 a, v2(2.1f, 2.2f);
 	vec3 b, v3(3.1f, 3.2f, 3.3f);
@@ -230,7 +222,7 @@ void TestVeoctorSwizzle()
 	OUTPUT << "\tvec4.zzwy = <" << c.x << ", " << c.y << ", " << c.z << ", " << c.w << ">\n\n";
 }
 
-void TestMatrix22()
+IMPL(Matrix22)
 {
 	const float r = 0.5f;
 	mat22 a(cos(r), -sin(r), sin(r), cos(r));
@@ -267,7 +259,7 @@ void TestMatrix22()
 		<< a[2] << "," << a[3] << "|\n\n";
 }
 
-void TestMatrix33()
+IMPL(Matrix33)
 {
 	mat33 a(-4, -3, 3, 0, 2, -2, 1, 4, -1);
 	mat33 b(a);
@@ -290,7 +282,7 @@ void TestMatrix33()
 		<< a[6] << "," << a[7] << "," << a[8] << "\n\n";
 }
 
-void TestMatrix44()
+IMPL(Matrix44)
 {
 	mat44 a(-4, -3, 3, 0, 0, 2, -2, 0, 1, 4, -1, 0, 1, 2, 50, 1);
 	mat44 b(a);
@@ -316,7 +308,7 @@ void TestMatrix44()
 		<< a[12] << "," << a[13] << "," << a[14] << "," << a[15] << "\n\n";
 }
 
-void TestStructure()
+IMPL(AllStructure)
 {
 	OUTPUT << "## structure size validation \n";
 	OUTPUT << "\tsizeof(float)  = " << sizeof(float) << std::endl;
@@ -386,7 +378,40 @@ void TestStructure()
 		<< std::endl << std::endl;
 }
 
-void TestColor()
+IMPL(Color)
 {
 	color4 b = { color3::white, 1.0 };
+}
+
+IMPL(Quaternion)
+{
+	gml::quat r1(vec3::right, gml::a2r(90));
+	gml::quat r2(vec3::left, gml::a2r(90));
+	gml::vec3 position(0, 0, 1);
+
+	OUTPUT << "## slerp\n";
+	for (int i = 0; i < 51; i++)
+	{
+		float k = i / 50.0f;
+		gml::quat r = slerp(r1, r2, k);
+		position = gml::rotate(r, vec3(0, 0, 1));
+		OUTPUT << "k = " << k << " \t\t"
+			<< "<" << position.x << ","
+			<< position.y << ","
+			<< position.z << "> \n";
+	}
+
+	OUTPUT << "\n## q1*q2 \n";
+	r1 = quat(vec3::forward, gml::a2r(90));
+	r2 = quat(vec3::up, gml::a2r(90));
+
+	auto r = r1 * r2;
+	position = gml::rotate(r, vec3(0, 0, 1));
+	OUTPUT << "<" << position.x << ","
+		<< position.y << ","
+		<< position.z << "> \n";
+
+	//auto rmat = gml::to_mat44(r);
+	//position = transform_vector(rmat, vec3(0, 0, 1));
+
 }
