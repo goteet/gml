@@ -3,8 +3,6 @@
 #include <gmlcolor.h>
 #include <gmlutility.h>
 
-
-#pragma comment(lib, "gml.lib")
 using namespace gml;
 
 void TestVector2();
