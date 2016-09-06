@@ -1,5 +1,5 @@
 #pragma once
-#include <gml/include/vector.h>
+#include <gmlvector.h>
 
 namespace gml
 {

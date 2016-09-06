@@ -15,28 +15,28 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\math_util.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="source\inner_util.h">
       <Filter>source</Filter>
     </ClInclude>
-    <ClInclude Include="include\ray.h">
+    <ClInclude Include="include\gmlvector.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\aabb.h">
+    <ClInclude Include="include\gmlrect.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\vector.h">
+    <ClInclude Include="include\gmlray.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\matrix.h">
+    <ClInclude Include="include\gmlmatrix.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\color.h">
+    <ClInclude Include="include\gmlcolor.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\rect.h">
+    <ClInclude Include="include\gmlaabb.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\gmlutility.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>

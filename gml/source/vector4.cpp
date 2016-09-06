@@ -1,5 +1,5 @@
-#include "../include/vector.h"
-#include "../include/math_util.h"
+#include "../include/gmlvector.h"
+#include "../include/gmlutility.h"
 #include <cassert>
 #include <cmath>
 #include "inner_util.h"

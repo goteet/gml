@@ -1,5 +1,5 @@
-#include "../include/color.h"
-#include "../include/math_util.h"
+#include "../include/gmlcolor.h"
+#include "../include/gmlutility.h"
 #include <stdlib.h>
 #include <cassert>
 

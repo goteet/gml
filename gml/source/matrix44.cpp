@@ -1,5 +1,5 @@
-#include "../include/matrix.h"
-#include "../include/math_util.h"
+#include "../include/gmlmatrix.h"
+#include "../include/gmlutility.h"
 #include "inner_util.h"
 #include <cassert>
 #include <cmath>

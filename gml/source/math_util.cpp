@@ -1,4 +1,4 @@
-#include "../include/math_util.h"
+#include "../include/gmlutility.h"
 #include "inner_util.h"
 
 namespace gml

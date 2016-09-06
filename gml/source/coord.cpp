@@ -1,4 +1,4 @@
-#include "../include/rect.h"
+#include "../include/gmlrect.h"
 
 namespace gml
 {

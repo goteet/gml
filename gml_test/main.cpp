@@ -1,7 +1,7 @@
-#include <gml/include/vector.h>
-#include <gml/include/matrix.h>
-#include <gml/include/color.h>
-#include <gml/include/math_util.h>
+#include <gmlvector.h>
+#include <gmlmatrix.h>
+#include <gmlcolor.h>
+#include <gmlutility.h>
 
 
 #pragma comment(lib, "gml.lib")
