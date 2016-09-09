@@ -42,6 +42,9 @@
     <ClInclude Include="include\gmlquaternion.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="include\gmlconv.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\vector2.cpp">
@@ -84,6 +87,9 @@
       <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="source\quaternion.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="source\convertion.cpp">
       <Filter>source</Filter>
     </ClCompile>
   </ItemGroup>

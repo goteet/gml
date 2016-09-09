@@ -3,6 +3,7 @@
 #include <gmlcolor.h>
 #include <gmlutility.h>
 #include <gmlquaternion.h>
+#include <gmlconv.h>
 
 //#define WRITE_TO_FILE
 #ifndef WRITE_TO_FILE
@@ -411,7 +412,7 @@ IMPL(Quaternion)
 		<< position.y << ","
 		<< position.z << "> \n";
 
-	//auto rmat = gml::to_mat44(r);
-	//position = transform_vector(rmat, vec3(0, 0, 1));
-
+	auto rmat = gml::to_mat44(r2);
+	auto r2_ = gml::to_quat(rmat);
+	position = transform_vector(rmat, vec3(0, 0, 1));
 }
