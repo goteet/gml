@@ -160,6 +160,12 @@ namespace gml
 		return *this;
 	}
 
+	vec2& vec2::set(const vec4& other)
+	{
+		set(other.x, other.y);
+		return *this;
+	}
+
 	vec2 vec2::normalized() const
 	{
 		vec2 copy(*this);
@@ -169,7 +175,7 @@ namespace gml
 	vec2& vec2::normalize()
 	{
 		float length2 = length_sqr();
-		if (!fequal(length2, 0.0f))
+		if (!fequal(length2, 0.0f) && !fequal(1.0f, length2))
 		{
 			auto invLength = 1.0f / sqrtf(length2);
 			x *= invLength;

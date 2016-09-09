@@ -38,6 +38,10 @@ namespace gml
 
 		mat22(const mat22& other);
 
+		explicit mat22(const mat33&);
+
+		explicit mat22(const mat44&);
+
 		mat22& operator=(const mat22& rhs);
 
 		mat22 operator* (float scaler) const;
@@ -121,6 +125,10 @@ namespace gml
 
 		mat33(const mat33& other);
 
+		explicit mat33(const mat22&);
+
+		explicit mat33(const mat44&);
+
 		mat33& operator=(const mat33& rhs);
 
 		mat33 operator* (float scaler) const;
@@ -198,6 +206,10 @@ namespace gml
 		mat44(const vec4& row1, const vec4& row2, const vec4& row3, const vec4& row4);
 
 		mat44(const mat44& other);
+
+		explicit mat44(const mat22&);
+
+		explicit mat44(const mat33&);
 
 		mat44& operator=(const mat44& rhs);
 

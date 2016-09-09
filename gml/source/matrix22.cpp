@@ -16,35 +16,35 @@ namespace gml
 		float cosr = cosf(radian);
 		float sinr = sinf(radian);
 		return mat22(
-			cosr, -sinr, 
+			cosr, -sinr,
 			sinr, cosr);
 	}
 
 	mat22 mat22::mat22::scale(float scaler)
 	{
 		return mat22(
-			scaler, 0, 
+			scaler, 0,
 			0, scaler);
 	}
 
 	mat22 mat22::mat22::scale(float sx, float sy)
 	{
 		return mat22(
-			sx, 0, 
+			sx, 0,
 			0, sy);
 	}
 
 	mat22 mat22::flip_x()
 	{
 		return mat22(
-			-1, 0, 
+			-1, 0,
 			0, 1);
 	}
 
 	mat22 mat22::flip_y()
 	{
 		return mat22(
-			1, 0, 
+			1, 0,
 			0, -1);
 	}
 
@@ -65,6 +65,19 @@ namespace gml
 	mat22::mat22(const mat22& other)
 	{
 		*this = other;
+	}
+
+	mat22::mat22(const mat33& mat3)
+	{
+		row[0].set(mat3.row[0]);
+		row[1].set(mat3.row[1]);
+
+	}
+
+	mat22::mat22(const mat44& mat4)
+	{
+		row[0].set(mat4.row[0]);
+		row[1].set(mat4.row[1]);
 	}
 
 	mat22& mat22::operator=(const mat22& rhs)

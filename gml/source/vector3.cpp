@@ -26,7 +26,7 @@ namespace gml
 
 	vec3::vec3(const vec2& v2, float z)
 	{
-		set(v2.x, v2.y, z);
+		set(v2, z);
 	}
 
 	vec3::vec3(const vec4& v4)
@@ -154,6 +154,14 @@ namespace gml
 		return &(this->x);
 	}
 
+	vec3& vec3::set(const vec2& v2, float z)
+	{
+		this->x = v2.x;
+		this->y = v2.y;
+		this->z = z;
+		return *this;
+	}
+
 	vec3& vec3::set(float x, float y, float z)
 	{
 		this->x = x;
@@ -184,7 +192,7 @@ namespace gml
 	vec3& vec3::normalize()
 	{
 		float length2 = length_sqr();
-		if (!fequal(length2, 0.0f))
+		if (!fequal(length2, 0.0f) && !fequal(1.0f, length2))
 		{
 			float invLength = 1.0f / sqrtf(length2);
 			this->x *= invLength;

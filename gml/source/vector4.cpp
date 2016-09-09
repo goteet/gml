@@ -6,16 +6,21 @@
 
 namespace gml
 {
-	vec4::vec4(){ }
+	vec4::vec4() { }
 
 	vec4::vec4(float x, float y, float z, float w)
 	{
 		set(x, y, z, w);
 	}
 
+	vec4::vec4(const vec2& v2, float z, float w)
+	{
+		set(v2, z, w);
+	}
+
 	vec4::vec4(const vec3& v3, float w)
 	{
-		set(v3.x, v3.y, v3.z, w);
+		set(v3, w);
 	}
 
 	bool vec4::operator==(const vec4& rhs) const
@@ -67,12 +72,37 @@ namespace gml
 		return &(this->x);
 	}
 
+	vec4& vec4::set(const vec2& v2, float z, float w)
+	{
+		this->x = v2.x;
+		this->y = v2.y;
+		this->z = z;
+		this->w = w;
+		return *this;
+	}
+
+	vec4& vec4::set(const vec3& v3, float w)
+	{
+		this->x = v3.x;
+		this->y = v3.y;
+		this->z = v3.z;
+		this->w = w;
+		return *this;
+	}
+
 	vec4& vec4::set(float x, float y, float z, float w)
 	{
 		this->x = x;
 		this->y = y;
 		this->z = z;
 		this->w = w;
+		return *this;
+	}
+
+	vec4& vec4::replace(const vec2& v2)
+	{
+		this->x = v2.x;
+		this->y = v2.y;
 		return *this;
 	}
 

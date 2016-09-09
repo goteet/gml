@@ -163,6 +163,20 @@ namespace gml
 		*this = other;
 	}
 
+	mat33::mat33(const mat22& mat2)
+	{
+		row[0].set(mat2.row[0], 0);
+		row[1].set(mat2.row[1], 0);
+		row[2].set(0, 0, 1);
+	}
+
+	mat33::mat33(const mat44& mat4)
+	{
+		row[0].set(mat4.row[0]);
+		row[1].set(mat4.row[1]);
+		row[2].set(mat4.row[2]);
+	}
+
 	mat33& mat33::operator=(const mat33& rhs)
 	{
 		if (&rhs != this)
@@ -358,7 +372,7 @@ namespace gml
 		vec3 rhs3(rhs, 0);
 		for (int i = 0; i < 3; i++)
 		{
-			result[i] = dot(rhs3, lhs.col(i));
+			result[i] = dot(lhs.row[i], rhs3);
 		}
 		return result;
 	}
@@ -369,7 +383,7 @@ namespace gml
 		vec3 rhs3(rhs, 1);
 		for (int i = 0; i < 3; i++)
 		{
-			result[i] = dot(rhs3, lhs.col(i));
+			result[i] = dot(lhs.row[i], rhs3);
 		}
 		return result;
 	}

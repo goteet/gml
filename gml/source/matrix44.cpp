@@ -166,6 +166,22 @@ namespace gml
 		*this = other;
 	}
 
+	mat44::mat44(const mat22& mat2)
+	{
+		row[0].set(mat2.row[0], 0, 0);
+		row[1].set(mat2.row[1], 0, 0);
+		row[2].set(0, 0, 1, 0);
+		row[3].set(0, 0, 0, 1);
+	}
+
+	mat44::mat44(const mat33& mat3)
+	{
+		row[0].set(mat3.row[0], 0);
+		row[1].set(mat3.row[1], 0);
+		row[2].set(mat3.row[2], 0);
+		row[3].set(0, 0, 0, 1);
+	}
+
 	mat44& mat44::operator=(const mat44& other)
 	{
 		for (int i = 0; i < 16; i++)
@@ -371,7 +387,7 @@ namespace gml
 		vec4 rhs4(rhs, 0);
 		for (int i = 0; i < 3; i++)
 		{
-			result[i] = dot(rhs4, lhs.col(i));
+			result[i] = dot(lhs.row[i], rhs4);
 		}
 		return result;
 	}
@@ -382,7 +398,7 @@ namespace gml
 		vec4 rhs4(rhs, 1);
 		for (int i = 0; i < 3; i++)
 		{
-			result[i] = dot(rhs4, lhs.col(i));
+			result[i] = dot(lhs.row[i], rhs4);
 		}
 		return result;
 	}

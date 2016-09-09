@@ -9,16 +9,18 @@ namespace gml
 
 	quat::quat() :w(1), v(0, 0, 0) { }
 
-	quat::quat(float rawW, const vec3& rawN) : w(rawW), v(rawN) { }
+	quat::quat(float rawW, const vec3& rawN) : w(rawW), v(rawN) {	}
 
 	quat::quat(const vec3& axis, float radius)
 	{
 		float halfRadius = radius * 0.5f;
-		float halfSin = sin(halfRadius);
 		float halfCos = cos(halfRadius);
+		float halfSin = sin(halfRadius);
 
 		this->v = axis * halfSin;
 		this->w = halfCos;
+
+		normalize();
 	}
 
 	quat quat::operator-() const
@@ -66,9 +68,9 @@ namespace gml
 	quat& quat::normalize()
 	{
 		float length2 = length_sqr();
-		if (!fequal(0, length2))
+		if (!fequal(0.0f, length2) && !fequal(1.0f, length2))
 		{
-			float invLength = 1.0f / sqrt(length2);
+			float invLength = 1.0f / sqrtf(length2);
 			this->v *= invLength;
 			this->w *= invLength;
 		}
@@ -116,7 +118,7 @@ namespace gml
 
 	float quat::length() const
 	{
-		return sqrt(length_sqr());
+		return sqrtf(length_sqr());
 	}
 
 	float quat::length_sqr() const
