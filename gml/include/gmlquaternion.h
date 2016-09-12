@@ -15,6 +15,8 @@ namespace gml
 	public:
 		quat();
 
+		quat(float rawW, const vec3& rawN);//do not use unless you know what happen.
+
 		quat(const vec3& axis, float radius);
 
 		quat operator-() const;
@@ -26,6 +28,8 @@ namespace gml
 		quat operator*(float scaler) const;
 
 		quat& operator+=(const quat& rhs);
+
+		quat& operator*=(const quat& rhs);
 
 		quat& operator*=(float scaler);
 
@@ -44,9 +48,6 @@ namespace gml
 		float length() const;
 
 		float length_sqr() const;
-
-	private:
-		quat(float rawW, const vec3& rawN);
 	};
 
 	quat operator*(float scaler, const quat& q);

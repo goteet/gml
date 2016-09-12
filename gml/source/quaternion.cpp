@@ -5,7 +5,7 @@
 namespace gml
 {
 	const quat quat::Ipos;
-	const quat quat::Ineg = { -1, vec3(0,0,0) };
+	const quat quat::Ineg(-1, vec3(0, 0, 0));
 
 	quat::quat() :w(1), v(0, 0, 0) { }
 
@@ -39,10 +39,11 @@ namespace gml
 
 	quat quat::operator*(const quat& rhs) const
 	{
-		quat rst;
-		rst.w = w * rhs.w - dot(v, rhs.v);
-		rst.v = w * rhs.v + rhs.w * v + cross(v, rhs.v);
-		return rst.normalize();
+		quat rst(
+			this->w * rhs.w - dot(this->v, rhs.v),
+			this->w * rhs.v + rhs.w * this->v + cross(this->v, rhs.v)
+			);
+		return rst;
 	}
 
 	quat quat::operator*(float scaler) const
@@ -56,6 +57,12 @@ namespace gml
 		this->v += rhs.v;
 		this->w += rhs.w;
 		return *this;
+	}
+
+	quat& quat::operator*=(const quat& rhs)
+	{
+		//since operator* will change this.v as long as this.w.
+		return *this = *this * rhs;
 	}
 
 	quat& quat::operator*=(float scaler)

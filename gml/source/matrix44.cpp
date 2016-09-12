@@ -75,7 +75,7 @@ namespace gml
 	mat44 mat44::translate(float x, float y, float z)
 	{
 		return mat44(
-			-1, 0, 0, x,
+			1, 0, 0, x,
 			0, 1, 0, y,
 			0, 0, 1, z,
 			0, 0, 0, 1
@@ -124,7 +124,8 @@ namespace gml
 			vec4(0, 0, 0, 1)
 			);
 
-		return rst.transpose();
+		return rst;
+		//return rst.transpose();
 	}
 
 	mat44 mat44::perspective_lh(float fov, float aspect, float near, float far)
@@ -136,8 +137,8 @@ namespace gml
 		mat44 rst(
 			1.0f / near_right, 0, 0, 0,
 			0, 1.0f / near_top, 0, 0,
-			0, 0, -far / z_range, 1,
-			0, 0, far * near / z_range, 0);
+			0, 0, -far / z_range, far * near / z_range,
+			0, 0, 1, 0);
 
 
 		return rst;
