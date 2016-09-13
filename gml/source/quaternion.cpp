@@ -5,11 +5,13 @@
 namespace gml
 {
 	const quat quat::Ipos;
-	const quat quat::Ineg(-1, vec3(0, 0, 0));
+	const quat quat::Ineg(-1, 0, 0, 0);
 
 	quat::quat() :w(1), v(0, 0, 0) { }
 
-	quat::quat(float rawW, const vec3& rawN) : w(rawW), v(rawN) {	}
+	quat::quat(float rw, const vec3& rv) : w(rw), v(rv) {	}
+
+	quat::quat(float rw, float rx, float ry, float rz) : w(rw), v(rx, ry, rz) { }
 
 	quat::quat(const vec3& axis, float radius)
 	{
@@ -146,13 +148,9 @@ namespace gml
 	vec3 rotate(const quat& rotation, const vec3& point)
 	{
 		quat invRotation = rotation.inversed();
-		quat tmpPoint;
-		tmpPoint.w = 0;
-		tmpPoint.v = point;
+		quat tmpPoint(0, point);
 
-		quat rst = rotation * tmpPoint;
-		rst = rst * invRotation;
-		return rst.v;
+		return (rotation * tmpPoint * invRotation).v;
 	}
 
 	quat slerp(const quat& s, const quat& d, float f)

@@ -4,6 +4,7 @@
 #include <gmlutility.h>
 #include <gmlquaternion.h>
 #include <gmlconv.h>
+#include <gmldualquat.h>
 
 //#define WRITE_TO_FILE
 #ifndef WRITE_TO_FILE
@@ -19,7 +20,7 @@ std::ofstream outFile(WRITE_LOG_FILENAME, std::ios_base::trunc);
 using namespace gml;
 
 #define DECL(name) const char* Test##name##Title = "# test "#name" \n";void Test##name##Func();
-#define USING(name) OUTPUT <<Test##name##Title; Test##name##Func();
+#define USING(name) {OUTPUT <<Test##name##Title; Test##name##Func();  OUTPUT <<std::endl <<std::endl;}
 #define IMPL(name) void Test##name##Func()
 
 DECL(Vector2);
@@ -32,6 +33,7 @@ DECL(Matrix44);
 DECL(Color);
 DECL(AllStructure);
 DECL(Quaternion);
+DECL(DualQuaternion);
 
 
 
@@ -49,6 +51,7 @@ int main()
 	USING(Color);
 	USING(AllStructure);
 	USING(Quaternion);
+	USING(DualQuaternion);
 
 #ifndef WRITE_TO_FILE
 	getchar();
@@ -307,6 +310,9 @@ IMPL(Matrix44)
 		<< a[4] << "," << a[5] << "," << a[6] << "," << a[7] << "\n"
 		<< a[8] << "," << a[9] << "," << a[10] << "," << a[11] << "\n"
 		<< a[12] << "," << a[13] << "," << a[14] << "," << a[15] << "\n\n";
+
+	mat44 t = mat44::translate(1, 2, 3);
+	vec3 p = transform_point(t, vec3::zero);
 }
 
 IMPL(AllStructure)
@@ -326,7 +332,7 @@ IMPL(AllStructure)
 
 	vec2 v2({ 1,2 });
 	OUTPUT << "\tv2({1,2})    = <" << v2.x << "," << v2.y << ">" << std::endl;
-	OUTPUT << "\tv2({1,2})    = <" << v2[0] << "," << v2[1] << ">" << std::endl;
+	OUTPUT << "\tv2({1,2})    = <" << v2[0] << "," << v2[1]		<< ">" << std::endl;
 
 	vec3 v3 = { 1,2,3 };
 	OUTPUT << "\tv3={1,2,3}   = <" << v3.x << "," << v3.y << "," << v3.z << ">" << std::endl;
@@ -415,4 +421,45 @@ IMPL(Quaternion)
 	auto rmat = gml::to_mat44(r2);
 	auto r2_ = gml::to_quat(rmat);
 	position = transform_vector(rmat, vec3(0, 0, 1));
+}
+
+IMPL(DualQuaternion)
+{
+	gml::dquat trans(0, 1, 0);
+	gml::dquat rot(vec3(0, 1, 0), a2r(180));
+	gml::mat44 mTrans = to_mat44(trans);
+	gml::mat44 mRotation = to_mat44(rot);
+
+	auto rnt = trans*rot;
+	auto tnr = rot*trans;
+
+	gml::mat44 mTNR = to_mat44(tnr);
+	gml::mat44 mRNT = to_mat44(rnt);
+	gml::vec3 p(0, 0, 0);
+
+	gml::vec3 tp = transform_point(mTrans, p);
+	gml::vec3 rp = transform_point(mRotation, p);
+	auto tret = gml::transform(trans, p);
+	OUTPUT << "translate:<"
+		<< tret.x << ","
+		<< tret.y << ","
+		<< tret.z << "> \n";
+	
+
+	tret = gml::transform(rot, p);
+	OUTPUT << "rotate:<" << tret.x << ","
+		<< tret.y << ","
+		<< tret.z << "> \n";
+
+	tret = gml::transform(rnt, p);
+	OUTPUT << "rotate and translate:<" << tret.x << ","
+		<< tret.y << ","
+		<< tret.z << "> \n";
+	tret = transform_point(mRNT, p);
+
+	tret = gml::transform(tnr, p);
+	OUTPUT << "translate and rotate:<" << tret.x << ","
+		<< tret.y << ","
+		<< tret.z << "> \n";
+	tret = transform_point(mTNR, p);
 }

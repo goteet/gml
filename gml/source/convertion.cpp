@@ -91,4 +91,52 @@ namespace gml
 		}
 		return rst.normalize();
 	}
+
+	mat44 to_mat44(const dquat& q)
+	{
+		mat44 rst;
+		auto normalDQ = q.normalized();
+
+#define M(r,c) rst.m[r][c]
+
+		// Extract rotational information
+		float w = normalDQ.real.w;
+		float x = normalDQ.real.v.x;
+		float y = normalDQ.real.v.y;
+		float z = normalDQ.real.v.z;
+
+		float w2 = w * w;
+		float x2 = x * x;
+		float y2 = y * y;
+		float z2 = z * z;
+		float xy2 = x * y * 2;
+		float yz2 = y * z * 2;
+		float xz2 = x * z * 2;
+		float wx2 = w * x * 2;
+		float wy2 = w * y * 2;
+		float wz2 = w * z * 2;
+
+		M(0, 0) = w2 + x2 - y2 - z2;
+		M(1, 0) = xy2 + wz2;
+		M(2, 0) = xz2 - wy2;
+
+		M(0, 1) = xy2 - wz2;
+		M(1, 1) = w2 + y2 - x2 - z2;
+		M(2, 1) = yz2 + wx2;
+
+		M(0, 2) = xz2 + wy2;
+		M(1, 2) = yz2 - wx2;
+		M(2, 2) = w2 + z2 - x2 - y2;
+
+		// Extract translation information
+		vec3 translation = normalDQ.get_translation();
+		M(0, 3) = translation.x;
+		M(1, 3) = translation.y;
+		M(2, 3) = translation.z;
+#undef M
+
+		rst.row[3].set(0, 0, 0, 1);
+
+		return rst;
+	}
 }

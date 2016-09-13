@@ -45,6 +45,9 @@
     <ClInclude Include="include\gmlconv.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="include\gmldualquat.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\vector2.cpp">
@@ -90,6 +93,9 @@
       <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="source\convertion.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dual_quat.cpp">
       <Filter>source</Filter>
     </ClCompile>
   </ItemGroup>

@@ -22,6 +22,7 @@
     <ClInclude Include="include\gmlconv.h" />
     <ClInclude Include="include\gmlaabb.h" />
     <ClInclude Include="include\gmlcolor.h" />
+    <ClInclude Include="include\gmldualquat.h" />
     <ClInclude Include="include\gmlquaternion.h" />
     <ClInclude Include="include\gmlutility.h" />
     <ClInclude Include="include\gmlmatrix.h" />
@@ -36,6 +37,7 @@
     <ClCompile Include="source\color4.cpp" />
     <ClCompile Include="source\convertion.cpp" />
     <ClCompile Include="source\coord.cpp" />
+    <ClCompile Include="source\dual_quat.cpp" />
     <ClCompile Include="source\math_util.cpp" />
     <ClCompile Include="source\matrix22.cpp" />
     <ClCompile Include="source\matrix33.cpp" />
