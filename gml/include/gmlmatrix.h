@@ -62,7 +62,9 @@ namespace gml
 
 		const float& operator[] (int index) const;
 
-		vec2 col(int index) const;
+		vec2 column(int index) const;
+
+		mat22& set_column(int index, vec2);
 
 		mat22& identity();
 
@@ -149,7 +151,9 @@ namespace gml
 
 		const float& operator[] (int index) const;
 
-		vec3 col(int index) const;
+		vec3 column(int index) const;
+
+		mat33& set_column(int index, vec3);
 
 		mat33& identity();
 
@@ -231,7 +235,9 @@ namespace gml
 
 		const float& operator[] (int index) const;
 
-		vec4 col(int index) const;
+		vec4 column(int index) const;
+
+		mat44& set_column(int index, vec4);
 
 		mat44& identity();
 

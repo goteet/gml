@@ -229,7 +229,7 @@ namespace gml
 		{
 			for (int j = 0; j < 3; j++)
 			{
-				m[i][j] = dot(copy.row[i], rhs.col(j));
+				m[i][j] = dot(copy.row[i], rhs.column(j));
 			}
 		}
 		return *this;
@@ -260,14 +260,24 @@ namespace gml
 
 	const float& mat33::operator[] (int index) const
 	{
-		assert(index >= 0 && index < 16);
+		assert(index >= 0 && index < 9);
 		return *(&(m[0][0]) + index);
 	}
 
-	vec3 mat33::col(int index) const
+	vec3 mat33::column(int index) const
 	{
 		assert(index >= 0 && index < 3);
 		return vec3(row[0][index], row[1][index], row[2][index]);
+	}
+
+	mat33& mat33::set_column(int index, vec3 v)
+	{
+		assert(index >= 0 && index < 3);
+		for (int i = 0; i < 3; i++)
+		{
+			m[i][index] = v[i];
+		}
+		return *this;
 	}
 
 	mat33& mat33::identity()
@@ -361,7 +371,7 @@ namespace gml
 		vec3 result;
 		for (int i = 0; i < 3; i++)
 		{
-			result[i] = dot(lhs, rhs.col(i));
+			result[i] = dot(lhs, rhs.column(i));
 		}
 		return result;
 	}

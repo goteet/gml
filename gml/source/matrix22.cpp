@@ -132,7 +132,7 @@ namespace gml
 		{
 			for (int j = 0; j < 2; j++)
 			{
-				m[i][j] = dot(copy.row[i], rhs.col(j));
+				m[i][j] = dot(copy.row[i], rhs.column(j));
 			}
 		}
 		return *this;
@@ -167,11 +167,23 @@ namespace gml
 		return *(&(m[0][0]) + index);
 	}
 
-	vec2 mat22::col(int index) const
+	vec2 mat22::column(int index) const
 	{
 		assert(index >= 0 && index < 2);
 		return vec2(row[0][index], row[1][index]);
 	}
+
+	mat22& mat22::set_column(int index, vec2 v)
+	{
+		assert(index >= 0 && index < 2);
+		for (int i = 0; i < 2; i++)
+		{
+			m[i][index] = v[i];
+		}
+		return *this;
+	}
+
+
 
 	mat22& mat22::identity()
 	{
@@ -248,7 +260,7 @@ namespace gml
 		vec2 result;
 		for (int i = 0; i < 2; i++)
 		{
-			result[i] = dot(lhs, rhs.col(i));
+			result[i] = dot(lhs, rhs.column(i));
 		}
 		return result;
 	}

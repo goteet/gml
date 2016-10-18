@@ -232,7 +232,7 @@ namespace gml
 		{
 			for (int j = 0; j < 4; j++)
 			{
-				m[i][j] = dot(copy.row[i], rhs.col(j));
+				m[i][j] = dot(copy.row[i], rhs.column(j));
 			}
 		}
 		return *this;
@@ -267,10 +267,20 @@ namespace gml
 		return *(&(m[0][0]) + index);
 	}
 
-	vec4 mat44::col(int index) const
+	vec4 mat44::column(int index) const
 	{
 		assert(index >= 0 && index < 4);
 		return vec4(row[0][index], row[1][index], row[2][index], row[3][index]);
+	}
+
+	mat44& mat44::set_column(int index, vec4 v)
+	{
+		assert(index >= 0 && index < 4);
+		for (int i = 0; i < 4; i++)
+		{
+			m[i][index] = v[i];
+		}
+		return *this;
 	}
 
 	mat44& mat44::identity()
@@ -377,7 +387,7 @@ namespace gml
 		vec4 result;
 		for (int i = 0; i < 4; i++)
 		{
-			result[i] = dot(lhs, rhs.col(i));
+			result[i] = dot(lhs, rhs.column(i));
 		}
 		return result;
 	}
