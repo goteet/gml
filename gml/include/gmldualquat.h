@@ -6,7 +6,7 @@ namespace gml
 	class dquat
 	{
 	public:
-		static const dquat I;
+		static const dquat& I();
 
 	public:
 		quat real;

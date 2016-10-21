@@ -82,10 +82,10 @@ namespace gml
 
 	void aabb::clear()
 	{
-		m_min_bound = vec3::zero;
-		m_max_bound = vec3::zero;
-		m_center = vec3::zero;
-		m_extend = vec3::zero;
+		m_min_bound = vec3::zero();
+		m_max_bound = vec3::zero();
+		m_center = vec3::zero();
+		m_extend = vec3::zero();
 		m_is_empty = true;
 	}
 }

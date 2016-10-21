@@ -31,9 +31,9 @@ namespace gml
 
 	private:
 		bool m_is_empty = true;
-		vec3 m_min_bound = vec3::zero;
-		vec3 m_max_bound = vec3::zero;
-		vec3 m_center = vec3::zero;
-		vec3 m_extend = vec3::zero;
+		vec3 m_min_bound = vec3::zero();
+		vec3 m_max_bound = vec3::zero();
+		vec3 m_center = vec3::zero();
+		vec3 m_extend = vec3::zero();
 	};
 }

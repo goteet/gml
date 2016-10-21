@@ -6,10 +6,14 @@
 
 namespace gml
 {
-	const mat22 mat22::I(
-		1.0f, 0.0f,
-		0.0f, 1.0f
-		);
+	const mat22& mat22::I()
+	{
+		static mat22 i(
+			1.0f, 0.0f,
+			0.0f, 1.0f
+			);
+		return i;
+	}
 
 	mat22 mat22::rotate(float radian)
 	{
@@ -187,7 +191,7 @@ namespace gml
 
 	mat22& mat22::identity()
 	{
-		return *this = I;
+		return *this = I();
 	}
 
 	mat22& mat22::transpose()

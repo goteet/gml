@@ -9,15 +9,15 @@ namespace gml
 	class color3
 	{
 	public:
-		static const color3 black;
-		static const color3 gray;
-		static const color3 white;
-		static const color3 red;
-		static const color3 green;
-		static const color3 blue;
-		static const color3 yellow;
-		static const color3 cyan;
-		static const color3 purple;
+		static const color3& black();
+		static const color3& gray();
+		static const color3& white();
+		static const color3& red();
+		static const color3& green();
+		static const color3& blue();
+		static const color3& yellow();
+		static const color3& cyan();
+		static const color3& purple();
 		static color3 random();
 
 	public:
@@ -69,21 +69,21 @@ namespace gml
 
 		color3 clamped() const;
 
-		unsigned int to_rgb();		
+		unsigned int to_rgb();
 	};
 
 	class color4
 	{
 	public:
-		static const color4 black;
-		static const color4 gray;
-		static const color4 white;
-		static const color4 red;
-		static const color4 green;
-		static const color4 blue;
-		static const color4 yellow;
-		static const color4 cyan;
-		static const color4 purple;
+		static const color4& black();
+		static const color4& gray();
+		static const color4& white();
+		static const color4& red();
+		static const color4& green();
+		static const color4& blue();
+		static const color4& yellow();
+		static const color4& cyan();
+		static const color4& purple();
 		static color4 random();
 
 	public:

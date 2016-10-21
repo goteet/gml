@@ -6,14 +6,46 @@
 
 namespace gml
 {
-	const vec3 vec3::zero(0.0f, 0.0f, 0.0f);
-	const vec3 vec3::one(1.0f, 1.0f, 1.0f);
-	const vec3 vec3::left(-1.0f, 0.0f, 0.0f);
-	const vec3 vec3::right(1.0f, 0.0f, 0.0f);
-	const vec3 vec3::up(0.0f, 1.0f, 0.0f);
-	const vec3 vec3::down(0.0f, -1.0f, 0.0f);
-	const vec3 vec3::forward(0.0f, 0.0f, 1.0f);
-	const vec3 vec3::backward(0.0f, 0.0f, -1.0f);
+	const vec3& vec3::zero()
+	{
+		static vec3 v(0.0f, 0.0f, 0.0f);
+		return v;
+	}
+	const vec3& vec3::one()
+	{
+		static vec3 v(1.0f, 1.0f, 1.0f);
+		return v;
+	}
+	const vec3& vec3::left()
+	{
+		static vec3 v(-1.0f, 0.0f, 0.0f);
+		return v;
+	}
+	const vec3& vec3::right()
+	{
+		static vec3 v(1.0f, 0.0f, 0.0f);
+		return v;
+	}
+	const vec3& vec3::up()
+	{
+		static vec3 v(0.0f, 1.0f, 0.0f);
+		return v;
+	}
+	const vec3& vec3::down()
+	{
+		static vec3 v(0.0f, -1.0f, 0.0f);
+		return v;
+	}
+	const vec3& vec3::forward()
+	{
+		static vec3 v(0.0f, 0.0f, 1.0f);
+		return v;
+	}
+	const vec3& vec3::backward()
+	{
+		static vec3 v(0.0f, 0.0f, -1.0f);
+		return v;
+	}
 
 	vec3::vec3()
 	{
@@ -201,7 +233,7 @@ namespace gml
 		}
 		else
 		{
-			*this = zero;
+			*this = zero();
 		}
 		return *this;
 	}

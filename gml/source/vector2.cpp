@@ -6,12 +6,36 @@
 
 namespace gml
 {
-	const vec2 vec2::zero(0.0f, 0.0f);
-	const vec2 vec2::one(1.0f, 1.0f);
-	const vec2 vec2::left(-1.0f, 0.0f);
-	const vec2 vec2::right(1.0f, 0.0f);
-	const vec2 vec2::up(0.0f, 1.0f);
-	const vec2 vec2::down(0.0f, -1.0f);
+	const vec2& vec2::zero()
+	{
+		vec2 v(0.0f, 0.0f);
+		return v;
+	}
+	const vec2& vec2::one()
+	{
+		vec2 v(1.0f, 1.0f);
+		return v;
+	}
+	const vec2& vec2::left()
+	{
+		vec2 v(-1.0f, 0.0f);
+		return v;
+	}
+	const vec2& vec2::right()
+	{
+		vec2 v(1.0f, 0.0f);
+		return v;
+	}
+	const vec2& vec2::up()
+	{
+		vec2 v(0.0f, 1.0f);
+		return v;
+	}
+	const vec2& vec2::down()
+	{
+		vec2 v(0.0f, -1.0f);
+		return v;
+	}
 
 	vec2::vec2()
 	{
@@ -36,7 +60,7 @@ namespace gml
 	{
 		return vec2(-x, -y);
 	}
-	
+
 	bool vec2::operator==(const vec2& rhs) const
 	{
 		if (&rhs == this)
@@ -183,7 +207,7 @@ namespace gml
 		}
 		else
 		{
-			*this = zero;
+			*this = zero();
 		}
 		return *this;
 	}

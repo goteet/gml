@@ -6,12 +6,16 @@
 
 namespace gml
 {
-	const mat44 mat44::I(
-		1.0f, 0.0f, 0.0f, 0.0f,
-		0.0f, 1.0f, 0.0f, 0.0f,
-		0.0f, 0.0f, 1.0f, 0.0f,
-		0.0f, 0.0f, 0.0f, 1.0f
-		);
+	const mat44& mat44::I()
+	{
+		static mat44 i(
+			1.0f, 0.0f, 0.0f, 0.0f,
+			0.0f, 1.0f, 0.0f, 0.0f,
+			0.0f, 0.0f, 1.0f, 0.0f,
+			0.0f, 0.0f, 0.0f, 1.0f
+			);
+		return i;
+	}
 
 	mat44 mat44::rotate_x(float radian)
 	{
@@ -285,7 +289,7 @@ namespace gml
 
 	mat44& mat44::identity()
 	{
-		return *this = I;
+		return *this = I();
 	}
 
 	mat44& mat44::transpose()

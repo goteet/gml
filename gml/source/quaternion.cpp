@@ -4,8 +4,16 @@
 
 namespace gml
 {
-	const quat quat::Ipos;
-	const quat quat::Ineg(-1, 0, 0, 0);
+	const quat& quat::Ipos()
+	{
+		static quat ipos;
+		return ipos;
+	}
+	const quat& quat::Ineg()
+	{
+		static quat ineg(-1, 0, 0, 0);
+		return ineg;
+	}
 
 	quat::quat() :w(1), v(0, 0, 0) { }
 

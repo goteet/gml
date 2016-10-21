@@ -5,8 +5,8 @@ namespace gml
 	class quat
 	{
 	public:
-		static const quat Ipos;
-		static const quat Ineg;
+		static const quat& Ipos();
+		static const quat& Ineg();
 
 	public:
 		float w;

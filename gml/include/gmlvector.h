@@ -9,12 +9,12 @@ namespace gml
 	class vec2
 	{
 	public:
-		static const vec2 zero;
-		static const vec2 one;
-		static const vec2 left;
-		static const vec2 right;
-		static const vec2 up;
-		static const vec2 down;
+		static const vec2& zero();
+		static const vec2& one();
+		static const vec2& left();
+		static const vec2& right();
+		static const vec2& up();
+		static const vec2& down();
 
 	public:
 		float x = 0.0f;
@@ -88,14 +88,14 @@ namespace gml
 	class vec3
 	{
 	public:
-		static const vec3 zero;
-		static const vec3 one;
-		static const vec3 left;
-		static const vec3 right;
-		static const vec3 up;
-		static const vec3 down;
-		static const vec3 forward;
-		static const vec3 backward;
+		static const vec3& zero();
+		static const vec3& one();
+		static const vec3& left();
+		static const vec3& right();
+		static const vec3& up();
+		static const vec3& down();
+		static const vec3& forward();
+		static const vec3& backward();
 
 	public:
 		float x = 0.0f;

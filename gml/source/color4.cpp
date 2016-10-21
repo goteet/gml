@@ -5,15 +5,51 @@
 
 namespace gml
 {
-	const color4 color4::black(0, 0, 0, 1);
-	const color4 color4::gray(0.5f, 0.5f, 0.5f, 1);
-	const color4 color4::white(1, 1, 1, 1);
-	const color4 color4::red(1, 0, 0, 1);
-	const color4 color4::green(0, 1, 0, 1);
-	const color4 color4::blue(0, 0, 1, 1);
-	const color4 color4::yellow(1, 1, 0,1);
-	const color4 color4::cyan(0, 1, 1,1);
-	const color4 color4::purple(1, 0, 1,1);
+	const color4& color4::black()
+	{
+		static color4 c(0, 0, 0, 1);
+		return c;
+	}
+	const color4& color4::gray()
+	{
+		static color4 c(0.5f, 0.5f, 0.5f, 1);
+		return c;
+	}
+	const color4& color4::white()
+	{
+		static color4 c(1, 1, 1, 1);
+		return c;
+	}
+	const color4& color4::red()
+	{
+		static color4 c(1, 0, 0, 1);
+		return c;
+	}
+	const color4& color4::green()
+	{
+		static color4 c(0, 1, 0, 1);
+		return c;
+	}
+	const color4& color4::blue()
+	{
+		static color4 c(0, 0, 1, 1);
+		return c;
+	}
+	const color4& color4::yellow()
+	{
+		static color4 c(1, 1, 0, 1);
+		return c;
+	}
+	const color4& color4::cyan()
+	{
+		static color4 c(0, 1, 1, 1);
+		return c;
+	}
+	const color4& color4::purple()
+	{
+		static color4 c(1, 0, 1, 1);
+		return c;
+	}
 
 	color4 color4::random()
 	{
@@ -29,7 +65,7 @@ namespace gml
 	{
 		set(r, g, b, a);
 	}
-	
+
 	color4::color4(const color3& c, float a)
 	{
 		this->r = c.r;

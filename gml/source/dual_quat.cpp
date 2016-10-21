@@ -4,7 +4,11 @@
 #include <cmath>
 namespace gml
 {
-	const dquat dquat::I;
+	const dquat& dquat::I()
+	{
+		static dquat dq;
+		return dq;
+	}
 
 	dquat::dquat() : real(1, 0, 0, 0), dual(0, 0, 0, 0) {}
 
@@ -219,7 +223,7 @@ namespace gml
 		dquat inv = dq.inversed();
 		inv.dual = -inv.dual;
 
-		dquat pt = dquat(quat::Ipos, quat(0, point));
+		dquat pt = dquat(quat::Ipos(), quat(0, point));
 		dquat rst = dq * pt * inv;
 		return rst.dual.v;
 	}

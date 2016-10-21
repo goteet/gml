@@ -10,7 +10,7 @@ namespace gml
 	class mat22
 	{
 	public:
-		static const mat22 I;
+		static const mat22& I();
 
 		static mat22 rotate(float radian);
 
@@ -82,7 +82,7 @@ namespace gml
 	class mat33
 	{
 	public:
-		static const mat33 I;
+		static const mat33& I();
 
 		static mat33 rotate22(float radian);
 
@@ -171,7 +171,7 @@ namespace gml
 	class mat44
 	{
 	public:
-		static const mat44 I;
+		static const mat44& I();
 
 		static mat44 rotate_x(float radian);
 

@@ -6,11 +6,15 @@
 
 namespace gml
 {
-	const mat33 mat33::I(
-		1.0f, 0.0f, 0.0f,
-		0.0f, 1.0f, 0.0f,
-		0.0f, 0.0f, 1.0f
-		);
+	const mat33& mat33::I()
+	{
+		static mat33 i(
+			1.0f, 0.0f, 0.0f,
+			0.0f, 1.0f, 0.0f,
+			0.0f, 0.0f, 1.0f
+			);
+		return i;
+	}
 
 	mat33 mat33::rotate22(float radian)
 	{
@@ -282,7 +286,7 @@ namespace gml
 
 	mat33& mat33::identity()
 	{
-		return *this = I;
+		return *this = I();
 	}
 
 	mat33& mat33::transpose()
