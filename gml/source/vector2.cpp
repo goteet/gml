@@ -8,32 +8,32 @@ namespace gml
 {
 	const vec2& vec2::zero()
 	{
-		vec2 v(0.0f, 0.0f);
+		static vec2 v(0.0f, 0.0f);
 		return v;
 	}
 	const vec2& vec2::one()
 	{
-		vec2 v(1.0f, 1.0f);
+		static vec2 v(1.0f, 1.0f);
 		return v;
 	}
 	const vec2& vec2::left()
 	{
-		vec2 v(-1.0f, 0.0f);
+		static vec2 v(-1.0f, 0.0f);
 		return v;
 	}
 	const vec2& vec2::right()
 	{
-		vec2 v(1.0f, 0.0f);
+		static vec2 v(1.0f, 0.0f);
 		return v;
 	}
 	const vec2& vec2::up()
 	{
-		vec2 v(0.0f, 1.0f);
+		static vec2 v(0.0f, 1.0f);
 		return v;
 	}
 	const vec2& vec2::down()
 	{
-		vec2 v(0.0f, -1.0f);
+		static vec2 v(0.0f, -1.0f);
 		return v;
 	}
 
