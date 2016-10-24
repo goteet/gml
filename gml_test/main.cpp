@@ -28,6 +28,7 @@ DECL(Vector3);
 DECL(Vector4);
 DECL(VectorSwizzle);
 DECL(Matrix22);
+DECL(Matrix32);
 DECL(Matrix33);
 DECL(Matrix44);
 DECL(Color);
@@ -46,6 +47,7 @@ int main()
 	USING(Vector4);
 	USING(VectorSwizzle);
 	USING(Matrix22);
+	USING(Matrix32);
 	USING(Matrix33);
 	USING(Matrix44);
 	USING(Color);
@@ -68,8 +70,8 @@ IMPL(Vector2)
 
 	vec2 a;
 	vec2 b(3, 4);
-	vec2 c(vec2::one);
-	vec2 d = vec2::left;
+	vec2 c(vec2::one());
+	vec2 d = vec2::left();
 
 	OUTPUT << "\tvec2 a;              a=<" << a.x << "," << a.y << ">\n";
 	OUTPUT << "\tvec2 b(3,4);         b=<" << b[0] << "," << b[1] << ">\n";
@@ -83,13 +85,13 @@ IMPL(Vector2)
 	a = -b;
 	OUTPUT << "\ta=b; a=<" << a[0] << "," << a[1] << ">\n";
 
-	bool isEqual = (-d == vec2::right);
+	bool isEqual = (-d == vec2::right());
 	OUTPUT << "\t(-d == vec2::right) is " << (isEqual ? "true" : "false") << "\n";
 
-	isEqual = (-vec2::up != vec2::down);
+	isEqual = (-vec2::up() != vec2::down());
 	OUTPUT << "\t(-vec2::up != vec2::down) is " << (isEqual ? "true" : "false") << "\n";
 
-	a = vec2::right + vec2::down;
+	a = vec2::right() + vec2::down();
 	OUTPUT << "\tvec2::right + vec2::down = <" << a[0] << "," << a[1] << ">\n";
 
 	OUTPUT << "## method:" << std::endl;
@@ -104,12 +106,12 @@ IMPL(Vector2)
 	c = b.normalized() * 3.4f;
 	b *= 3.4f;
 	OUTPUT << "  b == c is " << ((c == b) ? "" : "not ") << "equal \n"
-		<< "  b == vec2::one is " << ((vec2::one == b) ? "" : "not ") << "equal \n\n";
+		<< "  b == vec2::one is " << ((vec2::one() == b) ? "" : "not ") << "equal \n\n";
 
 
-	a = vec2::one + vec2::left;
+	a = vec2::one() + vec2::left();
 	OUTPUT << "  one + left = <" << a.x << "," << a.y << ">\n";
-	a += vec2::one * vec2::right;
+	a += vec2::one() * vec2::right();
 	OUTPUT << "  result += one * right = <" << a.x << "," << a.y << ">\n";
 
 	a = b.inversed();
@@ -117,14 +119,14 @@ IMPL(Vector2)
 
 	OUTPUT << "  cross(b,b) = <" << cross(b, c) << ">\n";
 	OUTPUT << "  cross(b,vec2::one) = <"
-		<< cross(b, vec2::one) << ">\n"
+		<< cross(b, vec2::one()) << ">\n"
 		<< "  dot(b,c) = " << dot(b, c) << "\n\n";
 
-	a = lerp(b, vec2::one, 0.5f);
+	a = lerp(b, vec2::one(), 0.5f);
 	OUTPUT << "  lerp(b,vec2::one, 0.5f) = <" << a[0] << "," << a[1] << ">\n";
-	a = lerp(b, vec2::one, 0.0f);
+	a = lerp(b, vec2::one(), 0.0f);
 	OUTPUT << "  lerp(b,vec2::one, 0.0f) = <" << a[0] << "," << a[1] << ">\n";
-	a = lerp(b, vec2::one, 1.0f);
+	a = lerp(b, vec2::one(), 1.0f);
 	OUTPUT << "  lerp(b,vec2::one, 1.0f) = <" << a[0] << "," << a[1] << ">\n\n";
 
 
@@ -137,7 +139,7 @@ IMPL(Vector2)
 
 IMPL(Vector3)
 {
-	vec3 a = vec3::one;
+	vec3 a = vec3::one();
 	vec3 b(3, 4, 5);
 	vec3 c;
 
@@ -152,11 +154,11 @@ IMPL(Vector3)
 	c = b.normalized() * 3.4f;
 	b *= 3.4f;
 	OUTPUT << "  b == c is " << ((c == b) ? "" : "not ") << "equal \n"
-		<< "  b == vec3::one is " << ((vec3::one == b) ? "" : "not ") << "equal \n\n";
+		<< "  b == vec3::one is " << ((vec3::one() == b) ? "" : "not ") << "equal \n\n";
 
-	a = vec3::one + vec3::left;
+	a = vec3::one() + vec3::left();
 	OUTPUT << "  one + left = <" << a.x << "," << a.y << "," << a.z << ">\n";
-	a += vec3::one * vec3::right;
+	a += vec3::one() * vec3::right();
 	OUTPUT << "  result += one * right = <" << a.x << "," << a.y << "," << a.z << ">\n";
 
 	a = b.inversed();
@@ -164,15 +166,15 @@ IMPL(Vector3)
 
 	a = cross(b, c);
 	OUTPUT << "  cross(b,b) = <" << a.x << "," << a.y << "," << a.z << ">\n";
-	a = cross(b, vec3::one);
+	a = cross(b, vec3::one());
 	OUTPUT << "  cross(b,vec3::one) = <" << a[0] << "," << a[1] << "," << a[2] << ">\n"
 		<< "  dot(b,c) = " << dot(b, c) << "\n\n";
 
-	a = lerp(b, vec3::one, 0.5f);
+	a = lerp(b, vec3::one(), 0.5f);
 	OUTPUT << "  lerp(b,vec3::one, 0.5f) = <" << a[0] << "," << a[1] << "," << a[2] << ">\n";
-	a = lerp(b, vec3::one, 0.0f);
+	a = lerp(b, vec3::one(), 0.0f);
 	OUTPUT << "  lerp(b,vec3::one, 0.0f) = <" << a[0] << "," << a[1] << "," << a[2] << ">\n";
-	a = lerp(b, vec3::one, 1.0f);
+	a = lerp(b, vec3::one(), 1.0f);
 	OUTPUT << "  lerp(b,vec3::one, 1.0f) = <" << a[0] << "," << a[1] << "," << a[2] << ">\n\n";
 
 
@@ -312,7 +314,7 @@ IMPL(Matrix44)
 		<< a[12] << "," << a[13] << "," << a[14] << "," << a[15] << "\n\n";
 
 	mat44 t = mat44::translate(1, 2, 3);
-	vec3 p = transform_point(t, vec3::zero);
+	vec3 p = transform_point(t, vec3::zero());
 }
 
 IMPL(AllStructure)
@@ -323,6 +325,7 @@ IMPL(AllStructure)
 	OUTPUT << "\tsizeof(vec3)   = " << sizeof(vec3) << std::endl;
 	OUTPUT << "\tsizeof(vec4)   = " << sizeof(vec4) << std::endl;
 	OUTPUT << "\tsizeof(mat22)  = " << sizeof(mat22) << std::endl;
+	OUTPUT << "\tsizeof(mat32)  = " << sizeof(mat32) << std::endl;
 	OUTPUT << "\tsizeof(mat33)  = " << sizeof(mat33) << std::endl;
 	OUTPUT << "\tsizeof(mat44)  = " << sizeof(mat44) << std::endl;
 	OUTPUT << "\tsizeof(color_rgb)  = " << sizeof(color3) << std::endl;
@@ -332,7 +335,7 @@ IMPL(AllStructure)
 
 	vec2 v2({ 1,2 });
 	OUTPUT << "\tv2({1,2})    = <" << v2.x << "," << v2.y << ">" << std::endl;
-	OUTPUT << "\tv2({1,2})    = <" << v2[0] << "," << v2[1]		<< ">" << std::endl;
+	OUTPUT << "\tv2({1,2})    = <" << v2[0] << "," << v2[1] << ">" << std::endl;
 
 	vec3 v3 = { 1,2,3 };
 	OUTPUT << "\tv3={1,2,3}   = <" << v3.x << "," << v3.y << "," << v3.z << ">" << std::endl;
@@ -346,6 +349,20 @@ IMPL(AllStructure)
 	OUTPUT << "\tm2={1,2,3,4} = |" << m2._00 << "," << m2._01 << "," << m2._10 << "," << m2._11 << "|" << std::endl;
 	OUTPUT << "\tm2={1,2,3,4} = |" << m2[0] << "," << m2[1] << "," << m2[2] << "," << m2[3] << "|" << std::endl;
 	OUTPUT << "\tm2={1,2,3,4} = |" << m2.row[0].x << "," << m2.row[0].y << "," << m2.row[1].x << "," << m2.row[0].y << "|" << std::endl;
+
+	mat32 m32 = { 1,2,3,4,5,6 };
+	OUTPUT << "\tm32={ 1,2,3,4,5,6 } = |"
+		<< m32._00 << "," << m32._01 << "," << m32._02 << ","
+		<< m32._10 << "," << m32._11 << "," << m32._12 << ","
+		<< std::endl;
+	OUTPUT << "\tm32={ 1,2,3,4,5,6 } = |"
+		<< m32[0] << "," << m32[1] << "," << m32[2] << ","
+		<< m32[3] << "," << m32[4] << "," << m32[5] << "|"
+		<< std::endl;
+	OUTPUT << "\tm32={ 1,2,3,4,5,6 } = |"
+		<< m32.row(0).x << "," << m32.row(0)[1] << "," << m32.row(0)[2] << ","
+		<< m32.row(1).x << "," << m32.row(1).y  << "," << m32.row(1).z << "|"
+		<< std::endl;
 
 	mat33 m3 = { 1,2,3,4,5,6,7,8,9 };
 	OUTPUT << "\tm3={ 1,2,3,4,5,6,7,8,9 } = |"
@@ -387,13 +404,13 @@ IMPL(AllStructure)
 
 IMPL(Color)
 {
-	color4 b = { color3::white, 1.0 };
+	color4 b = { color3::white(), 1.0 };
 }
 
 IMPL(Quaternion)
 {
-	gml::quat r1(vec3::right, gml::a2r(90));
-	gml::quat r2(vec3::left, gml::a2r(90));
+	gml::quat r1(vec3::right(), gml::a2r(90));
+	gml::quat r2(vec3::left(), gml::a2r(90));
 	gml::vec3 position(0, 0, 1);
 
 	OUTPUT << "## slerp\n";
@@ -409,8 +426,8 @@ IMPL(Quaternion)
 	}
 
 	OUTPUT << "\n## q1*q2 \n";
-	r1 = quat(vec3::forward, gml::a2r(90));
-	r2 = quat(vec3::up, gml::a2r(90));
+	r1 = quat(vec3::forward(), gml::a2r(90));
+	r2 = quat(vec3::up(), gml::a2r(90));
 
 	auto r = r1 * r2;
 	position = gml::rotate(r, vec3(0, 0, 1));
@@ -444,7 +461,7 @@ IMPL(DualQuaternion)
 		<< tret.x << ","
 		<< tret.y << ","
 		<< tret.z << "> \n";
-	
+
 
 	tret = gml::transform(rot, p);
 	OUTPUT << "rotate:<" << tret.x << ","
@@ -462,4 +479,9 @@ IMPL(DualQuaternion)
 		<< tret.y << ","
 		<< tret.z << "> \n";
 	tret = transform_point(mTNR, p);
+}
+
+IMPL(Matrix32)
+{
+	mat32 a(0, 1, 2, 3, 4, 5);
 }

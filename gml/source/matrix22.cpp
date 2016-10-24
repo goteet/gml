@@ -174,7 +174,7 @@ namespace gml
 	vec2 mat22::column(int index) const
 	{
 		assert(index >= 0 && index < 2);
-		return vec2(row[0][index], row[1][index]);
+		return vec2(m[0][index], m[1][index]);
 	}
 
 	mat22& mat22::set_column(int index, vec2 v)

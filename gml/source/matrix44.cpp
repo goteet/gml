@@ -274,7 +274,7 @@ namespace gml
 	vec4 mat44::column(int index) const
 	{
 		assert(index >= 0 && index < 4);
-		return vec4(row[0][index], row[1][index], row[2][index], row[3][index]);
+		return vec4(m[0][index], m[1][index], m[2][index], m[3][index]);
 	}
 
 	mat44& mat44::set_column(int index, vec4 v)

@@ -16,56 +16,7 @@ namespace gml
 		return i;
 	}
 
-	mat33 mat33::rotate22(float radian)
-	{
-		float cosr = cosf(radian);
-		float sinr = sinf(radian);
-		return mat33(
-			cosr, -sinr, 0,
-			sinr, cosr, 0,
-			0, 0, 1);
-	}
-
-	mat33 mat33::mat33::scale22(float scaler)
-	{
-		return mat33(
-			scaler, 0, 0,
-			0, scaler, 0,
-			0, 0, 1);
-	}
-
-	mat33 mat33::mat33::scale22(float sx, float sy)
-	{
-		return mat33(
-			sx, 0, 0,
-			0, sy, 0,
-			0, 0, 1);
-	}
-	mat33 mat33::translate(float x, float y)
-	{
-		return mat33(
-			1, 0, 0,
-			0, 1, 0,
-			x, y, 1);
-	}
-
-	mat33 mat33::flip22_x()
-	{
-		return mat33(
-			-1, 0, 0,
-			0, 1, 0,
-			0, 0, 1);
-	}
-
-	mat33 mat33::flip22_y()
-	{
-		return mat33(
-			1, 0, 0,
-			0, -1, 0,
-			0, 0, 1);
-	}
-
-	mat33 mat33::rotate33_x(float radian)
+	mat33 mat33::rotate_x(float radian)
 	{
 		float cosr = cosf(radian);
 		float sinr = sinf(radian);
@@ -77,7 +28,7 @@ namespace gml
 			);
 	}
 
-	mat33 mat33::rotate33_y(float radian)
+	mat33 mat33::rotate_y(float radian)
 	{
 		float cosr = cosf(radian);
 		float sinr = sinf(radian);
@@ -89,7 +40,7 @@ namespace gml
 			);
 	}
 
-	mat33 mat33::rotate33_z(float radian)
+	mat33 mat33::rotate_z(float radian)
 	{
 		float cosr = cosf(radian);
 		float sinr = sinf(radian);
@@ -101,7 +52,7 @@ namespace gml
 			);
 	}
 
-	mat33 mat33::scale33(float scale)
+	mat33 mat33::scale(float scale)
 	{
 		return mat33(
 			scale, 0, 0,
@@ -110,7 +61,7 @@ namespace gml
 			);
 	}
 
-	mat33 mat33::scale33(float sx, float sy, float sz)
+	mat33 mat33::scale(float sx, float sy, float sz)
 	{
 		return mat33(
 			sx, 0, 0,
@@ -119,7 +70,7 @@ namespace gml
 			);
 	}
 
-	mat33 mat33::flip33_x()
+	mat33 mat33::flip_x()
 	{
 		return mat33(
 			-1, 0, 0,
@@ -128,7 +79,7 @@ namespace gml
 			);
 	}
 
-	mat33 mat33::flip33_y()
+	mat33 mat33::flip_y()
 	{
 		return mat33(
 			1, 0, 0,
@@ -137,7 +88,7 @@ namespace gml
 			);
 	}
 
-	mat33 mat33::flip33_z()
+	mat33 mat33::flip_z()
 	{
 		return mat33(
 			1, 0, 0,
@@ -271,7 +222,7 @@ namespace gml
 	vec3 mat33::column(int index) const
 	{
 		assert(index >= 0 && index < 3);
-		return vec3(row[0][index], row[1][index], row[2][index]);
+		return vec3(m[0][index], m[1][index], row[2][index]);
 	}
 
 	mat33& mat33::set_column(int index, vec3 v)

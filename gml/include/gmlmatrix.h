@@ -79,38 +79,87 @@ namespace gml
 		float determinant() const;
 	};
 
+	class mat32
+	{
+	public:
+		static const mat32& I();
+
+		static mat32 rotate(float radian);
+
+		static mat32 scale(float scale);
+
+		static mat32 scale(float sx, float sy);
+
+		static mat32 translate(float x, float y);
+
+		static mat32 flip_x();
+
+		static mat32 flip_y();
+
+	public:
+		union
+		{
+			// special for GPU constant buffer layout.
+			float m[2][4] = { 0,0,0,0,0,0,0,0 };
+			struct { float _00, _01, _02, _dummy_0, _10, _11, _12, _dummy_1; };
+			struct { vec3 r; float _dummy_2; } rows[2];
+		};
+
+		mat32();
+
+		mat32(float _00, float _01, float _02, float _10, float _11, float _12);
+
+		mat32(const vec3& row1, const vec3& row2);
+
+		mat32(const mat32& other);
+
+		explicit mat32(const mat22&);
+
+		mat32& operator=(const mat32& rhs);
+
+		mat32 operator* (const mat32& rhs) const;
+
+		mat32& operator*=(const mat32& rhs);
+
+		bool operator== (const mat32& rhs) const;
+
+		bool operator!= (const mat32& rhs) const;
+
+		float& operator[] (int index);
+
+		const float& operator[] (int index) const;
+
+		vec3& row(int index);
+
+		const vec3& row(int index) const;
+
+		vec2 column(int index) const;
+
+		mat32& set_column(int index, vec2);
+
+		mat32& identity();
+	};
+
 	class mat33
 	{
 	public:
 		static const mat33& I();
 
-		static mat33 rotate22(float radian);
+		static mat33 rotate_x(float radian);
 
-		static mat33 scale22(float scale);
+		static mat33 rotate_y(float radian);
 
-		static mat33 scale22(float sx, float sy);
+		static mat33 rotate_z(float radian);
 
-		static mat33 translate(float x, float y);
+		static mat33 scale(float scale);
 
-		static mat33 flip22_x();
+		static mat33 scale(float sx, float sy, float sz);
 
-		static mat33 flip22_y();
+		static mat33 flip_x();
 
-		static mat33 rotate33_x(float radian);
+		static mat33 flip_y();
 
-		static mat33 rotate33_y(float radian);
-
-		static mat33 rotate33_z(float radian);
-
-		static mat33 scale33(float scale);
-
-		static mat33 scale33(float sx, float sy, float sz);
-
-		static mat33 flip33_x();
-
-		static mat33 flip33_y();
-
-		static mat33 flip33_z();
+		static mat33 flip_z();
 	public:
 		union
 		{
@@ -256,6 +305,11 @@ namespace gml
 	mat22 operator* (float scaler, const mat22& rhs);
 
 	vec2 operator* (const vec2& lhs, const mat22& rhs);
+
+	//matrix32
+	vec2 transform_vector(const mat32& lhs, const vec2& rhs);
+
+	vec2 transform_point(const mat32& lhs, const vec2& rhs);
 
 	//matrix33
 	mat33 operator* (float scaler, const mat33& rhs);
