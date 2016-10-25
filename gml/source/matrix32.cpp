@@ -181,7 +181,7 @@ namespace gml
 	{
 		vec2 result;
 		vec3 rhs3(rhs, 0);
-		for (int i = 0; i < 3; i++)
+		for (int i = 0; i < 2; i++)
 		{
 			result[i] = dot(lhs.rows[i].r, rhs3);
 		}
@@ -192,7 +192,7 @@ namespace gml
 	{
 		vec2 result;
 		vec3 rhs3(rhs, 1);
-		for (int i = 0; i < 3; i++)
+		for (int i = 0; i < 2; i++)
 		{
 			result[i] = dot(lhs.rows[i].r, rhs3);
 		}
