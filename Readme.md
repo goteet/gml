@@ -4,10 +4,14 @@ game math library, a simple easy-used math library for game developing.
 
 # to-do list
 ---
-* [x] vector
-* [x] matrix
-* [ ] quaternion
- * [ ] quaternion abstraction
+- [x] vector
+- [x] matrix
+- [x] color
+- [ ] quaternion
+ * [x] quaternion abstraction
  * [ ] quaternion-euler
- * [ ] quaternion-matrix
+ * [x] quaternion-matrix
+- [x] dual-quaternion
+- [x] rect for 2d
+- [x] ray for 3d
  
