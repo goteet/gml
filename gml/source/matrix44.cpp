@@ -163,10 +163,10 @@ namespace gml
 	{
 		float z_range = far - near;
 		mat44 rst(
-			2.0f / width, 0, 0, 0,
-			0, 2.0f / height, 0, 0,
+			2.0f / width, 0, 0, -1,
+			0, -2.0f / height, 0, 1,
 			0, 0, 1.0f / z_range, -near / z_range,
-			-1, -1, 0, 1);
+			0, 0, 0, 1);
 		return rst;
 	}
 
