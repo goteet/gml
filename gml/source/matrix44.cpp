@@ -148,6 +148,28 @@ namespace gml
 		return rst;
 	}
 
+	mat44 mat44::center_ortho_lh(float width, float height, float near, float far)
+	{
+		float z_range = far - near;
+		mat44 rst(
+			2.0f / width, 0, 0, 0,
+			0, 2.0f / height, 0, 0,
+			0, 0, 1.0f / z_range, -near / z_range,
+			0, 0, 0, 1);
+		return rst;
+	}
+
+	mat44 mat44::ortho2d_lh(float width, float height, float near, float far)
+	{
+		float z_range = far - near;
+		mat44 rst(
+			2.0f / width, 0, 0, 0,
+			0, 2.0f / height, 0, 0,
+			0, 0, 1.0f / z_range, -near / z_range,
+			-1, -1, 0, 1);
+		return rst;
+	}
+
 	mat44::mat44() {}
 
 	mat44::mat44(float _00, float _01, float _02, float _03, float _10, float _11, float _12, float _13, float _20, float _21, float _22, float _23, float _30, float _31, float _32, float _33)

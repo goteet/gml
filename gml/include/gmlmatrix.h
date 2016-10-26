@@ -244,6 +244,10 @@ namespace gml
 
 		static mat44 perspective_lh(float fov, float aspect, float near, float far);
 
+		static mat44 center_ortho_lh(float width, float height, float near, float far);
+
+		static mat44 ortho2d_lh(float width, float height, float near, float far);
+
 	public:
 		union
 		{
