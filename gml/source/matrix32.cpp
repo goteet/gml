@@ -58,6 +58,50 @@ namespace gml
 			0, -1, 0);
 	}
 
+	mat32 mat32::trsp(const vec2& translate, float rotation_radian, const vec2& scale, const vec2& pivot)
+	{
+		/*
+			  1,0,tx * cos,-sin,0 * sx,0,0 * 1,0,-px
+			  0,1,ty   sin, cos,0   0,sy,0   0,1,-py
+
+			= cos,-sin,tx * sx,0,-sx*px
+			  sin,+cos,ty   0,sy,-sy*py
+
+			= cos*sx,-sin*sy, -cos*sx*px+sin*sy*px + tx
+			  sin*sx, cos*sy, -sin*sx*px-cos*sy*py + ty
+		*/
+		float cosr = cos(rotation_radian);
+		float sinr = sin(rotation_radian);
+		float spx = -scale.x*pivot.x;
+		float spy = -scale.y*pivot.y;
+
+		return mat32(
+			cosr*scale.x, -sinr*scale.y, cosr*spx - sinr*spy + translate.x,
+			sinr*scale.x, +cosr*scale.y, sinr*spx + cosr*spy + translate.y
+			);
+	}
+
+	mat32 mat32::trps(const vec2& translate, float rotation_radian, const vec2& pivot, const vec2& scale)
+	{
+		/*
+			1,0,tx * cos,-sin,0 * 1,0,-px * sx,0,0
+			0,1,ty   sin, cos,0   0,1,-px   0,sy,0
+
+		  = cos,-sin,ty * sx,0,-px
+			sin, cos,ty   0,sy,-px
+
+		  = cos*sx,-sin*sy, -cos*px+sin*px + tx
+			sin*sx,+cos*sy, -sin*px-cos*py + ty
+		*/
+		float cosr = cos(rotation_radian);
+		float sinr = sin(rotation_radian);
+
+		return mat32(
+			cosr*scale.x, -sinr*scale.y, -cosr*pivot.x + sinr*pivot.y + translate.x,
+			sinr*scale.x, +cosr*scale.y, -sinr*pivot.x - cosr*pivot.y + translate.y
+			);
+	}
+
 	mat32::mat32() {}
 
 	mat32::mat32(float _00, float _01, float _02, float _10, float _11, float _12)

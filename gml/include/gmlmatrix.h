@@ -96,6 +96,10 @@ namespace gml
 
 		static mat32 flip_y();
 
+		static mat32 trsp(const vec2& translate, float rotation_radian, const vec2& scale, const vec2& pivot);
+
+		static mat32 trps(const vec2& translate, float rotation_radian, const vec2& pivot, const vec2& scale);
+
 	public:
 		union
 		{
