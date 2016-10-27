@@ -153,7 +153,7 @@ namespace gml
 		{
 			for (int j = 0; j < 3; j++)
 			{
-				m[i][j] = dot(copy.rows[i].r, vec3(rhs.column(j), 0));
+				m[i][j] = dot(copy.rows[i].r, vec3(rhs.column(j), ((j == 2) ? 1 : 0)));
 			}
 		}
 		return *this;
