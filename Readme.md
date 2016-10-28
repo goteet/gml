@@ -7,9 +7,9 @@ game math library, a simple easy-used math library for game developing.
 - [x] vector
 - [x] matrix
 - [x] color
-- [ ] quaternion
+- [x] quaternion
  * [x] quaternion abstraction
- * [ ] quaternion-euler
+ * [x] quaternion-euler
  * [x] quaternion-matrix
 - [x] dual-quaternion
 - [x] rect for 2d

@@ -110,7 +110,7 @@ namespace gml
 
 	vec2 vec2::operator*(const vec2& rhs) const
 	{
-		return vec2(rhs.x, rhs.y);
+		return vec2(x * rhs.x, y * rhs.y);
 	}
 
 	vec2& vec2::operator+=(float value)
