@@ -1,6 +1,6 @@
 #pragma once
 #include <gmlmatrix.h>
-#include <gmlquaternion.h>
+#include <gmlrotation.h>
 #include <gmldualquat.h>
 namespace gml
 {

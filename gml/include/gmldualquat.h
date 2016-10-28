@@ -1,5 +1,5 @@
 #pragma once
-#include <gmlquaternion.h>
+#include <gmlrotation.h>
 
 namespace gml
 {

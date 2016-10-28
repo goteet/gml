@@ -39,13 +39,13 @@
     <ClInclude Include="include\gmlutility.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\gmlquaternion.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="include\gmlconv.h">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\gmldualquat.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\gmlrotation.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>
@@ -99,6 +99,9 @@
       <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="source\matrix32.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="source\eular.cpp">
       <Filter>source</Filter>
     </ClCompile>
   </ItemGroup>

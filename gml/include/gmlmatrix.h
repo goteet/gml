@@ -129,17 +129,17 @@ namespace gml
 
 		bool operator!= (const mat32& rhs) const;
 
-		float& operator[] (int index);
+		float& operator[] (unsigned int index);
 
-		const float& operator[] (int index) const;
+		const float& operator[] (unsigned int index) const;
 
-		vec3& row(int index);
+		vec3& row(unsigned int index);
 
-		const vec3& row(int index) const;
+		const vec3& row(unsigned int index) const;
 
-		vec2 column(int index) const;
+		vec2 column(unsigned int index) const;
 
-		mat32& set_column(int index, vec2);
+		mat32& set_column(unsigned int index, vec2);
 
 		mat32& identity();
 	};

@@ -1,16 +1,10 @@
-#include "../include/gmlquaternion.h"
+#include "../include/gmlrotation.h"
 #include <cmath>
 #include "../include/gmlutility.h"
 #include "../include/gmlconv.h"
 
 namespace gml
 {
-    euler::euler() : roll(0), pitch(0), yaw(0) { }
-
-    euler::euler(float roll, float pitch, float yaw) : roll(roll), pitch(pitch), yaw(yaw) { }
-
-    euler::euler(const vec3& v) : roll(v.x), pitch(v.y), yaw(v.z) { }
-
 	const quat& quat::Ipos()
 	{
 		static quat ipos;
@@ -202,7 +196,7 @@ namespace gml
 		return f0 * s + f1 * d;
 	}
 
-    euler q2e(const quat& q)
+    euler to_eular(const quat& q)
     {
         mat33 m = to_mat33(q);
 
@@ -213,7 +207,7 @@ namespace gml
         );
     }
     
-    quat e2q(const euler& e)
+    quat to_quaternion(const euler& e)
     {
         vec4 v0(cos(e.yaw / 2), 0, 0, sin(e.yaw / 2));
         vec4 v1(cos(e.pitch / 2), 0, sin(e.pitch / 2), 0);

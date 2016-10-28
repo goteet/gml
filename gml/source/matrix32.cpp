@@ -153,7 +153,7 @@ namespace gml
 		{
 			for (int j = 0; j < 3; j++)
 			{
-				m[i][j] = dot(copy.rows[i].r, vec3(rhs.column(j), ((j == 2) ? 1 : 0)));
+				m[i][j] = dot(copy.rows[i].r, vec3(rhs.column(j), ((j == 2) ? 1.0f : 0.0f)));
 			}
 		}
 		return *this;
@@ -177,36 +177,36 @@ namespace gml
 		return !(*this == rhs);
 	}
 
-	float& mat32::operator[] (int index)
+	float& mat32::operator[] (unsigned int index)
 	{
 		return const_cast<float&>(const_cast<const mat32*>(this)->operator[](index));
 	}
 
-	const float& mat32::operator[] (int index) const
+	const float& mat32::operator[] (unsigned int index) const
 	{
 		assert(index >= 0 && index < 6);
 		if (index > 2) index++;
 		return *(&(m[0][0]) + index);
 	}
 
-	vec3& mat32::row(int index)
+	vec3& mat32::row(unsigned int index)
 	{
 		return const_cast<vec3&>(const_cast<const mat32*>(this)->row(index));
 	}
 
-	const vec3& mat32::row(int index) const
+	const vec3& mat32::row(unsigned int index) const
 	{
 		assert(index >= 0 && index < 2);
 		return rows[index].r;
 	}
 
-	vec2 mat32::column(int index) const
+	vec2 mat32::column(unsigned int index) const
 	{
 		assert(index >= 0 && index < 3);
 		return vec2(m[0][index], m[1][index]);
 	}
 
-	mat32& mat32::set_column(int index, vec2 v)
+	mat32& mat32::set_column(unsigned int index, vec2 v)
 	{
 		assert(index >= 0 && index < 3);
 		for (int i = 0; i < 3; i++)

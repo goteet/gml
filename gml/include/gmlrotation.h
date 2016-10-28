@@ -77,8 +77,8 @@ namespace gml
 	quat slerp(const quat& s, const quat& d, float f);
 
     // quaternion to euler angle.
-    euler q2e(const quat& q);
+    euler to_eular(const quat& q);
 
     // euler angle to quaternion.
-    quat e2q(const euler& e);
+    quat to_quaternion(const euler& e);
 }
