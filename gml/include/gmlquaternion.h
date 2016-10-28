@@ -2,6 +2,21 @@
 #include <gmlvector.h>
 namespace gml
 {
+    class euler
+    {
+    public:
+        float roll;
+        float pitch;
+        float yaw;
+
+    public:
+        euler();
+
+        euler(float roll, float pitch, float yaw);
+
+        euler(const vec3& v);
+    };
+
 	class quat
 	{
 	public:
@@ -62,9 +77,8 @@ namespace gml
 	quat slerp(const quat& s, const quat& d, float f);
 
     // quaternion to euler angle.
-    // in roll(x), pitch(y), yaw(z) order.
-    vec3 q2e(const quat& q);
+    euler q2e(const quat& q);
 
     // euler angle to quaternion.
-    quat e2q(const vec3& euler);
+    quat e2q(const euler& e);
 }
