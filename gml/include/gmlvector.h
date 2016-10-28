@@ -190,9 +190,29 @@ namespace gml
 
 		bool operator!=(const vec4& rhs) const;
 
+        vec4 operator+(float value) const;
+
+		vec4 operator-(float value) const;
+
 		vec4 operator*(float value) const;
 
+		vec4 operator+(const vec4& rhs) const;
+
+		vec4 operator-(const vec4& rhs) const;
+
+		vec4 operator*(const vec4& rhs) const;
+
+		vec4& operator+=(float value);
+
+		vec4& operator-=(float value);
+
 		vec4& operator*=(float value);
+
+		vec4& operator+=(const vec4& rhs);
+
+		vec4& operator-=(const vec4& rhs);
+
+		vec4& operator*=(const vec4& rhs);
 
 		//hack
 		float& operator[](int index);

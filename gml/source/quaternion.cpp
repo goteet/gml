@@ -1,6 +1,7 @@
 #include "../include/gmlquaternion.h"
 #include <cmath>
 #include "../include/gmlutility.h"
+#include "../include/gmlconv.h"
 
 namespace gml
 {
@@ -195,4 +196,23 @@ namespace gml
 		return f0 * s + f1 * d;
 	}
 
+    vec3 q2e(const quat& q)
+    {
+        mat33 m = to_mat33(q);
+
+        return vec3(
+            atan2(m._12, m._22),
+            asin(clamp<float>(-m._02, -1.0f, 1.0f)),
+            atan2(m._01, m._00)
+        );
+    }
+    
+    quat e2q(const vec3& euler)
+    {
+        vec4 v0(cos(euler.z / 2), 0, 0, sin(euler.z / 2));
+        vec4 v1(cos(euler.y / 2), 0, sin(euler.y / 2), 0);
+        vec4 v2(cos(euler.x / 2), sin(euler.x / 2), 0, 0);
+        vec4 v = v0 * v1 * v2;
+        return quat(v.w, v.x, v.y, v.z);
+    }
 }

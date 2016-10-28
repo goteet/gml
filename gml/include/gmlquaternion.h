@@ -60,4 +60,11 @@ namespace gml
 	vec3 rotate(const quat& rotation, const vec3& point);
 
 	quat slerp(const quat& s, const quat& d, float f);
+
+    // quaternion to euler angle.
+    // in roll(x), pitch(y), yaw(z) order.
+    vec3 q2e(const quat& q);
+
+    // euler angle to quaternion.
+    quat e2q(const vec3& euler);
 }
