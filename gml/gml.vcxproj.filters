@@ -104,5 +104,8 @@
     <ClCompile Include="source\eular.cpp">
       <Filter>source</Filter>
     </ClCompile>
+    <ClCompile Include="source\aabb2d.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

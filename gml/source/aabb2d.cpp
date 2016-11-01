@@ -2,7 +2,7 @@
 
 namespace gml
 {
-	aabb::aabb()
+	aabb2d::aabb2d()
 		: m_min_bound(vec3::zero())
 		, m_max_bound(vec3::zero())
 		, m_center(vec3::zero())
@@ -11,12 +11,12 @@ namespace gml
 
 	}
 
-	aabb::aabb(const vec3& min_bound, const vec3& max_bound)
+	aabb2d::aabb2d(const vec2& min_bound, const vec2& max_bound)
 	{
 		set(min_bound, max_bound);
 	}
 
-	bool aabb::operator==(const aabb& other) const
+	bool aabb2d::operator==(const aabb2d& other) const
 	{
 		if (is_empty() && other.is_empty())
 		{
@@ -32,7 +32,7 @@ namespace gml
 		}
 	}
 
-	aabb& aabb::set(const vec3& min_bound, const vec3& max_bound)
+	aabb2d& aabb2d::set(const vec2& min_bound, const vec2& max_bound)
 	{
 		m_min_bound = min_combine(min_bound, max_bound);
 		m_max_bound = max_combine(min_bound, max_bound);
@@ -42,20 +42,17 @@ namespace gml
 		return *this;
 	}
 
-	bool aabb::is_contain(const aabb& other) const
+	bool aabb2d::is_contain(const aabb2d& other) const
 	{
 		if (!is_empty() && !other.is_empty())
 		{
-
 			return !(m_min_bound.x > other.m_min_bound.x || m_max_bound.x < other.m_max_bound.x ||
-				m_min_bound.y > other.m_min_bound.y || m_max_bound.y < other.m_max_bound.y ||
-				m_min_bound.z > other.m_min_bound.z || m_max_bound.z < other.m_max_bound.z);
+				m_min_bound.y > other.m_min_bound.y || m_max_bound.y < other.m_max_bound.y);
 		}
 		return false;
-
 	}
 
-	int aabb::is_intersect(const aabb& other) const
+	int aabb2d::is_intersect(const aabb2d& other) const
 	{
 		if (is_empty() && other.is_empty())
 		{
@@ -69,8 +66,7 @@ namespace gml
 			}
 
 			if (m_min_bound.x > other.m_max_bound.x || m_max_bound.x < other.m_min_bound.x ||
-				m_min_bound.y > other.m_max_bound.y || m_max_bound.y < other.m_min_bound.y ||
-				m_min_bound.z > other.m_max_bound.z || m_max_bound.z < other.m_min_bound.z)
+				m_min_bound.y > other.m_max_bound.y || m_max_bound.y < other.m_min_bound.y)
 			{
 				return it_none;
 			}
@@ -79,14 +75,12 @@ namespace gml
 			bool maxxless = m_max_bound.x < other.m_max_bound.x;
 			bool minyless = m_min_bound.y < other.m_min_bound.y;
 			bool maxyless = m_max_bound.y < other.m_max_bound.y;
-			bool minzless = m_min_bound.z < other.m_min_bound.z;
-			bool maxzless = m_max_bound.z < other.m_max_bound.z;
 
-			if (minxless && !maxxless && minyless && !maxyless && minzless && !maxzless)
+			if (minxless && !maxxless && minyless && !maxyless)
 			{
 				return it_contain;
 			}
-			if (!minxless && maxxless && !minyless && maxyless && !minzless && maxzless)
+			if (!minxless && maxxless && !minyless && maxyless)
 			{
 				return it_inside;
 			}
@@ -99,18 +93,17 @@ namespace gml
 		}
 	}
 
-	bool aabb::is_contain(const vec3& point) const
+	bool aabb2d::is_contain(const vec2& point) const
 	{
 		if (!is_empty())
 		{
 			return !(m_min_bound.x > point.x || m_max_bound.x < point.x ||
-				m_min_bound.y > point.y || m_max_bound.y < point.y ||
-				m_min_bound.z > point.z || m_max_bound.z < point.z);
+				m_min_bound.y > point.y || m_max_bound.y < point.y);
 		}
 		return false;
 	}
 
-	void aabb::expand(const vec3& point)
+	void aabb2d::expand(const vec2& point)
 	{
 		if (is_empty())
 		{
@@ -127,7 +120,7 @@ namespace gml
 		m_extend = m_center - m_min_bound;
 	}
 
-	void aabb::expand(const aabb& other)
+	void aabb2d::expand(const aabb2d& other)
 	{
 		if (other.is_empty())
 		{
@@ -147,12 +140,12 @@ namespace gml
 		}
 	}
 
-	void aabb::clear()
+	void aabb2d::clear()
 	{
-		m_min_bound = vec3::zero();
-		m_max_bound = vec3::zero();
-		m_center = vec3::zero();
-		m_extend = vec3::zero();
+		m_min_bound = vec2::zero();
+		m_max_bound = vec2::zero();
+		m_center = vec2::zero();
+		m_extend = vec2::zero();
 		m_is_empty = true;
 	}
 }

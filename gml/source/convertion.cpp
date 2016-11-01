@@ -139,4 +139,18 @@ namespace gml
 
 		return rst;
 	}
+
+	aabb transform(const mat44& mat, const aabb& inaabb)
+	{
+		auto minb = gml::transform_point(mat, inaabb.min_bound());
+		auto maxb = gml::transform_point(mat, inaabb.max_bound());
+		return aabb(minb, maxb);
+	}
+
+	aabb2d transform(const mat32& mat, const aabb2d& inaabb2d)
+	{
+		auto minb = gml::transform_point(mat, inaabb2d.min_bound());
+		auto maxb = gml::transform_point(mat, inaabb2d.max_bound());
+		return aabb2d(minb, maxb);
+	}
 }
