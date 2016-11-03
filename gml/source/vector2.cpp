@@ -199,11 +199,14 @@ namespace gml
 	vec2& vec2::normalize()
 	{
 		float length2 = length_sqr();
-		if (!fequal(length2, 0.0f) && !fequal(1.0f, length2))
+		if (!fequal(length2, 0.0f))
 		{
-			auto invLength = 1.0f / sqrtf(length2);
-			x *= invLength;
-			y *= invLength;
+			if (!fequal(1.0f, length2))
+			{
+				auto invLength = 1.0f / sqrtf(length2);
+				x *= invLength;
+				y *= invLength;
+			}
 		}
 		else
 		{

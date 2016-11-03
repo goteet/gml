@@ -86,11 +86,14 @@ namespace gml
 	quat& quat::normalize()
 	{
 		float length2 = length_sqr();
-		if (!fequal(0.0f, length2) && !fequal(1.0f, length2))
+		if (!fequal(0.0f, length2))
 		{
-			float invLength = 1.0f / sqrtf(length2);
-			this->v *= invLength;
-			this->w *= invLength;
+			if (!fequal(1.0f, length2))
+			{
+				float invLength = 1.0f / sqrtf(length2);
+				this->v *= invLength;
+				this->w *= invLength;
+			}
 		}
 
 		return *this;
@@ -196,23 +199,23 @@ namespace gml
 		return f0 * s + f1 * d;
 	}
 
-    euler to_eular(const quat& q)
-    {
-        mat33 m = to_mat33(q);
+	euler to_eular(const quat& q)
+	{
+		mat33 m = to_mat33(q);
 
-        return euler(
-            atan2(m._12, m._22),
-            asin(clamp<float>(-m._02, -1.0f, 1.0f)),
-            atan2(m._01, m._00)
-        );
-    }
-    
-    quat to_quaternion(const euler& e)
-    {
-        vec4 v0(cos(e.yaw / 2), 0, 0, sin(e.yaw / 2));
-        vec4 v1(cos(e.pitch / 2), 0, sin(e.pitch / 2), 0);
-        vec4 v2(cos(e.roll / 2), sin(e.roll / 2), 0, 0);
-        vec4 v = v0 * v1 * v2;
-        return quat(v.w, v.x, v.y, v.z);
-    }
+		return euler(
+			atan2(m._12, m._22),
+			asin(clamp<float>(-m._02, -1.0f, 1.0f)),
+			atan2(m._01, m._00)
+			);
+	}
+
+	quat to_quaternion(const euler& e)
+	{
+		vec4 v0(cos(e.yaw / 2), 0, 0, sin(e.yaw / 2));
+		vec4 v1(cos(e.pitch / 2), 0, sin(e.pitch / 2), 0);
+		vec4 v2(cos(e.roll / 2), sin(e.roll / 2), 0, 0);
+		vec4 v = v0 * v1 * v2;
+		return quat(v.w, v.x, v.y, v.z);
+	}
 }

@@ -106,11 +106,14 @@ namespace gml
 	dquat& dquat::normalize()
 	{
 		float l = length();
-		if (!fequal(l, 0) && !fequal(l, 1))
+		if (!fequal(l, 0))
 		{
-			auto invL = 1.0f / l;
-			this->real *= invL;
-			this->dual *= invL;
+			if (!fequal(l, 1))
+			{
+				auto invL = 1.0f / l;
+				this->real *= invL;
+				this->dual *= invL;
+			}
 		}
 		return *this;
 	}
