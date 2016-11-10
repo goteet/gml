@@ -18,7 +18,11 @@ namespace gml
 
 	bool aabb2d::operator==(const aabb2d& other) const
 	{
-		if (is_empty() && other.is_empty())
+		if (this == &other)
+		{
+			return true;
+		}
+		else if (is_empty() && other.is_empty())
 		{
 			return true;
 		}
