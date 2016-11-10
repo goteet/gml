@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\gmlangle.h" />
     <ClInclude Include="include\gmlconv.h" />
     <ClInclude Include="include\gmlaabb.h" />
     <ClInclude Include="include\gmlcolor.h" />
@@ -34,6 +35,7 @@
   <ItemGroup>
     <ClCompile Include="source\aabb.cpp" />
     <ClCompile Include="source\aabb2d.cpp" />
+    <ClCompile Include="source\angle.cpp" />
     <ClCompile Include="source\color3.cpp" />
     <ClCompile Include="source\color4.cpp" />
     <ClCompile Include="source\convertion.cpp" />
