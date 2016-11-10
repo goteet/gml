@@ -249,10 +249,10 @@ IMPL(Matrix22)
 
 	b = a;
 	OUTPUT << "  a can"
-		<< (a.invert() ? " " : " not ")
+		<< (a.can_invert() ? " " : " not ")
 		<< "inverse.\n\n";
 
-
+	a.inverse();
 	OUTPUT << "  a.inv =\n  |"
 		<< a[0] << "," << a[1] << "|\n  |"
 		<< a[2] << "," << a[3] << "|\n\n";
@@ -275,8 +275,9 @@ IMPL(Matrix33)
 		<< a[6] << "," << a[7] << "," << a[8] << "\n\n";
 
 	//a.transpose();
-	OUTPUT << "can inverse = " << a.invert() << "\n";
+	OUTPUT << "can inverse = " << a.can_invert() << "\n";
 
+	a.inverse();
 	OUTPUT << a[0] << "," << a[1] << "," << a[2] << "\n"
 		<< a[3] << "," << a[4] << "," << a[5] << "\n"
 		<< a[6] << "," << a[7] << "," << a[8] << "\n\n";
@@ -299,8 +300,9 @@ IMPL(Matrix44)
 		<< a[12] << "," << a[13] << "," << a[14] << "," << a[15] << "\n\n";
 
 	//a.transpose();
-	OUTPUT << "can inverse = " << a.invert() << "\n";
+	OUTPUT << "can inverse = " << a.can_invert() << "\n";
 
+	a.inverse();
 	OUTPUT << a[0] << "," << a[1] << "," << a[2] << "," << a[3] << "\n"
 		<< a[4] << "," << a[5] << "," << a[6] << "," << a[7] << "\n"
 		<< a[8] << "," << a[9] << "," << a[10] << "," << a[11] << "\n"
@@ -409,8 +411,8 @@ IMPL(Color)
 
 IMPL(Quaternion)
 {
-	gml::quat r1(vec3::right(), gml::a2r(90));
-	gml::quat r2(vec3::left(), gml::a2r(90));
+	gml::quat r1(vec3::right(), gml::degree(90));
+	gml::quat r2(vec3::left(), gml::degree(90));
 	gml::vec3 position(0, 0, 1);
 
 	OUTPUT << "## slerp\n";
@@ -426,8 +428,8 @@ IMPL(Quaternion)
 	}
 
 	OUTPUT << "\n## q1*q2 \n";
-	r1 = quat(vec3::forward(), gml::a2r(90));
-	r2 = quat(vec3::up(), gml::a2r(90));
+	r1 = quat(vec3::forward(), gml::degree(90));
+	r2 = quat(vec3::up(), gml::degree(90));
 
 	auto r = r1 * r2;
 	position = gml::rotate(r, vec3(0, 0, 1));
@@ -443,7 +445,7 @@ IMPL(Quaternion)
 IMPL(DualQuaternion)
 {
 	gml::dquat trans(0, 1, 0);
-	gml::dquat rot(vec3(0, 1, 0), a2r(180));
+	gml::dquat rot(vec3(0, 1, 0), degree(180));
 	gml::mat44 mTrans = to_mat44(trans);
 	gml::mat44 mRotation = to_mat44(rot);
 

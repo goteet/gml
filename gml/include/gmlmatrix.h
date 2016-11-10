@@ -1,5 +1,6 @@
 #pragma once
 #include <gmlvector.h>
+#include <gmlutility.h>
 
 namespace gml
 {
@@ -12,7 +13,7 @@ namespace gml
 	public:
 		static const mat22& I();
 
-		static mat22 rotate(float radian);
+		static mat22 rotate(const radian& r);
 
 		static mat22 scale(float scale);
 
@@ -72,7 +73,11 @@ namespace gml
 
 		mat22 transposed() const;
 
-		bool invert();
+		bool can_invert() const;
+
+		mat22& inverse();
+
+		mat22 inversed() const;
 
 		bool is_orthogonal() const;
 
@@ -84,7 +89,7 @@ namespace gml
 	public:
 		static const mat32& I();
 
-		static mat32 rotate(float radian);
+		static mat32 rotate(const radian& r);
 
 		static mat32 scale(float scale);
 
@@ -96,13 +101,13 @@ namespace gml
 
 		static mat32 flip_y();
 
-		static mat32 inv_trs(const vec2& translate, float rotation_radian, const vec2& scale);
+		static mat32 inv_trs(const vec2& translate, const radian& r, const vec2& scale);
 
-		static mat32 trs(const vec2& translate, float rotation_radian, const vec2& scale);
+		static mat32 trs(const vec2& translate, const radian& r, const vec2& scale);
 
-		static mat32 trsp(const vec2& translate, float rotation_radian, const vec2& scale, const vec2& pivot);
+		static mat32 trsp(const vec2& translate, const radian& r, const vec2& scale, const vec2& pivot);
 
-		static mat32 trps(const vec2& translate, float rotation_radian, const vec2& pivot, const vec2& scale);
+		static mat32 trps(const vec2& translate, const radian& r, const vec2& pivot, const vec2& scale);
 
 	public:
 		union
@@ -153,11 +158,11 @@ namespace gml
 	public:
 		static const mat33& I();
 
-		static mat33 rotate_x(float radian);
+		static mat33 rotate_x(const radian& r);
 
-		static mat33 rotate_y(float radian);
+		static mat33 rotate_y(const radian& r);
 
-		static mat33 rotate_z(float radian);
+		static mat33 rotate_z(const radian& r);
 
 		static mat33 scale(float scale);
 
@@ -218,7 +223,11 @@ namespace gml
 
 		mat33 transposed() const;
 
-		bool invert();
+		bool can_invert() const;
+
+		mat33& inverse();
+
+		mat33 inversed() const;
 
 		bool is_orthogonal() const;
 
@@ -230,11 +239,11 @@ namespace gml
 	public:
 		static const mat44& I();
 
-		static mat44 rotate_x(float radian);
+		static mat44 rotate_x(const radian& r);
 
-		static mat44 rotate_y(float radian);
+		static mat44 rotate_y(const radian& r);
 
-		static mat44 rotate_z(float radian);
+		static mat44 rotate_z(const radian& r);
 
 		static mat44 scale(float scale);
 
@@ -306,7 +315,11 @@ namespace gml
 
 		mat44 transposed() const;
 
-		bool invert();
+		bool can_invert() const;
+
+		mat44& inverse();
+
+		mat44 inversed() const;
 
 		bool is_orthogonal() const;
 

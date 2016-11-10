@@ -15,10 +15,10 @@ namespace gml
 		return i;
 	}
 
-	mat32 mat32::rotate(float radian)
+	mat32 mat32::rotate(const radian& r)
 	{
-		float cosr = cosf(radian);
-		float sinr = sinf(radian);
+		float cosr = cosf(r);
+		float sinr = sinf(r);
 		return mat32(
 			cosr, -sinr, 0,
 			sinr, cosr, 0);
@@ -58,7 +58,7 @@ namespace gml
 			0, -1, 0);
 	}
 
-	mat32 mat32::inv_trs(const vec2& translate, float rotation_radian, const vec2& scale)
+	mat32 mat32::inv_trs(const vec2& translate, const radian& rotation, const vec2& scale)
 	{
 		/*
 			sx,0,0 * +cos,sin,0 * 1,0,-tx
@@ -70,8 +70,8 @@ namespace gml
 		=   +sx*cos, sx*sin, -sx*(cos*tx+sin*ty)
 			-sy*sin, sy*cos, +sy*(sin*tx-cos*ty)
 		*/
-		float cosr = cos(rotation_radian);
-		float sinr = sin(rotation_radian);
+		float cosr = cos(rotation);
+		float sinr = sin(rotation);
 
 		return mat32(
 			+scale.x*cosr, scale.x*sinr, -scale.x*(cosr*translate.x - sinr*translate.y),
@@ -79,7 +79,7 @@ namespace gml
 			);
 	}
 
-	mat32 mat32::trs(const vec2& translate, float rotation_radian, const vec2& scale)
+	mat32 mat32::trs(const vec2& translate, const radian& rotation, const vec2& scale)
 	{
 		/*
 			1,0,tx * cos,-sin,0 * sx,0,0
@@ -91,8 +91,8 @@ namespace gml
 		=   cos*sx,-sin*sy, tx
 			sin*sx, cos*sy, ty
 		*/
-		float cosr = cos(rotation_radian);
-		float sinr = sin(rotation_radian);
+		float cosr = cos(rotation);
+		float sinr = sin(rotation);
 
 		return mat32(
 			cosr*scale.x, -sinr*scale.y, translate.x,
@@ -100,7 +100,7 @@ namespace gml
 			);
 	}
 
-	mat32 mat32::trsp(const vec2& translate, float rotation_radian, const vec2& scale, const vec2& pivot)
+	mat32 mat32::trsp(const vec2& translate, const radian& rotation, const vec2& scale, const vec2& pivot)
 	{
 		/*
 			  1,0,tx * cos,-sin,0 * sx,0,0 * 1,0,-px
@@ -112,8 +112,8 @@ namespace gml
 			= cos*sx,-sin*sy, -cos*sx*px+sin*sy*px + tx
 			  sin*sx, cos*sy, -sin*sx*px-cos*sy*py + ty
 		*/
-		float cosr = cos(rotation_radian);
-		float sinr = sin(rotation_radian);
+		float cosr = cos(rotation);
+		float sinr = sin(rotation);
 		float spx = -scale.x*pivot.x;
 		float spy = -scale.y*pivot.y;
 
@@ -123,7 +123,7 @@ namespace gml
 			);
 	}
 
-	mat32 mat32::trps(const vec2& translate, float rotation_radian, const vec2& pivot, const vec2& scale)
+	mat32 mat32::trps(const vec2& translate, const radian& rotation, const vec2& pivot, const vec2& scale)
 	{
 		/*
 			1,0,tx * cos,-sin,0 * 1,0,-px * sx,0,0
@@ -135,8 +135,8 @@ namespace gml
 		  = cos*sx,-sin*sy, -cos*px+sin*px + tx
 			sin*sx,+cos*sy, -sin*px-cos*py + ty
 		*/
-		float cosr = cos(rotation_radian);
-		float sinr = sin(rotation_radian);
+		float cosr = cos(rotation);
+		float sinr = sin(rotation);
 
 		return mat32(
 			cosr*scale.x, -sinr*scale.y, -cosr*pivot.x + sinr*pivot.y + translate.x,

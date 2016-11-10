@@ -17,10 +17,10 @@ namespace gml
 		return i;
 	}
 
-	mat44 mat44::rotate_x(float radian)
+	mat44 mat44::rotate_x(const radian& r)
 	{
-		float cosr = cosf(radian);
-		float sinr = sinf(radian);
+		float cosr = cosf(r);
+		float sinr = sinf(r);
 
 		return mat44(
 			1, 0, 0, 0,
@@ -30,10 +30,10 @@ namespace gml
 			);
 	}
 
-	mat44 mat44::rotate_y(float radian)
+	mat44 mat44::rotate_y(const radian& r)
 	{
-		float cosr = cosf(radian);
-		float sinr = sinf(radian);
+		float cosr = cosf(r);
+		float sinr = sinf(r);
 
 		return mat44(
 			cosr, 0, -sinr, 0,
@@ -43,10 +43,10 @@ namespace gml
 			);
 	}
 
-	mat44 mat44::rotate_z(float radian)
+	mat44 mat44::rotate_z(const radian& r)
 	{
-		float cosr = cosf(radian);
-		float sinr = sinf(radian);
+		float cosr = cosf(r);
+		float sinr = sinf(r);
 
 		return mat44(
 			cosr, -sinr, 0, 0,
@@ -334,46 +334,70 @@ namespace gml
 		return result;
 	}
 
-	bool mat44::invert()
+	bool mat44::can_invert() const
+	{
+		if (is_orthogonal())
+		{
+			return true;
+		}
+		else
+		{
+			float det = determinant();
+			return !fequal(det, 0.0f);
+		}
+	}
+
+	mat44& mat44::inverse()
 	{
 		if (is_orthogonal())
 		{
 			transpose();
-			return true;
 		}
-
-		float det = determinant();
-		if (!fequal(det, 0.0f))
+		else
 		{
-			det = 1.0f / det;
-			mat44 copy(*this);
+			float det = determinant();
+			if (!fequal(det, 0.0f))
+			{
+				det = 1.0f / det;
+				mat44 copy(*this);
 
-			//to-do det_impl is calculated above in determinant().
-			//try to gcd
-			m[0][0] = +determinant_impl(copy._11, copy._12, copy._13, copy._21, copy._22, copy._23, copy._31, copy._32, copy._33) * det;
-			m[1][0] = -determinant_impl(copy._10, copy._12, copy._13, copy._20, copy._22, copy._23, copy._30, copy._32, copy._33) * det;
-			m[2][0] = +determinant_impl(copy._10, copy._11, copy._13, copy._20, copy._21, copy._23, copy._30, copy._31, copy._33) * det;
-			m[3][0] = -determinant_impl(copy._10, copy._11, copy._12, copy._20, copy._21, copy._22, copy._30, copy._31, copy._32) * det;
+				//to-do det_impl is calculated above in determinant().
+				//try to gcd
+				m[0][0] = +determinant_impl(copy._11, copy._12, copy._13, copy._21, copy._22, copy._23, copy._31, copy._32, copy._33) * det;
+				m[1][0] = -determinant_impl(copy._10, copy._12, copy._13, copy._20, copy._22, copy._23, copy._30, copy._32, copy._33) * det;
+				m[2][0] = +determinant_impl(copy._10, copy._11, copy._13, copy._20, copy._21, copy._23, copy._30, copy._31, copy._33) * det;
+				m[3][0] = -determinant_impl(copy._10, copy._11, copy._12, copy._20, copy._21, copy._22, copy._30, copy._31, copy._32) * det;
 
-			m[0][1] = -determinant_impl(copy._01, copy._02, copy._03, copy._21, copy._22, copy._23, copy._31, copy._32, copy._33) * det;
-			m[1][1] = +determinant_impl(copy._00, copy._02, copy._03, copy._20, copy._22, copy._23, copy._30, copy._32, copy._33) * det;
-			m[2][1] = -determinant_impl(copy._00, copy._01, copy._03, copy._20, copy._21, copy._23, copy._30, copy._31, copy._33) * det;
-			m[3][1] = +determinant_impl(copy._00, copy._01, copy._02, copy._20, copy._21, copy._22, copy._30, copy._31, copy._32) * det;
+				m[0][1] = -determinant_impl(copy._01, copy._02, copy._03, copy._21, copy._22, copy._23, copy._31, copy._32, copy._33) * det;
+				m[1][1] = +determinant_impl(copy._00, copy._02, copy._03, copy._20, copy._22, copy._23, copy._30, copy._32, copy._33) * det;
+				m[2][1] = -determinant_impl(copy._00, copy._01, copy._03, copy._20, copy._21, copy._23, copy._30, copy._31, copy._33) * det;
+				m[3][1] = +determinant_impl(copy._00, copy._01, copy._02, copy._20, copy._21, copy._22, copy._30, copy._31, copy._32) * det;
 
-			m[0][2] = +determinant_impl(copy._01, copy._02, copy._03, copy._11, copy._12, copy._13, copy._31, copy._32, copy._33) * det;
-			m[1][2] = -determinant_impl(copy._00, copy._02, copy._03, copy._10, copy._12, copy._13, copy._30, copy._32, copy._33) * det;
-			m[2][2] = +determinant_impl(copy._00, copy._01, copy._03, copy._10, copy._11, copy._13, copy._30, copy._31, copy._33) * det;
-			m[3][2] = -determinant_impl(copy._00, copy._01, copy._02, copy._10, copy._11, copy._12, copy._30, copy._31, copy._32) * det;
+				m[0][2] = +determinant_impl(copy._01, copy._02, copy._03, copy._11, copy._12, copy._13, copy._31, copy._32, copy._33) * det;
+				m[1][2] = -determinant_impl(copy._00, copy._02, copy._03, copy._10, copy._12, copy._13, copy._30, copy._32, copy._33) * det;
+				m[2][2] = +determinant_impl(copy._00, copy._01, copy._03, copy._10, copy._11, copy._13, copy._30, copy._31, copy._33) * det;
+				m[3][2] = -determinant_impl(copy._00, copy._01, copy._02, copy._10, copy._11, copy._12, copy._30, copy._31, copy._32) * det;
 
-			m[0][3] = -determinant_impl(copy._01, copy._02, copy._03, copy._11, copy._12, copy._13, copy._21, copy._22, copy._23) * det;
-			m[1][3] = +determinant_impl(copy._00, copy._02, copy._03, copy._10, copy._12, copy._13, copy._20, copy._22, copy._23) * det;
-			m[2][3] = -determinant_impl(copy._00, copy._01, copy._03, copy._10, copy._11, copy._13, copy._20, copy._21, copy._23) * det;
-			m[3][3] = +determinant_impl(copy._00, copy._01, copy._02, copy._10, copy._11, copy._12, copy._20, copy._21, copy._22) * det;
-
-			return true;
+				m[0][3] = -determinant_impl(copy._01, copy._02, copy._03, copy._11, copy._12, copy._13, copy._21, copy._22, copy._23) * det;
+				m[1][3] = +determinant_impl(copy._00, copy._02, copy._03, copy._10, copy._12, copy._13, copy._20, copy._22, copy._23) * det;
+				m[2][3] = -determinant_impl(copy._00, copy._01, copy._03, copy._10, copy._11, copy._13, copy._20, copy._21, copy._23) * det;
+				m[3][3] = +determinant_impl(copy._00, copy._01, copy._02, copy._10, copy._11, copy._12, copy._20, copy._21, copy._22) * det;
+			}
+			else
+			{
+				//TODO:
+				// can not invert here,
+				// what should i do when this occur ?
+			}
 		}
+		return *this;
+	}
 
-		return false;
+	mat44 mat44::inversed() const
+	{
+		mat44 result(*this);
+		result.inverse();
+		return result;
 	}
 
 	bool mat44::is_orthogonal() const

@@ -25,7 +25,7 @@ namespace gml
 		dual = 0.5 * dual * real;
 	}
 
-	dquat::dquat(const vec3& axis, float radius) : real(axis, radius), dual(0, 0, 0, 0) { }
+	dquat::dquat(const vec3& axis, const radian& r) : real(axis, r), dual(0, 0, 0, 0) { }
 
 	dquat::dquat(const vec3& translation) : real(1, 0, 0, 0), dual(0, translation * 0.5f) { }
 
@@ -34,8 +34,8 @@ namespace gml
 		dual.v *= 0.5f;
 	}
 
-	dquat::dquat(const vec3& axis, float radius, const vec3& translation)
-		: real(axis, radius)
+	dquat::dquat(const vec3& axis, const radian& r, const vec3& translation)
+		: real(axis, r)
 		, dual(0, translation)
 	{
 		dual = 0.5f * dual * real;
@@ -51,9 +51,9 @@ namespace gml
 		return (2.0f * dual * real.conjugated()).v;
 	}
 
-	float dquat::get_rotate_angle() const
+	radian dquat::get_rotate_radian() const
 	{
-		return 2 * acos(real.w);
+		return radian(2 * acos(real.w));
 	}
 
 	dquat dquat::operator+ (const dquat& rhs) const
@@ -158,21 +158,21 @@ namespace gml
 		float invr = 1.0f / sqrtf(length());
 		// change the pitch. //
 		// Screw parameters
-		float angle = get_rotate_angle();
+		radian r = get_rotate_radian();
 		float pitch = dual.w * invr; //-2 * dual.w * invr
 		vec3 direction = real.v * invr;
 		vec3 moment = (dual.v + direction * pitch * real.w) * invr;	//(dual.v - direction * pitch * real.w * 0.5f) * invr
 
 		// Exponential power 
-		angle *= t * 0.5f;
+		r *= t * 0.5f;
 		pitch *= t;
-		
+
 		// Convert back to dual-quaternion
-		float sinAngle = sin(angle); // angle/2
-		float cosAngle = cos(angle); // angle/2
+		float sinAngle = sin(r); // angle/2
+		float cosAngle = cos(r); // angle/2
 
 		real = quat(cosAngle, direction * sinAngle);
-		
+
 		//dual = quat(-pitch * sinAngle * 0.5f , sinAngle * moment + 0.5f * pitch * cosAngle * direction);
 		dual = quat(pitch * sinAngle, sinAngle * moment - pitch * cosAngle * direction);
 
@@ -192,7 +192,7 @@ namespace gml
 
 	dquat sc_lerp(const dquat& from, const dquat& to, float t)
 	{
-		
+
 		/* this code piece may cause an unexpected result,
 		   which the translation is oppsite from the right direction.
 

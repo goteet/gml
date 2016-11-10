@@ -16,10 +16,10 @@ namespace gml
 		return i;
 	}
 
-	mat33 mat33::rotate_x(float radian)
+	mat33 mat33::rotate_x(const radian& r)
 	{
-		float cosr = cosf(radian);
-		float sinr = sinf(radian);
+		float cosr = cosf(r);
+		float sinr = sinf(r);
 
 		return mat33(
 			1, 0, 0,
@@ -28,10 +28,10 @@ namespace gml
 			);
 	}
 
-	mat33 mat33::rotate_y(float radian)
+	mat33 mat33::rotate_y(const radian& r)
 	{
-		float cosr = cosf(radian);
-		float sinr = sinf(radian);
+		float cosr = cosf(r);
+		float sinr = sinf(r);
 
 		return mat33(
 			cosr, 0, -sinr,
@@ -40,10 +40,10 @@ namespace gml
 			);
 	}
 
-	mat33 mat33::rotate_z(float radian)
+	mat33 mat33::rotate_z(const radian& r)
 	{
-		float cosr = cosf(radian);
-		float sinr = sinf(radian);
+		float cosr = cosf(r);
+		float sinr = sinf(r);
 
 		return mat33(
 			cosr, -sinr, 0,
@@ -256,38 +256,63 @@ namespace gml
 		result.transpose();
 		return result;
 	}
+	
+	bool mat33::can_invert() const
+	{
+		if (is_orthogonal())
+		{
+			return true;
+		}
+		else
+		{
+			float det = determinant();
+			return !fequal(det, 0.0f);
+		}
+	}
 
-	bool mat33::invert()
+	mat33& mat33::inverse()
 	{
 		if (is_orthogonal())
 		{
 			transpose();
-			return true;
 		}
-
-		float det = determinant();
-		if (!fequal(det, 0.0f))
+		else
 		{
-			det = 1.0f / det;
-			mat33 copy(*this);
+			float det = determinant();
+			if (!fequal(det, 0.0f))
+			{
+				det = 1.0f / det;
+				mat33 copy(*this);
 
-			//to-do det_impl is calculated above in determinant().
-			//try to gcd
-			m[0][0] = +determinant_impl(copy._11, copy._12, copy._21, copy._22) * det;
-			m[1][0] = -determinant_impl(copy._10, copy._12, copy._20, copy._22) * det;
-			m[2][0] = +determinant_impl(copy._10, copy._11, copy._20, copy._21) * det;
+				//to-do det_impl is calculated above in determinant().
+				//try to gcd
+				m[0][0] = +determinant_impl(copy._11, copy._12, copy._21, copy._22) * det;
+				m[1][0] = -determinant_impl(copy._10, copy._12, copy._20, copy._22) * det;
+				m[2][0] = +determinant_impl(copy._10, copy._11, copy._20, copy._21) * det;
 
-			m[0][1] = -determinant_impl(copy._01, copy._02, copy._21, copy._22) * det;
-			m[1][1] = +determinant_impl(copy._00, copy._02, copy._20, copy._22) * det;
-			m[2][1] = -determinant_impl(copy._00, copy._01, copy._20, copy._21) * det;
+				m[0][1] = -determinant_impl(copy._01, copy._02, copy._21, copy._22) * det;
+				m[1][1] = +determinant_impl(copy._00, copy._02, copy._20, copy._22) * det;
+				m[2][1] = -determinant_impl(copy._00, copy._01, copy._20, copy._21) * det;
 
-			m[0][2] = +determinant_impl(copy._01, copy._02, copy._11, copy._12) * det;
-			m[1][2] = -determinant_impl(copy._00, copy._02, copy._10, copy._12) * det;
-			m[2][2] = +determinant_impl(copy._00, copy._01, copy._10, copy._11) * det;
-
-			return true;
+				m[0][2] = +determinant_impl(copy._01, copy._02, copy._11, copy._12) * det;
+				m[1][2] = -determinant_impl(copy._00, copy._02, copy._10, copy._12) * det;
+				m[2][2] = +determinant_impl(copy._00, copy._01, copy._10, copy._11) * det;
+			}
+			else
+			{
+				//TODO:
+				// can not invert here,
+				// what should i do when this occur ?
+			}
 		}
-		return false;
+		return *this;
+	}
+
+	mat33 mat33::inversed() const
+	{
+		mat33 result(*this);
+		result.inverse();
+		return result;
 	}
 
 	bool mat33::is_orthogonal() const

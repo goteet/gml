@@ -1,21 +1,23 @@
 #pragma once
 #include <gmlvector.h>
+#include <gmlutility.h>
+
 namespace gml
 {
-    class euler
-    {
-    public:
-        float roll;
-        float pitch;
-        float yaw;
+	class euler
+	{
+	public:
+		float roll;
+		float pitch;
+		float yaw;
 
-    public:
-        euler();
+	public:
+		euler();
 
-        euler(float roll, float pitch, float yaw);
+		euler(float roll, float pitch, float yaw);
 
-        euler(const vec3& v);
-    };
+		euler(const vec3& v);
+	};
 
 	class quat
 	{
@@ -30,7 +32,7 @@ namespace gml
 	public:
 		quat();
 
-		quat(const vec3& axis, float radius);
+		quat(const vec3& axis, const radian& r);
 
 		quat operator-() const;
 
@@ -76,9 +78,9 @@ namespace gml
 
 	quat slerp(const quat& s, const quat& d, float f);
 
-    // quaternion to euler angle.
-    euler to_eular(const quat& q);
+	// quaternion to euler angle.
+	euler to_eular(const quat& q);
 
-    // euler angle to quaternion.
-    quat to_quaternion(const euler& e);
+	// euler angle to quaternion.
+	quat to_quaternion(const euler& e);
 }

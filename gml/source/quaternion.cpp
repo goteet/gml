@@ -22,11 +22,11 @@ namespace gml
 
 	quat::quat(float rw, float rx, float ry, float rz) : w(rw), v(rx, ry, rz) { }
 
-	quat::quat(const vec3& axis, float radius)
+	quat::quat(const vec3& axis, const radian& r)
 	{
-		float halfRadius = radius * 0.5f;
-		float halfCos = cos(halfRadius);
-		float halfSin = sin(halfRadius);
+		radian halfRadian = r * 0.5f;
+		float halfCos = cos(halfRadian);
+		float halfSin = sin(halfRadian);
 
 		this->v = axis * halfSin;
 		this->w = halfCos;

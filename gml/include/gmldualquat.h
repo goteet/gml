@@ -1,5 +1,6 @@
 #pragma once
 #include <gmlrotation.h>
+#include <gmlutility.h>
 
 namespace gml
 {
@@ -17,9 +18,9 @@ namespace gml
 
 		dquat(const quat& rotation, const vec3 translation);
 
-		dquat(const vec3& axis, float radius, const vec3& translation);//rotate and translate
+		dquat(const vec3& axis, const radian& r, const vec3& translation);//rotate and translate
 
-		dquat(const vec3& axis, float radius); //only rotate
+		dquat(const vec3& axis, const radian& r); //only rotate
 
 		dquat(const vec3& translation);//only translation
 
@@ -29,12 +30,12 @@ namespace gml
 
 		vec3 get_translation() const;
 
-		float get_rotate_angle() const;
+		radian get_rotate_radian() const;
 
 		dquat operator+ (const dquat& rhs) const;
 
 		dquat operator* (const dquat& rhs) const;
-		
+
 		dquat operator* (float scaler) const;
 
 		dquat& operator+=(const dquat& rhs);
@@ -60,7 +61,7 @@ namespace gml
 		dquat exponented(float t) const;
 
 		float length() const;
-		
+
 	public:
 		dquat(const quat &r, const quat& t);//unless you know what u r doing.
 	};

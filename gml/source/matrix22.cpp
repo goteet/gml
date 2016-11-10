@@ -15,10 +15,10 @@ namespace gml
 		return i;
 	}
 
-	mat22 mat22::rotate(float radian)
+	mat22 mat22::rotate(const radian& r)
 	{
-		float cosr = cosf(radian);
-		float sinr = sinf(radian);
+		float cosr = cosf(r);
+		float sinr = sinf(r);
 		return mat22(
 			cosr, -sinr,
 			sinr, cosr);
@@ -207,26 +207,52 @@ namespace gml
 		return result;
 	}
 
-	bool mat22::invert()
+	bool mat22::can_invert() const
+	{
+		if (is_orthogonal())
+		{
+			return true;
+		}
+		else
+		{
+			float det = determinant();
+			return !fequal(det, 0.0f);
+		}
+	}
+
+	mat22& mat22::inverse()
 	{
 		if (is_orthogonal())
 		{
 			transpose();
-			return true;
 		}
-
-		float det = determinant();
-		if (!fequal(det, 0.0f))
+		else
 		{
-			//calc adjoint matrix 
-			swap(this->m[0][0], this->m[1][1]);
-			this->m[0][1] = -this->m[0][1];
-			this->m[1][0] = -this->m[1][0];
+			float det = determinant();
+			if (!fequal(det, 0.0f))
+			{
+				//calc adjoint matrix 
+				swap(this->m[0][0], this->m[1][1]);
+				this->m[0][1] = -this->m[0][1];
+				this->m[1][0] = -this->m[1][0];
 
-			*this *= 1.0f / det;
-			return true;
+				*this *= 1.0f / det;
+			}
+			else
+			{
+				//TODO:
+				// can not invert here,
+				// what should i do when this occur ?
+			}
 		}
-		return false;
+		return *this;
+	}
+
+	mat22 mat22::inversed() const
+	{
+		mat22 result(*this);
+		result.inverse();
+		return result;
 	}
 
 	bool mat22::is_orthogonal() const
