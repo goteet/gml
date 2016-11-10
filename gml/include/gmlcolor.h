@@ -157,27 +157,27 @@ namespace gml
 		R = 0, G = 1, B = 2, A = 3,
 	} SWIZZLE_COLOR;
 
-	template<SWIZZLE_COLOR SWIZZLE_X, SWIZZLE_COLOR SWIZZLE_Y, SWIZZLE_COLOR SWIZZLE_Z>
+	template<SWIZZLE_COLOR SwizzleX, SWIZZLE_COLOR SwizzleY, SWIZZLE_COLOR SeizzleZ>
 	inline color3 swizzle(const color3& c3)
 	{
-		return color3(c3[SWIZZLE_X], c3[SWIZZLE_Y], c3[SWIZZLE_Z]);
+		return color3(c3[SwizzleX], c3[SwizzleY], c3[SeizzleZ]);
 	}
 
-	template<SWIZZLE_COLOR SWIZZLE_X, SWIZZLE_COLOR SWIZZLE_Y, SWIZZLE_COLOR SWIZZLE_Z>
+	template<SWIZZLE_COLOR SwizzleX, SWIZZLE_COLOR SwizzleY, SWIZZLE_COLOR SeizzleZ>
 	inline color3 swizzle(const color4& c4)
 	{
-		return color3(c4[SWIZZLE_X], c4[SWIZZLE_Y], c4[SWIZZLE_Z]);
+		return color3(c4[SwizzleX], c4[SwizzleY], c4[SeizzleZ]);
 	}
 
-	template<SWIZZLE_COLOR SWIZZLE_X, SWIZZLE_COLOR SWIZZLE_Y, SWIZZLE_COLOR SWIZZLE_Z, SWIZZLE_COLOR SWIZZLE_W>
+	template<SWIZZLE_COLOR SwizzleX, SWIZZLE_COLOR SwizzleY, SWIZZLE_COLOR SeizzleZ, SWIZZLE_COLOR SwizzleW>
 	inline color4 swizzle(const color3& c3)
 	{
-		return color4(c3[SWIZZLE_X], c3[SWIZZLE_Y], c3[SWIZZLE_Z], c3[SWIZZLE_W]);
+		return color4(c3[SwizzleX], c3[SwizzleY], c3[SeizzleZ], c3[SwizzleW]);
 	}
 
-	template<SWIZZLE_COLOR SWIZZLE_X, SWIZZLE_COLOR SWIZZLE_Y, SWIZZLE_COLOR SWIZZLE_Z, SWIZZLE_COLOR SWIZZLE_W>
+	template<SWIZZLE_COLOR SwizzleX, SWIZZLE_COLOR SwizzleY, SWIZZLE_COLOR SeizzleZ, SWIZZLE_COLOR SwizzleW>
 	inline color4 swizzle(const color4& c4)
 	{
-		return color4(c4[SWIZZLE_X], c4[SWIZZLE_Y], c4[SWIZZLE_Z], c4[SWIZZLE_W]);
+		return color4(c4[SwizzleX], c4[SwizzleY], c4[SeizzleZ], c4[SwizzleW]);
 	}
 }

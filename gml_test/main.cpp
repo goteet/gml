@@ -203,28 +203,28 @@ IMPL(VectorSwizzle)
 	//a = vec3;
 	a = vec2(v3);
 
-	a = swizzle<Y, X>(v2);
+	a = swizzle<_Y, _X>(v2);
 	OUTPUT << "\tvec2.yx = <" << a.x << ", " << a.y << ">\n";
-	a = swizzle<Y, Z>(v3);
+	a = swizzle<_Y, _Z>(v3);
 	OUTPUT << "\tvec3.yz = <" << a.x << ", " << a.y << ">\n";
-	a = swizzle<W, W>(v4);
+	a = swizzle<_W, _W>(v4);
 	OUTPUT << "\tvec4.ww = <" << a.x << ", " << a.y << ">\n\n";
 
 	//b = vec4;
 	b = vec3(v4);
 
-	b = swizzle<Y, X, Y>(v2);
+	b = swizzle<_Y, _X, _Y>(v2);
 	OUTPUT << "\tvec2.yxy = <" << b.x << ", " << b.y << ", " << b.z << ">\n";
-	b = swizzle<Y, Z, X>(v3);
+	b = swizzle<_Y, _Z, _X>(v3);
 	OUTPUT << "\tvec3.yzx = <" << b.x << ", " << b.y << ", " << b.z << ">\n";
-	b = swizzle<W, W, X>(v4);
+	b = swizzle<_W, _W, _X>(v4);
 	OUTPUT << "\tvec4.wwx = <" << b.x << ", " << b.y << ", " << b.z << ">\n\n";
 
-	c = swizzle<Y, X, X, Y>(v2);
+	c = swizzle<_Y, _X, _X, _Y>(v2);
 	OUTPUT << "\tvec2.yxxy = <" << c.x << ", " << c.y << ", " << c.z << ", " << c.w << ">\n";
-	c = swizzle<Y, Z, X, Z>(v3);
+	c = swizzle<_Y, _Z, _X, _Z>(v3);
 	OUTPUT << "\tvec3.yzxz = <" << c.x << ", " << c.y << ", " << c.z << ", " << c.w << ">\n";
-	c = swizzle<Z, Z, W, Y>(v4);
+	c = swizzle<_Z, _Z, _W, _Y>(v4);
 	OUTPUT << "\tvec4.zzwy = <" << c.x << ", " << c.y << ", " << c.z << ", " << c.w << ">\n\n";
 }
 
