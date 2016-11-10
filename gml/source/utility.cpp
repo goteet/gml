@@ -8,6 +8,8 @@ namespace gml
 	float a2r(float angle) { return angle * a2r_factor; }
 	float r2a(float raian) { return raian * a2r_factor; }
 
+	radian::radian() :value(0.0f) {}
+
 	radian::radian(float v) : value(v) {}
 
 	radian::operator degree() const { return degree(r2a(value)); }
@@ -27,6 +29,8 @@ namespace gml
 	radian& radian::operator-=(const radian& other) { value -= other.value; return *this; }
 
 	radian& radian::operator*=(float scaler) { value *= scaler; return *this; }
+
+	degree::degree() : value(0.0f) {}
 
 	degree::degree(float v) : value(v) {}
 

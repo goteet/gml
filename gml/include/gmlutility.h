@@ -12,6 +12,7 @@ namespace gml
 	class radian
 	{
 	public:
+		radian();
 		explicit radian(float v);
 		operator degree() const;
 		operator float() const;
@@ -28,12 +29,13 @@ namespace gml
 	class degree
 	{
 	public:
+		degree();
 		explicit degree(float v);
 		operator radian() const;
 		operator float() const;
 		degree operator-();
 		degree operator+(const degree&) const;
-		degree operator-(const degree&) const;		
+		degree operator-(const degree&) const;
 		degree operator*(float scaler) const;
 		degree& operator+=(const degree&);
 		degree& operator-=(const degree&);
