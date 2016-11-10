@@ -1,5 +1,12 @@
 #pragma once
 
+namespace
+{
+	struct _R { constexpr static int SwizzleIndex = 0; };
+	struct _G { constexpr static int SwizzleIndex = 1; };
+	struct _B { constexpr static int SwizzleIndex = 2; };
+	struct _A { constexpr static int SwizzleIndex = 3; };
+}
 namespace gml
 {
 	class color3;
@@ -150,34 +157,28 @@ namespace gml
 	color4 operator*(float value, const color4& rhs);
 
 	float dot(const color4& lhs, const color4& rhs);
-
-	//swizzle
-	typedef enum SWIZZLE_COLOR
-	{
-		R = 0, G = 1, B = 2, A = 3,
-	} SWIZZLE_COLOR;
-
-	template<SWIZZLE_COLOR SwizzleX, SWIZZLE_COLOR SwizzleY, SWIZZLE_COLOR SeizzleZ>
+	
+	template<typename SwizzleR, typename SwizzleG, typename SwizzleB>
 	inline color3 swizzle(const color3& c3)
 	{
-		return color3(c3[SwizzleX], c3[SwizzleY], c3[SeizzleZ]);
+		return color3(c3[SwizzleR::SwizzleIndex], c3[SwizzleG::SwizzleIndex], c3[SwizzleB::SwizzleIndex]);
 	}
 
-	template<SWIZZLE_COLOR SwizzleX, SWIZZLE_COLOR SwizzleY, SWIZZLE_COLOR SeizzleZ>
+	template<typename SwizzleR, typename SwizzleG, typename SwizzleB>
 	inline color3 swizzle(const color4& c4)
 	{
-		return color3(c4[SwizzleX], c4[SwizzleY], c4[SeizzleZ]);
+		return color3(c4[SwizzleR::SwizzleIndex], c4[SwizzleG::SwizzleIndex], c4[SwizzleB::SwizzleIndex]);
 	}
 
-	template<SWIZZLE_COLOR SwizzleX, SWIZZLE_COLOR SwizzleY, SWIZZLE_COLOR SeizzleZ, SWIZZLE_COLOR SwizzleW>
+	template<typename SwizzleR, typename SwizzleG, typename SwizzleB, typename SwizzleA>
 	inline color4 swizzle(const color3& c3)
 	{
-		return color4(c3[SwizzleX], c3[SwizzleY], c3[SeizzleZ], c3[SwizzleW]);
+		return color4(c3[SwizzleR::SwizzleIndex], c3[SwizzleG::SwizzleIndex], c3[SwizzleB::SwizzleIndex], c3[SwizzleA::SwizzleIndex]);
 	}
 
-	template<SWIZZLE_COLOR SwizzleX, SWIZZLE_COLOR SwizzleY, SWIZZLE_COLOR SeizzleZ, SWIZZLE_COLOR SwizzleW>
+	template<typename SwizzleR, typename SwizzleG, typename SwizzleB, typename SwizzleA>
 	inline color4 swizzle(const color4& c4)
 	{
-		return color4(c4[SwizzleX], c4[SwizzleY], c4[SeizzleZ], c4[SwizzleW]);
+		return color4(c4[SwizzleR::SwizzleIndex], c4[SwizzleG::SwizzleIndex], c4[SwizzleB::SwizzleIndex], c4[SwizzleA::SwizzleIndex]);
 	}
 }

@@ -307,39 +307,39 @@ namespace gml
 		return vec2(v4[SwizzleX::SwizzleIndex], v4[SwizzleY::SwizzleIndex]);
 	}
 
-	template<typename SwizzleX, typename SwizzleY, typename SeizzleZ>
+	template<typename SwizzleX, typename SwizzleY, typename SwizzleZ>
 	inline vec3 swizzle(const vec2& v2)
 	{
-		return vec3(v2[SwizzleX::SwizzleIndex], v2[SwizzleY::SwizzleIndex], v2[SeizzleZ::SwizzleIndex]);
+		return vec3(v2[SwizzleX::SwizzleIndex], v2[SwizzleY::SwizzleIndex], v2[SwizzleZ::SwizzleIndex]);
 	}
 
-	template<typename SwizzleX, typename SwizzleY, typename SeizzleZ>
+	template<typename SwizzleX, typename SwizzleY, typename SwizzleZ>
 	inline vec3 swizzle(const vec3& v3)
 	{
-		return vec3(v3[SwizzleX::SwizzleIndex], v3[SwizzleY::SwizzleIndex], v3[SeizzleZ::SwizzleIndex]);
+		return vec3(v3[SwizzleX::SwizzleIndex], v3[SwizzleY::SwizzleIndex], v3[SwizzleZ::SwizzleIndex]);
 	}
 
-	template<typename SwizzleX, typename SwizzleY, typename SeizzleZ>
+	template<typename SwizzleX, typename SwizzleY, typename SwizzleZ>
 	inline vec3 swizzle(const vec4& v4)
 	{
-		return vec3(v4[SwizzleX::SwizzleIndex], v4[SwizzleY::SwizzleIndex], v4[SeizzleZ::SwizzleIndex]);
+		return vec3(v4[SwizzleX::SwizzleIndex], v4[SwizzleY::SwizzleIndex], v4[SwizzleZ::SwizzleIndex]);
 	}
 
-	template<typename SwizzleX, typename SwizzleY, typename SeizzleZ, typename SwizzleW>
+	template<typename SwizzleX, typename SwizzleY, typename SwizzleZ, typename SwizzleW>
 	inline vec4 swizzle(const vec2& v2)
 	{
-		return vec4(v2[SwizzleX::SwizzleIndex], v2[SwizzleY::SwizzleIndex], v2[SeizzleZ::SwizzleIndex], v2[SwizzleW::SwizzleIndex]);
+		return vec4(v2[SwizzleX::SwizzleIndex], v2[SwizzleY::SwizzleIndex], v2[SwizzleZ::SwizzleIndex], v2[SwizzleW::SwizzleIndex]);
 	}
 
-	template<typename SwizzleX, typename SwizzleY, typename SeizzleZ, typename SwizzleW>
+	template<typename SwizzleX, typename SwizzleY, typename SwizzleZ, typename SwizzleW>
 	inline vec4 swizzle(const vec3& v3)
 	{
-		return vec4(v3[SwizzleX::SwizzleIndex], v3[SwizzleY::SwizzleIndex], v3[SeizzleZ::SwizzleIndex], v3[SwizzleW::SwizzleIndex]);
+		return vec4(v3[SwizzleX::SwizzleIndex], v3[SwizzleY::SwizzleIndex], v3[SwizzleZ::SwizzleIndex], v3[SwizzleW::SwizzleIndex]);
 	}
 
-	template<typename SwizzleX, typename SwizzleY, typename SeizzleZ, typename SwizzleW>
+	template<typename SwizzleX, typename SwizzleY, typename SwizzleZ, typename SwizzleW>
 	inline vec4 swizzle(const vec4& v4)
 	{
-		return vec4(v4[SwizzleX::SwizzleIndex], v4[SwizzleY::SwizzleIndex], v4[SeizzleZ::SwizzleIndex], v4[SwizzleW::SwizzleIndex]);
+		return vec4(v4[SwizzleX::SwizzleIndex], v4[SwizzleY::SwizzleIndex], v4[SwizzleZ::SwizzleIndex], v4[SwizzleW::SwizzleIndex]);
 	}
 }
