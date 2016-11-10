@@ -14,6 +14,8 @@ namespace gml
 
 	radian::operator float() const { return value; }
 
+	radian radian::operator-() { return radian(-value); }
+
 	radian radian::operator+(const radian& other) const { return radian(*this) += other; }
 
 	radian radian::operator-(const radian& other) const { return radian(*this) -= other; }
@@ -31,6 +33,8 @@ namespace gml
 	degree::operator radian() const { return radian(a2r(value)); }
 
 	degree::operator float() const { return value; }
+
+	degree degree::operator-() { return degree(-value); }
 
 	degree degree::operator+(const degree& other) const { return degree(*this) += other; }
 

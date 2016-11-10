@@ -15,6 +15,7 @@ namespace gml
 		explicit radian(float v);
 		operator degree() const;
 		operator float() const;
+		radian operator-();
 		radian operator+(const radian&) const;
 		radian operator-(const radian&) const;
 		radian operator*(float scaler) const;
@@ -30,8 +31,9 @@ namespace gml
 		explicit degree(float v);
 		operator radian() const;
 		operator float() const;
+		degree operator-();
 		degree operator+(const degree&) const;
-		degree operator-(const degree&) const;
+		degree operator-(const degree&) const;		
 		degree operator*(float scaler) const;
 		degree& operator+=(const degree&);
 		degree& operator-=(const degree&);
