@@ -103,28 +103,28 @@ namespace gml
 		return *this;
 	}
 
-	dquat& dquat::normalize()
+	void dquat::normalize()
 	{
 		float l = length();
-		if (!fequal(l, 0))
+		if (!fequal(l, 0.0f))
 		{
-			if (!fequal(l, 1))
+			if (!fequal(l, 1.0f))
 			{
 				auto invL = 1.0f / l;
 				this->real *= invL;
 				this->dual *= invL;
 			}
 		}
-		return *this;
 	}
 
 	dquat dquat::normalized() const
 	{
 		dquat rst(*this);
-		return rst.normalize();
+		rst.normalize();
+		return rst;
 	}
 
-	dquat& dquat::conjugate()
+	void dquat::conjugate()
 	{
 		real.conjugate();
 
@@ -132,28 +132,29 @@ namespace gml
 		// => q.conjugate() = -q = q
 		// so.... what....
 		dual.conjugate();
-
-		return *this;
 	}
 
 	dquat dquat::conjugated() const
 	{
 		dquat rst(*this);
-		return rst.conjugate();
+		rst.conjugate();
+		return rst;
 	}
 
-	dquat& dquat::inverse()
+	void dquat::inverse()
 	{
-		return normalize().conjugate();
+		normalize();
+		conjugate();
 	}
 
 	dquat dquat::inversed() const
 	{
 		dquat rst(*this);
-		return rst.inverse();
+		rst.inverse();
+		return rst;
 	}
 
-	dquat& dquat::exponent(float t)
+	void dquat::exponent(float t)
 	{
 		float invr = 1.0f / sqrtf(length());
 		// change the pitch. //
@@ -175,14 +176,13 @@ namespace gml
 
 		//dual = quat(-pitch * sinAngle * 0.5f , sinAngle * moment + 0.5f * pitch * cosAngle * direction);
 		dual = quat(pitch * sinAngle, sinAngle * moment - pitch * cosAngle * direction);
-
-		return *this;
 	}
 
 	dquat dquat::exponented(float t) const
 	{
 		auto result(*this);
-		return result.exponent(t);
+		result.exponent(t);
+		return result;
 	}
 
 	float dquat::length() const
@@ -208,7 +208,8 @@ namespace gml
 
 		// ScLERP = Qa * (Qa^-1 * Qb)^t 
 		dquat diff = from.conjugated() * to;
-		return from * diff.exponent(t);
+		diff.exponent(t);
+		return from * diff;
 	}
 
 	dquat operator*(float scaler, const dquat& rhs)

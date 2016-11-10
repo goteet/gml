@@ -74,17 +74,17 @@ namespace gml
 
 		explicit operator float*();
 
-		vec2& set(float x, float y);
+		void set(float x, float y);
 
-		vec2& set(const vec3& v3);
+		void set(const vec3& v3);
 
-		vec2& set(const vec4& v4);
+		void set(const vec4& v4);
 
+		void normalize(); 
+		
 		vec2 normalized() const;
 
-		vec2& normalize();
-
-		vec2& inverse();
+		void inverse();
 
 		vec2 inversed() const;
 
@@ -156,19 +156,19 @@ namespace gml
 
 		explicit operator float*();
 
-		vec3& set(const vec2& v2, float z);
+		void set(const vec2& v2, float z);
 
-		vec3& set(float x, float y, float z);
+		void set(float x, float y, float z);
 
-		vec3& set(const vec4& v4);
+		void set(const vec4& v4);
 
-		vec3& replace(const vec2& v2);
+		void replace(const vec2& v2);
 
+		void normalize(); 
+		
 		vec3 normalized() const;
-
-		vec3& normalize();
-
-		vec3& inverse();
+		
+		void inverse();
 
 		vec3 inversed() const;
 
@@ -229,15 +229,15 @@ namespace gml
 
 		explicit operator float*();
 
-		vec4& set(const vec2& v2, float z, float w);
+		void set(const vec2& v2, float z, float w);
 
-		vec4& set(const vec3& v3, float w);
+		void set(const vec3& v3, float w);
 
-		vec4& set(float x, float y, float z, float w);
+		void set(float x, float y, float z, float w);
 
-		vec4& replace(const vec2& v2);
+		void replace(const vec2& v2);
 
-		vec4& replace(const vec3& v3);
+		void replace(const vec3& v3);
 
 		float length() const;
 

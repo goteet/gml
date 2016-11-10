@@ -65,17 +65,17 @@ namespace gml
 
 		vec2 column(int index) const;
 
-		mat22& set_column(int index, vec2);
+		void set_column(int index, vec2);
 
-		mat22& identity();
+		void identity();
 
-		mat22& transpose();
+		void transpose();
 
 		mat22 transposed() const;
 
 		bool can_invert() const;
 
-		mat22& inverse();
+		void inverse();
 
 		mat22 inversed() const;
 
@@ -148,9 +148,9 @@ namespace gml
 
 		vec2 column(unsigned int index) const;
 
-		mat32& set_column(unsigned int index, vec2);
+		void set_column(unsigned int index, vec2);
 
-		mat32& identity();
+		void identity();
 	};
 
 	class mat33
@@ -215,17 +215,17 @@ namespace gml
 
 		vec3 column(int index) const;
 
-		mat33& set_column(int index, vec3);
+		void set_column(int index, vec3);
 
-		mat33& identity();
+		void identity();
 
-		mat33& transpose();
+		void transpose();
 
 		mat33 transposed() const;
 
 		bool can_invert() const;
 
-		mat33& inverse();
+		void inverse();
 
 		mat33 inversed() const;
 
@@ -307,17 +307,17 @@ namespace gml
 
 		vec4 column(int index) const;
 
-		mat44& set_column(int index, vec4);
+		void set_column(int index, vec4);
 
-		mat44& identity();
+		void identity();
 
-		mat44& transpose();
+		void transpose();
 
 		mat44 transposed() const;
 
 		bool can_invert() const;
 
-		mat44& inverse();
+		void inverse();
 
 		mat44 inversed() const;
 

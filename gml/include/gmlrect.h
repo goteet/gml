@@ -1,15 +1,8 @@
 #pragma once
+#include <gmlutility.h>
 
 namespace gml
 {
-	typedef enum HIT_TYPE
-	{
-		outside		= 0,
-		intersect	= 1,
-		contain		= 2,
-		inside		= 3,
-	} HIT_TYPE;
-
 	class coord
 	{
 	public:
@@ -21,14 +14,18 @@ namespace gml
 
 		coord(int x, int y);
 
-		coord& set(int x, int y);
+		bool operator==(const coord& other) const;
 
-		coord& move(int offsetx, int offsety);
+		void set(int x, int y);
+
+		void move(int offsetx, int offsety);
 	};
 
 	class rect
 	{
 	public:
+		bool operator==(const rect& other) const;
+
 		int left() const;
 
 		int right() const;
@@ -47,35 +44,35 @@ namespace gml
 
 		coord size() const;
 		
-		rect& set_width(int w);
+		void set_width(int w);
 
-		rect& set_height(int h);
-
-		rect& set_left(int x);
-
-		rect& set_right(int x);
-
-		rect& set_top(int y);
-
-		rect& set_bottom(int y);
-
-		rect& set_pos(int x, int y);
-
-		rect& set_pos(const coord& pos);
-
-		rect& set_size(int w, int h);
-
-		rect& set_size(const coord& size);
-
-		bool hit_test(int x, int y) const;
-
-		bool hit_test(const coord& point) const;
-
-		int hit_test(const rect& other) const;
-
-		rect& move(int offsetx, int offsety);
+		void set_height(int h);
 		
-		rect& enlarge(int offsetw, int offseth);
+		void set_left(int x);
+		
+		void set_right(int x);
+		
+		void set_top(int y);
+		
+		void set_bottom(int y);
+		
+		void set_pos(int x, int y);
+		
+		void set_pos(const coord& pos);
+		
+		void set_size(int w, int h);
+		
+		void set_size(const coord& size);
+
+		bool contains(int x, int y) const;
+
+		bool contains(const coord& point) const;
+
+		it_mode hit_test(const rect& other) const;
+
+		void move(int offsetx, int offsety);
+		
+		void enlarge(int offsetw, int offseth);
 
 	private:
 		coord m_pos;

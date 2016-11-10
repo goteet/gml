@@ -89,7 +89,8 @@ namespace gml
 			rst.v.y = (mat._12 + mat._21) * base;
 			break;
 		}
-		return rst.normalize();
+		rst.normalize();
+		return rst;
 	}
 
 	mat44 to_mat44(const dquat& q)

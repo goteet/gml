@@ -225,29 +225,26 @@ namespace gml
 		return vec3(m[0][index], m[1][index], row[2][index]);
 	}
 
-	mat33& mat33::set_column(int index, vec3 v)
+	void mat33::set_column(int index, vec3 v)
 	{
 		assert(index >= 0 && index < 3);
 		for (int i = 0; i < 3; i++)
 		{
 			m[i][index] = v[i];
 		}
-		return *this;
 	}
 
-	mat33& mat33::identity()
+	void mat33::identity()
 	{
-		return *this = I();
+		*this = I();
 	}
 
-	mat33& mat33::transpose()
+	void mat33::transpose()
 	{
 		swap(this->_10, this->_01);
 		swap(this->_20, this->_02);
 
 		swap(this->_21, this->_12);
-
-		return *this;
 	}
 
 	mat33 mat33::transposed() const
@@ -270,7 +267,7 @@ namespace gml
 		}
 	}
 
-	mat33& mat33::inverse()
+	void mat33::inverse()
 	{
 		if (is_orthogonal())
 		{
@@ -305,7 +302,6 @@ namespace gml
 				// what should i do when this occur ?
 			}
 		}
-		return *this;
 	}
 
 	mat33 mat33::inversed() const

@@ -74,4 +74,13 @@ namespace gml
 			return T(maxValue);
 		return value;
 	}
+
+	enum it_mode
+	{
+		it_none,
+		it_contain,
+		it_inside,
+		it_intersect,
+		it_same,
+	};
 }

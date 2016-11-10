@@ -118,9 +118,9 @@ namespace gml
 
 	mat44 mat44::look_at(const vec3& eye, const vec3& look, const vec3& up)
 	{
-		vec3 forward = (look - eye).normalize();
-		vec3 real_up = (up - forward * dot(forward, up.normalized())).normalize();
-		vec3 right = cross(real_up, forward).normalize();
+		vec3 forward = (look - eye).normalized();
+		vec3 real_up = (up - forward * dot(forward, up.normalized())).normalized();
+		vec3 right = cross(real_up, forward).normalized();
 		mat44 rst(
 			vec4(right, -dot(eye, right)),
 			vec4(real_up, -dot(eye, real_up)),
@@ -299,22 +299,21 @@ namespace gml
 		return vec4(m[0][index], m[1][index], m[2][index], m[3][index]);
 	}
 
-	mat44& mat44::set_column(int index, vec4 v)
+	void mat44::set_column(int index, vec4 v)
 	{
 		assert(index >= 0 && index < 4);
 		for (int i = 0; i < 4; i++)
 		{
 			m[i][index] = v[i];
 		}
-		return *this;
 	}
 
-	mat44& mat44::identity()
+	void mat44::identity()
 	{
-		return *this = I();
+		*this = I();
 	}
 
-	mat44& mat44::transpose()
+	void mat44::transpose()
 	{
 		swap(this->_10, this->_01);
 		swap(this->_20, this->_02);
@@ -324,7 +323,6 @@ namespace gml
 		swap(this->_31, this->_13);
 
 		swap(this->_32, this->_23);
-		return *this;
 	}
 
 	mat44 mat44::transposed() const
@@ -347,7 +345,7 @@ namespace gml
 		}
 	}
 
-	mat44& mat44::inverse()
+	void mat44::inverse()
 	{
 		if (is_orthogonal())
 		{
@@ -390,7 +388,6 @@ namespace gml
 				// what should i do when this occur ?
 			}
 		}
-		return *this;
 	}
 
 	mat44 mat44::inversed() const

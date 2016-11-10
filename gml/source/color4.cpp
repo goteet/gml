@@ -174,58 +174,42 @@ namespace gml
 		return &(this->r);
 	}
 
-	color4& color4::set(float r, float g, float b, float a)
+	void color4::set(float r, float g, float b, float a)
 	{
 		this->r = r;
 		this->g = g;
 		this->b = b;
 		this->a = a;
-		return *this;
 	}
 
-	color4& color4::replace(const color3& c3)
+	void color4::replace(const color3& c3)
 	{
 		this->r = c3.r;
 		this->g = c3.g;
 		this->b = c3.b;
-		return *this;
 	}
 
-	color4& color4::clamp()
+	void color4::clamp()
 	{
-		if (r > 1.0f) r = 1.0f;
-		else if (r < 0.0f) r = 0.0f;
-
-		if (g > 1.0f) g = 1.0f;
-		else if (g < 0.0f) g = 0.0f;
-
-		if (b > 1.0f) b = 1.0f;
-		else if (b < 0.0f) b = 0.0f;
-
-		if (a > 1.0f) a = 1.0f;
-		else if (a < 0.0f) a = 0.0f;
-
-		return *this;
+		r = clamp01(r);
+		g = clamp01(g);
+		b = clamp01(b);
+		a = clamp01(a);
 	}
 
 	color4 color4::clamped() const
 	{
 		color4 copy(*this);
-		return copy.clamp();
+		copy.clamp();
+		return copy;
 	}
 
-	unsigned int color4::to_rgba()
+	color4::operator unsigned int()
 	{
-		unsigned int nr = static_cast<unsigned int>(r * 255);
-		unsigned int ng = static_cast<unsigned int>(g * 255);
-		unsigned int nb = static_cast<unsigned int>(b * 255);
-		unsigned int na = static_cast<unsigned int>(a * 255);
-
-		if (nr > 255) nr = 255;
-		if (ng > 255) ng = 255;
-		if (nb > 255) nb = 255;
-		if (na > 255) na = 255;
-
+		int nr = gml::clamp(static_cast<int>(r * 255), 0, 255);
+		int ng = gml::clamp(static_cast<int>(g * 255), 0, 255);
+		int nb = gml::clamp(static_cast<int>(b * 255), 0, 255);
+		int na = gml::clamp(static_cast<int>(a * 255), 0, 255);
 		return nr | (ng << 8) | (nb << 16) | (na << 24);
 	}
 

@@ -148,46 +148,41 @@ namespace gml
 		return &(this->x);
 	}
 
-	vec4& vec4::set(const vec2& v2, float z, float w)
+	void vec4::set(const vec2& v2, float z, float w)
 	{
 		this->x = v2.x;
 		this->y = v2.y;
 		this->z = z;
 		this->w = w;
-		return *this;
 	}
 
-	vec4& vec4::set(const vec3& v3, float w)
+	void vec4::set(const vec3& v3, float w)
 	{
 		this->x = v3.x;
 		this->y = v3.y;
 		this->z = v3.z;
 		this->w = w;
-		return *this;
 	}
 
-	vec4& vec4::set(float x, float y, float z, float w)
+	void vec4::set(float x, float y, float z, float w)
 	{
 		this->x = x;
 		this->y = y;
 		this->z = z;
 		this->w = w;
-		return *this;
 	}
 
-	vec4& vec4::replace(const vec2& v2)
+	void vec4::replace(const vec2& v2)
 	{
 		this->x = v2.x;
 		this->y = v2.y;
-		return *this;
 	}
 
-	vec4& vec4::replace(const vec3& v3)
+	void vec4::replace(const vec3& v3)
 	{
 		this->x = v3.x;
 		this->y = v3.y;
 		this->z = v3.z;
-		return *this;
 	}
 
 	float vec4::length() const

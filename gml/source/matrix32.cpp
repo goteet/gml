@@ -248,19 +248,18 @@ namespace gml
 		return vec2(m[0][index], m[1][index]);
 	}
 
-	mat32& mat32::set_column(unsigned int index, vec2 v)
+	void mat32::set_column(unsigned int index, vec2 v)
 	{
 		assert(index >= 0 && index < 3);
 		for (int i = 0; i < 3; i++)
 		{
 			m[i][index] = v[i];
 		}
-		return *this;
 	}
 
-	mat32& mat32::identity()
+	void mat32::identity()
 	{
-		return *this = I();
+		*this = I();
 	}
 
 	vec2 transform_vector(const mat32& lhs, const vec2& rhs)

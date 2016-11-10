@@ -186,42 +186,39 @@ namespace gml
 		return &(this->x);
 	}
 
-	vec3& vec3::set(const vec2& v2, float z)
+	void vec3::set(const vec2& v2, float z)
 	{
 		this->x = v2.x;
 		this->y = v2.y;
 		this->z = z;
-		return *this;
 	}
 
-	vec3& vec3::set(float x, float y, float z)
+	void vec3::set(float x, float y, float z)
 	{
 		this->x = x;
 		this->y = y;
 		this->z = z;
-		return *this;
 	}
 
-	vec3& vec3::set(const vec4& v4)
+	void vec3::set(const vec4& v4)
 	{
 		set(v4.x, v4.y, v4.z);
-		return *this;
 	}
 
-	vec3& vec3::replace(const vec2& v2)
+	void vec3::replace(const vec2& v2)
 	{
 		x = v2.x;
 		y = v2.y;
-		return *this;
 	}
 
 	vec3 vec3::normalized() const
 	{
 		vec3 copy(*this);
-		return copy.normalize();
+		copy.normalize();
+		return copy;
 	}
 
-	vec3& vec3::normalize()
+	void vec3::normalize()
 	{
 		float length2 = length_sqr();
 		if (!fequal(length2, 0.0f))
@@ -238,21 +235,20 @@ namespace gml
 		{
 			*this = zero();
 		}
-		return *this;
 	}
 
-	vec3& vec3::inverse()
+	void vec3::inverse()
 	{
 		x = 1.0f / x;
 		y = 1.0f / y;
 		z = 1.0f / z;
-		return *this;
 	}
 
 	vec3 vec3::inversed() const
 	{
 		vec3 copy(*this);
-		return copy.inverse();
+		copy.inverse();
+		return copy;
 	}
 
 	float vec3::length() const

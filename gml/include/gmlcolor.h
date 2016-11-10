@@ -68,15 +68,15 @@ namespace gml
 
 		explicit operator float*();
 
-		color3& set(float r, float g, float b);
+		void set(float r, float g, float b);
 
-		color3& set(const color4& c4);
+		void set(const color4& c4);
 
-		color3& clamp();
+		void clamp();
 
 		color3 clamped() const;
 
-		unsigned int to_rgb();
+		operator unsigned int();
 	};
 
 	class color4
@@ -135,15 +135,15 @@ namespace gml
 
 		explicit operator float*();
 
-		color4& set(float r, float g, float b, float a);
+		void set(float r, float g, float b, float a);
 
-		color4& replace(const color3& c3);
+		void replace(const color3& c3);
 
-		color4& clamp();
+		void clamp();
 
 		color4 clamped() const;
 
-		unsigned int to_rgba();
+		operator unsigned int();
 	};
 
 	color3 operator+(float value, const color3& rhs);
@@ -157,7 +157,7 @@ namespace gml
 	color4 operator*(float value, const color4& rhs);
 
 	float dot(const color4& lhs, const color4& rhs);
-	
+
 	template<typename SwizzleR, typename SwizzleG, typename SwizzleB>
 	inline color3 swizzle(const color3& c3)
 	{

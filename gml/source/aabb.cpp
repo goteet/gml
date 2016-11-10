@@ -32,17 +32,16 @@ namespace gml
 		}
 	}
 
-	aabb& aabb::set(const vec3& min_bound, const vec3& max_bound)
+	void aabb::set(const vec3& min_bound, const vec3& max_bound)
 	{
 		m_min_bound = min_combine(min_bound, max_bound);
 		m_max_bound = max_combine(min_bound, max_bound);
 		m_center = (m_min_bound + m_max_bound) * 0.5f;
 		m_extend = m_center - m_min_bound;
 		m_is_empty = false;
-		return *this;
 	}
 
-	bool aabb::is_contain(const aabb& other) const
+	bool aabb::contains(const aabb& other) const
 	{
 		if (!is_empty() && !other.is_empty())
 		{
@@ -55,7 +54,7 @@ namespace gml
 
 	}
 
-	int aabb::is_intersect(const aabb& other) const
+	it_mode aabb::is_intersect(const aabb& other) const
 	{
 		if (is_empty() && other.is_empty())
 		{
@@ -99,7 +98,7 @@ namespace gml
 		}
 	}
 
-	bool aabb::is_contain(const vec3& point) const
+	bool aabb::contains(const vec3& point) const
 	{
 		if (!is_empty())
 		{

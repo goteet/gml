@@ -83,7 +83,7 @@ namespace gml
 		return *this;
 	}
 
-	quat& quat::normalize()
+	void quat::normalize()
 	{
 		float length2 = length_sqr();
 		if (!fequal(0.0f, length2))
@@ -95,46 +95,42 @@ namespace gml
 				this->w *= invLength;
 			}
 		}
-
-		return *this;
 	}
 
 	quat quat::normalized() const
 	{
 		quat rst(*this);
-		return rst.normalize();
+		rst.normalize();
+		return rst;
 	}
 
-	quat& quat::conjugate()
+	void quat::conjugate()
 	{
 		this->v = -this->v;
 		//this->w = -this->w;
-		return *this;
 	}
 
 	quat quat::conjugated() const
 	{
 		quat rst(*this);
-		return rst.conjugate();
+		rst.conjugate();
+		return rst;
 	}
 
-	quat& quat::inverse()
+	void quat::inverse()
 	{
 		conjugate();
-		if (!fequal(0, length_sqr()))
+		if (!fequal(0.0f, length_sqr()))
 		{
-			return normalize();
-		}
-		else
-		{
-			return *this;
+			normalize();
 		}
 	}
 
 	quat quat::inversed() const
 	{
 		quat rst(*this);
-		return rst.inverse();
+		rst.inverse();
+		return rst;
 	}
 
 	float quat::length() const

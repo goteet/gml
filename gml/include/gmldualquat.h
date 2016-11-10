@@ -44,19 +44,19 @@ namespace gml
 
 		dquat& operator*=(float scaler);
 
-		dquat& normalize();
+		void normalize();
 
 		dquat normalized() const;
 
-		dquat& conjugate();
+		void conjugate();
 
 		dquat conjugated() const;
 
-		dquat& inverse();
+		void inverse();
 
 		dquat inversed() const;
 
-		dquat& exponent(float t);
+		void exponent(float t);
 
 		dquat exponented(float t) const;
 

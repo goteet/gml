@@ -171,32 +171,30 @@ namespace gml
 		return &(this->x);
 	}
 
-	vec2& vec2::set(float x, float y)
+	void vec2::set(float x, float y)
 	{
 		this->x = x;
 		this->y = y;
-		return *this;
 	}
 
-	vec2& vec2::set(const vec3& other)
+	void vec2::set(const vec3& other)
 	{
 		set(other.x, other.y);
-		return *this;
 	}
 
-	vec2& vec2::set(const vec4& other)
+	void vec2::set(const vec4& other)
 	{
 		set(other.x, other.y);
-		return *this;
 	}
 
 	vec2 vec2::normalized() const
 	{
 		vec2 copy(*this);
-		return copy.normalize();
+		copy.normalize();
+		return copy;
 	}
 
-	vec2& vec2::normalize()
+	void vec2::normalize()
 	{
 		float length2 = length_sqr();
 		if (!fequal(length2, 0.0f))
@@ -212,20 +210,19 @@ namespace gml
 		{
 			*this = zero();
 		}
-		return *this;
 	}
 
-	vec2& vec2::inverse()
+	void vec2::inverse()
 	{
 		x = 1.0f / x;
 		y = 1.0f / y;
-		return *this;
 	}
 
 	vec2 vec2::inversed() const
 	{
 		vec2 copy(*this);
-		return copy.inverse();
+		copy.inverse();
+		return copy;
 	}
 
 	float vec2::length() const

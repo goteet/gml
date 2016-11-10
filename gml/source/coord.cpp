@@ -9,16 +9,23 @@ namespace gml
 		set(x, y);
 	}
 
-	coord& coord::set(int x, int y)
+	void coord::set(int x, int y)
 	{
 		this->x = x;
 		this->y = y;
-		return *this;
 	}
 
-	coord& coord::move(int offsetx, int offsety)
+	void coord::move(int offsetx, int offsety)
 	{
 		set(x + offsetx, y + offsety);
-		return *this;
+	}
+
+	bool coord::operator==(const coord& other) const
+	{
+		if (this == &other)
+		{
+			return true;
+		}
+		return (x == other.x) && (y == other.y);
 	}
 }

@@ -48,15 +48,15 @@ namespace gml
 
 		quat& operator*=(float scaler);
 
-		quat& normalize();
+		void normalize();
 
 		quat normalized() const;
 
-		quat& conjugate();
+		void conjugate();
 
 		quat conjugated() const;
 
-		quat& inverse();
+		void inverse();
 
 		quat inversed() const;
 

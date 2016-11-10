@@ -177,27 +177,25 @@ namespace gml
 		return vec2(m[0][index], m[1][index]);
 	}
 
-	mat22& mat22::set_column(int index, vec2 v)
+	void mat22::set_column(int index, vec2 v)
 	{
 		assert(index >= 0 && index < 2);
 		for (int i = 0; i < 2; i++)
 		{
 			m[i][index] = v[i];
 		}
-		return *this;
 	}
 
 
 
-	mat22& mat22::identity()
+	void mat22::identity()
 	{
-		return *this = I();
+		*this = I();
 	}
 
-	mat22& mat22::transpose()
+	void mat22::transpose()
 	{
 		swap(this->_10, this->_01);
-		return *this;
 	}
 
 	mat22 mat22::transposed() const
@@ -220,7 +218,7 @@ namespace gml
 		}
 	}
 
-	mat22& mat22::inverse()
+	void mat22::inverse()
 	{
 		if (is_orthogonal())
 		{
@@ -245,7 +243,6 @@ namespace gml
 				// what should i do when this occur ?
 			}
 		}
-		return *this;
 	}
 
 	mat22 mat22::inversed() const
