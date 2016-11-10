@@ -2,7 +2,7 @@
 #include <gmlmatrix.h>
 #include <gmlcolor.h>
 #include <gmlutility.h>
-#include <gmlquaternion.h>
+#include <gmlrotation.h>
 #include <gmlconv.h>
 #include <gmldualquat.h>
 
@@ -361,7 +361,7 @@ IMPL(AllStructure)
 		<< std::endl;
 	OUTPUT << "\tm32={ 1,2,3,4,5,6 } = |"
 		<< m32.row(0).x << "," << m32.row(0)[1] << "," << m32.row(0)[2] << ","
-		<< m32.row(1).x << "," << m32.row(1).y  << "," << m32.row(1).z << "|"
+		<< m32.row(1).x << "," << m32.row(1).y << "," << m32.row(1).z << "|"
 		<< std::endl;
 
 	mat33 m3 = { 1,2,3,4,5,6,7,8,9 };
