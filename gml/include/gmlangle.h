@@ -1,6 +1,6 @@
 #pragma once
 
-#include "gmlutility.h"
+#include <gmlutility.h>
 
 namespace gml
 {
@@ -22,13 +22,6 @@ namespace gml
 		}
 
 		constexpr degree(radian r);
-
-		constexpr radian to_radian() const;
-
-		constexpr operator float() const
-		{
-			return value;
-		}
 
 		friend constexpr bool operator==(degree l, degree r)
 		{
@@ -100,11 +93,7 @@ namespace gml
 			value *= r;
 			return *this;
 		}
-		degree& operator/=(float r)
-		{
-			value /= r;
-			return *this;
-		}
+
 	};
 
 	struct radian
@@ -123,16 +112,6 @@ namespace gml
 
 		constexpr radian(degree d) : value(d.value * d2r_factor)
 		{
-		}
-
-		constexpr degree to_degree() const
-		{
-			return degree(*this);
-		}
-
-		constexpr operator float() const
-		{
-			return value;
 		}
 
 		friend constexpr bool operator==(radian l, radian r)
@@ -205,11 +184,11 @@ namespace gml
 			value *= r;
 			return *this;
 		}
-		radian& operator/=(float r)
-		{
-			value /= r;
-			return *this;
-		}
+
 	};
+
+	constexpr degree::degree(radian r) : value(r.value * r2d_factor)
+	{
+	}
 
 }

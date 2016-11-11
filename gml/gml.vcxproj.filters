@@ -110,8 +110,5 @@
     <ClCompile Include="source\utility.cpp">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="source\angle.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>
