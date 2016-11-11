@@ -11,7 +11,6 @@ namespace gml
 {
 	class color3;
 	class color4;
-	class color4;
 
 	class color3
 	{

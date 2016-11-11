@@ -206,16 +206,16 @@ namespace gml
 				y *= invLength;
 			}
 		}
-		else
-		{
-			*this = zero();
-		}
 	}
 
 	void vec2::inverse()
 	{
-		x = 1.0f / x;
-		y = 1.0f / y;
+		float length2 = length_sqr();
+		if (!fequal(length2, 0.0f))
+		{
+			x /= length2;
+			y /= length2;
+		}
 	}
 
 	vec2 vec2::inversed() const
