@@ -231,17 +231,17 @@ namespace gml
 				this->z *= invLength;
 			}
 		}
-		else
-		{
-			*this = zero();
-		}
 	}
 
 	void vec3::inverse()
 	{
-		x = 1.0f / x;
-		y = 1.0f / y;
-		z = 1.0f / z;
+		float length2 = length_sqr();
+		if (!fequal(length2, 0.0f))
+		{
+			x /= length2;
+			y /= length2;
+			z /= length2;
+		}
 	}
 
 	vec3 vec3::inversed() const

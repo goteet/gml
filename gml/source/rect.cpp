@@ -121,6 +121,22 @@ namespace gml
 		return contains(point.x, point.y);
 	}
 
+	int get_intersect_number(const rect& container, const rect& to_check)
+	{
+		int intersect_other = 0;
+
+		if (container.contains(to_check.left(), to_check.top()))
+			intersect_other++;
+		if (container.contains(to_check.left(), to_check.bottom()))
+			intersect_other++;
+		if (container.contains(to_check.right(), to_check.top()))
+			intersect_other++;
+		if (container.contains(to_check.right(), to_check.bottom()))
+			intersect_other++;
+
+		return intersect_other;
+	}
+
 	it_mode rect::hit_test(const rect& other) const
 	{
 		if (*this == other)
@@ -128,30 +144,32 @@ namespace gml
 			return it_same;
 		}
 
-		int intersect_other = 0;
-		if (other.contains(left(), top()))		intersect_other++;
-		if (other.contains(left(), bottom()))	intersect_other++;
-		if (other.contains(right(), top()))		intersect_other++;
-		if (other.contains(right(), bottom()))	intersect_other++;
-
-		if (intersect_other == 0)
-		{
-			return it_none;
-		}
-		else if (intersect_other == 4)
+		int intersect_other = get_intersect_number(other, *this);
+		if (intersect_other == 4)
 		{
 			return it_inside;
 		}
+		// Impossible 3.
+		else if (intersect_other == 2 || intersect_other == 1)
+		{
+			return it_intersect;
+		}
 		else
 		{
-
-			intersect_other = 0;
-			if (contains(other.left(), other.top()))		intersect_other++;
-			if (contains(other.left(), other.bottom()))	intersect_other++;
-			if (contains(other.right(), other.top()))		intersect_other++;
-			if (contains(other.right(), other.bottom()))	intersect_other++;
-
-			return (intersect_other == 4) ? it_contain : it_intersect;
+			intersect_other = get_intersect_number(*this, other);
+			if (intersect_other == 4)
+			{
+				return it_contain;
+			}
+			// Impossible 3.
+			else if (intersect_other == 2) // Impossible 1
+			{
+				return it_intersect;
+			}
+			else
+			{
+				return it_none;
+			}
 		}
 	}
 
