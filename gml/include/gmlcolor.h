@@ -32,7 +32,7 @@ namespace gml
 		float b = 0.0f;
 
 	public:
-		color3();
+		color3() = default;
 
 		color3(float r, float g, float b);
 
@@ -99,7 +99,7 @@ namespace gml
 		float a = 1.0f;
 
 	public:
-		color4();
+		color4() = default;
 
 		color4(float r, float g, float b, float a);
 

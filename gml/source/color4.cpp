@@ -56,11 +56,6 @@ namespace gml
 		return (color4(rand() * 1.0f, rand() * 1.0f, rand() * 1.0f, rand() * 1.0f) * (1.0f / RAND_MAX));
 	}
 
-	color4::color4()
-	{
-
-	}
-
 	color4::color4(float r, float g, float b, float a)
 	{
 		set(r, g, b, a);

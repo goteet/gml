@@ -29,7 +29,7 @@ namespace gml
 		float y = 0.0f;
 
 	public:
-		vec2();
+		vec2() = default;
 
 		vec2(float x, float y);
 
@@ -111,7 +111,7 @@ namespace gml
 		float z = 0.0f;
 
 	public:
-		vec3();
+		vec3() = default;
 
 		vec3(float x, float y, float z);
 
@@ -186,7 +186,7 @@ namespace gml
 		float w = 0.0f;
 
 	public:
-		vec4();
+		vec4() = default;
 
 		vec4(float x, float y, float z, float w);
 

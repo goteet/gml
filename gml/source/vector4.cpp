@@ -6,8 +6,6 @@
 
 namespace gml
 {
-	vec4::vec4() { }
-
 	vec4::vec4(float x, float y, float z, float w)
 	{
 		set(x, y, z, w);

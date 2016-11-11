@@ -56,11 +56,6 @@ namespace gml
 		return color3(rand() * 1.0f, rand() * 1.0f, rand() * 1.0f) * (1.0f / RAND_MAX);
 	}
 
-	color3::color3()
-	{
-
-	}
-
 	color3::color3(float r, float g, float b)
 	{
 		this->r = r;

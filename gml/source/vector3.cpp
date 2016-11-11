@@ -47,10 +47,6 @@ namespace gml
 		return v;
 	}
 
-	vec3::vec3()
-	{
-	}
-
 	vec3::vec3(float x, float y, float z)
 	{
 		set(x, y, z);
