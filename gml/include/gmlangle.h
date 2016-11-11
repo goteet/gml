@@ -4,10 +4,10 @@
 
 namespace gml
 {
-	struct degree;
-	struct radian;
+	class degree;
+	class radian;
 
-	struct degree
+	class degree
 	{
 	private:
 		static constexpr float r2d_factor = static_cast<float>(180.0 / PI_d);
@@ -86,7 +86,7 @@ namespace gml
 		}
 	};
 
-	struct radian
+	class radian
 	{
 	private:
 		static constexpr float d2r_factor = static_cast<float>(PI_d / 180.0);
