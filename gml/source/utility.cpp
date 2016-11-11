@@ -3,55 +3,6 @@
 
 namespace gml
 {
-	constexpr static const float a2r_factor = static_cast<float>(PI / 180.0);
-	constexpr static const float r2a_factor = 1.0f / a2r_factor;
-	float a2r(float angle) { return angle * a2r_factor; }
-	float r2a(float raian) { return raian * a2r_factor; }
-
-	radian::radian() :value(0.0f) {}
-
-	radian::radian(float v) : value(v) {}
-
-	radian::operator degree() const { return degree(r2a(value)); }
-
-	radian::operator float() const { return value; }
-
-	radian radian::operator-() { return radian(-value); }
-
-	radian radian::operator+(const radian& other) const { return radian(*this) += other; }
-
-	radian radian::operator-(const radian& other) const { return radian(*this) -= other; }
-
-	radian radian::operator*(float scaler) const { return radian(*this) *= scaler; }
-
-	radian& radian::operator+=(const radian& other) { value += other.value; return *this; }
-
-	radian& radian::operator-=(const radian& other) { value -= other.value; return *this; }
-
-	radian& radian::operator*=(float scaler) { value *= scaler; return *this; }
-
-	degree::degree() : value(0.0f) {}
-
-	degree::degree(float v) : value(v) {}
-
-	degree::operator radian() const { return radian(a2r(value)); }
-
-	degree::operator float() const { return value; }
-
-	degree degree::operator-() { return degree(-value); }
-
-	degree degree::operator+(const degree& other) const { return degree(*this) += other; }
-
-	degree degree::operator-(const degree& other) const { return degree(*this) -= other; }
-
-	degree degree::operator*(float scaler) const { return degree(*this) *= scaler; }
-
-	degree& degree::operator+=(const degree& other) { value += other.value; return *this; }
-
-	degree& degree::operator-=(const degree& other) { value -= other.value; return *this; }
-
-	degree& degree::operator*=(float scaler) { value *= scaler; return *this; }
-
 
 	bool fequal(float a, float b)
 	{

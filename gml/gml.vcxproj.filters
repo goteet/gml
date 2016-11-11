@@ -48,6 +48,9 @@
     <ClInclude Include="include\gmlrotation.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="include\gmlangle.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\vector2.cpp">
@@ -105,6 +108,9 @@
       <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="source\utility.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="source\angle.cpp">
       <Filter>source</Filter>
     </ClCompile>
   </ItemGroup>

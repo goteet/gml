@@ -2,46 +2,11 @@
 
 namespace gml
 {
-	constexpr const double PI = 3.14159265358979323846;
+	constexpr double PI_d = 3.14159265358979323846;
+	constexpr float PI = static_cast<float>(PI_d);
+
 
 	bool fequal(float a, float b);
-
-	class radian;
-	class degree;
-
-	class radian
-	{
-	public:
-		radian();
-		explicit radian(float v);
-		operator degree() const;
-		operator float() const;
-		radian operator-();
-		radian operator+(const radian&) const;
-		radian operator-(const radian&) const;
-		radian operator*(float scaler) const;
-		radian& operator+=(const radian&);
-		radian& operator-=(const radian&);
-		radian& operator*=(float scaler);
-		float value;
-	};
-
-	class degree
-	{
-	public:
-		degree();
-		explicit degree(float v);
-		operator radian() const;
-		operator float() const;
-		degree operator-();
-		degree operator+(const degree&) const;
-		degree operator-(const degree&) const;
-		degree operator*(float scaler) const;
-		degree& operator+=(const degree&);
-		degree& operator-=(const degree&);
-		degree& operator*=(float scaler);
-		float value;
-	};
 
 	template<typename T>
 	inline T lerp(T left, T right, float fac)
