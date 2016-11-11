@@ -17,8 +17,8 @@ namespace gml
 
 	mat22 mat22::rotate(const radian& r)
 	{
-		float cosr = cosf(r);
-		float sinr = sinf(r);
+		float cosr = gml::cos(r);
+		float sinr = gml::sin(r);
 		return mat22(
 			cosr, -sinr,
 			sinr, cosr);

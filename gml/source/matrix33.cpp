@@ -18,8 +18,8 @@ namespace gml
 
 	mat33 mat33::rotate_x(const radian& r)
 	{
-		float cosr = cosf(r);
-		float sinr = sinf(r);
+		float cosr = gml::cos(r);
+		float sinr = gml::sin(r);
 
 		return mat33(
 			1, 0, 0,
@@ -30,8 +30,8 @@ namespace gml
 
 	mat33 mat33::rotate_y(const radian& r)
 	{
-		float cosr = cosf(r);
-		float sinr = sinf(r);
+		float cosr = gml::cos(r);
+		float sinr = gml::sin(r);
 
 		return mat33(
 			cosr, 0, -sinr,
@@ -42,8 +42,8 @@ namespace gml
 
 	mat33 mat33::rotate_z(const radian& r)
 	{
-		float cosr = cosf(r);
-		float sinr = sinf(r);
+		float cosr = gml::cos(r);
+		float sinr = gml::sin(r);
 
 		return mat33(
 			cosr, -sinr, 0,

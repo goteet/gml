@@ -17,9 +17,7 @@ namespace gml
 
 		constexpr degree() = default;
 
-		explicit constexpr degree(float v) : value(v)
-		{
-		}
+		explicit constexpr degree(float v) : value(v) { }
 
 		constexpr degree(radian r);
 
@@ -47,7 +45,6 @@ namespace gml
 		{
 			return l.value >= r.value;
 		}
-
 		friend constexpr degree operator+(degree l, degree r)
 		{
 			return degree(l.value + r.value);
@@ -64,11 +61,6 @@ namespace gml
 		{
 			return degree(l * r.value);
 		}
-		friend constexpr degree operator/(degree l, float r)
-		{
-			return degree(l.value / r);
-		}
-
 		constexpr degree operator+() const
 		{
 			return *this;
@@ -77,7 +69,6 @@ namespace gml
 		{
 			return degree(-value);
 		}
-
 		degree& operator+=(degree r)
 		{
 			value += r.value;
@@ -93,7 +84,6 @@ namespace gml
 			value *= r;
 			return *this;
 		}
-
 	};
 
 	struct radian
@@ -106,13 +96,9 @@ namespace gml
 
 		constexpr radian() = default;
 
-		explicit constexpr radian(float v) : value(v)
-		{
-		}
+		explicit constexpr radian(float v) : value(v) { }
 
-		constexpr radian(degree d) : value(d.value * d2r_factor)
-		{
-		}
+		constexpr radian(degree d) : value(d.value * d2r_factor) { }
 
 		friend constexpr bool operator==(radian l, radian r)
 		{
@@ -138,7 +124,6 @@ namespace gml
 		{
 			return l.value >= r.value;
 		}
-
 		friend constexpr radian operator+(radian l, radian r)
 		{
 			return radian(l.value + r.value);
@@ -155,11 +140,6 @@ namespace gml
 		{
 			return radian(l * r.value);
 		}
-		friend constexpr radian operator/(radian l, float r)
-		{
-			return radian(l.value / r);
-		}
-
 		constexpr radian operator+() const
 		{
 			return *this;
@@ -168,7 +148,6 @@ namespace gml
 		{
 			return radian(-value);
 		}
-
 		radian& operator+=(radian r)
 		{
 			value += r.value;
@@ -184,11 +163,13 @@ namespace gml
 			value *= r;
 			return *this;
 		}
-
 	};
 
-	constexpr degree::degree(radian r) : value(r.value * r2d_factor)
-	{
-	}
+	float cos(const radian&);
+
+	float sin(const radian&);
+
+	// definition of radian is after degree.
+	constexpr degree::degree(radian r) : value(r.value * r2d_factor) { }
 
 }

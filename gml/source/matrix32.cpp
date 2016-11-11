@@ -17,8 +17,8 @@ namespace gml
 
 	mat32 mat32::rotate(const radian& r)
 	{
-		float cosr = cosf(r);
-		float sinr = sinf(r);
+		float cosr = gml::cos(r);
+		float sinr = gml::sin(r);
 		return mat32(
 			cosr, -sinr, 0,
 			sinr, cosr, 0);

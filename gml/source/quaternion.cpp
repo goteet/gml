@@ -25,8 +25,9 @@ namespace gml
 	quat::quat(const vec3& axis, const radian& r)
 	{
 		radian halfRadian = r * 0.5f;
-		float halfCos = cos(halfRadian);
-		float halfSin = sin(halfRadian);
+
+		float halfCos = gml::cos(halfRadian);
+		float halfSin = gml::sin(halfRadian);
 
 		this->v = axis * halfSin;
 		this->w = halfCos;
@@ -188,8 +189,8 @@ namespace gml
 			float inv_sin_w = 1.0f / sin_w;
 			float w = atan2(sin_w, cos_w);
 
-			f0 = sin((1.0f - f) * w)*inv_sin_w;
-			f1 = sin(f * w)*inv_sin_w;
+			f0 = sinf((1.0f - f) * w)*inv_sin_w;
+			f1 = sinf(f * w)*inv_sin_w;
 		}
 
 		return f0 * s + f1 * d;
@@ -208,9 +209,9 @@ namespace gml
 
 	quat to_quaternion(const euler& e)
 	{
-		vec4 v0(cos(e.yaw / 2), 0, 0, sin(e.yaw / 2));
-		vec4 v1(cos(e.pitch / 2), 0, sin(e.pitch / 2), 0);
-		vec4 v2(cos(e.roll / 2), sin(e.roll / 2), 0, 0);
+		vec4 v0(cosf(e.yaw / 2), 0, 0, sinf(e.yaw / 2));
+		vec4 v1(cosf(e.pitch / 2), 0, sinf(e.pitch / 2), 0);
+		vec4 v2(cosf(e.roll / 2), sinf(e.roll / 2), 0, 0);
 		vec4 v = v0 * v1 * v2;
 		return quat(v.w, v.x, v.y, v.z);
 	}

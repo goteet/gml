@@ -19,8 +19,8 @@ namespace gml
 
 	mat44 mat44::rotate_x(const radian& r)
 	{
-		float cosr = cosf(r);
-		float sinr = sinf(r);
+		float cosr = gml::cos(r);
+		float sinr = gml::sin(r);
 
 		return mat44(
 			1, 0, 0, 0,
@@ -32,8 +32,8 @@ namespace gml
 
 	mat44 mat44::rotate_y(const radian& r)
 	{
-		float cosr = cosf(r);
-		float sinr = sinf(r);
+		float cosr = gml::cos(r);
+		float sinr = gml::sin(r);
 
 		return mat44(
 			cosr, 0, -sinr, 0,
@@ -45,8 +45,8 @@ namespace gml
 
 	mat44 mat44::rotate_z(const radian& r)
 	{
-		float cosr = cosf(r);
-		float sinr = sinf(r);
+		float cosr = gml::cos(r);
+		float sinr = gml::sin(r);
 
 		return mat44(
 			cosr, -sinr, 0, 0,
