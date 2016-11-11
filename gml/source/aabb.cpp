@@ -94,7 +94,7 @@ namespace gml
 				return it_inside;
 			}
 
-			return it_intersect;
+			return it_hit;
 		}
 		else
 		{

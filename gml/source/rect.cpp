@@ -121,7 +121,7 @@ namespace gml
 		return contains(point.x, point.y);
 	}
 
-	int get_intersect_number(const rect& container, const rect& to_check)
+	int get_intersection_count(const rect& container, const rect& to_check)
 	{
 		int intersect_other = 0;
 
@@ -144,27 +144,27 @@ namespace gml
 			return it_same;
 		}
 
-		int intersect_other = get_intersect_number(other, *this);
-		if (intersect_other == 4)
+		int intersection_count = get_intersection_count(other, *this);
+		if (intersection_count == 4)
 		{
 			return it_inside;
 		}
 		// Impossible 3.
-		else if (intersect_other == 2 || intersect_other == 1)
+		else if (intersection_count == 2 || intersection_count == 1)
 		{
-			return it_intersect;
+			return it_hit;
 		}
 		else
 		{
-			intersect_other = get_intersect_number(*this, other);
-			if (intersect_other == 4)
+			intersection_count = get_intersection_count(*this, other);
+			if (intersection_count == 4)
 			{
 				return it_contain;
 			}
 			// Impossible 3.
-			else if (intersect_other == 2) // Impossible 1
+			else if (intersection_count == 2) // Impossible 1
 			{
-				return it_intersect;
+				return it_hit;
 			}
 			else
 			{

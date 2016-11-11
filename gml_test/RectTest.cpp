@@ -106,7 +106,7 @@ namespace gml
 			GML_IS_TRUE(mRect.hit_test(r) == it_none);
 
 			r.enlarge(5, 5);
-			GML_IS_TRUE(mRect.hit_test(r) == it_intersect);
+			GML_IS_TRUE(mRect.hit_test(r) == it_hit);
 
 			r.enlarge(20, 20);
 			GML_IS_TRUE(mRect.hit_test(r) == it_inside);

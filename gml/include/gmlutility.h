@@ -78,9 +78,9 @@ namespace gml
 	enum it_mode
 	{
 		it_none,
+		it_hit,
 		it_contain,
 		it_inside,
-		it_intersect,
 		it_same,
 	};
 }
