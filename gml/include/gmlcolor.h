@@ -71,10 +71,6 @@ namespace gml
 
 		void set(const color4& c4);
 
-		void clamp();
-
-		color3 clamped() const;
-
 		unsigned int rgba();
 
 		unsigned int bgra();
@@ -139,10 +135,6 @@ namespace gml
 		void set(float r, float g, float b, float a);
 
 		void replace(const color3& c3);
-
-		void clamp();
-
-		color4 clamped() const;
 
 		unsigned int rgba();
 

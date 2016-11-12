@@ -40,13 +40,9 @@ namespace gml
 	{
 		if (!is_empty() && !other.is_empty())
 		{
-
-			return !(m_min_bound.x > other.m_min_bound.x || m_max_bound.x < other.m_max_bound.x ||
-				m_min_bound.y > other.m_min_bound.y || m_max_bound.y < other.m_max_bound.y ||
-				m_min_bound.z > other.m_min_bound.z || m_max_bound.z < other.m_max_bound.z);
+			return contains(other.min_bound()) && contains(other.max_bound());
 		}
 		return false;
-
 	}
 
 	it_mode aabb::is_intersect(const aabb& other) const
@@ -62,30 +58,32 @@ namespace gml
 				return it_same;
 			}
 
-			if (m_min_bound.x > other.m_max_bound.x || m_max_bound.x < other.m_min_bound.x ||
-				m_min_bound.y > other.m_max_bound.y || m_max_bound.y < other.m_min_bound.y ||
-				m_min_bound.z > other.m_max_bound.z || m_max_bound.z < other.m_min_bound.z)
-			{
-				return it_none;
-			}
+			bool minBoundContains = contains(other.min_bound());
+			bool maxBoundContains = contains(other.max_bound());
 
-			bool minxless = m_min_bound.x < other.m_min_bound.x;
-			bool maxxless = m_max_bound.x < other.m_max_bound.x;
-			bool minyless = m_min_bound.y < other.m_min_bound.y;
-			bool maxyless = m_max_bound.y < other.m_max_bound.y;
-			bool minzless = m_min_bound.z < other.m_min_bound.z;
-			bool maxzless = m_max_bound.z < other.m_max_bound.z;
-
-			if (minxless && !maxxless && minyless && !maxyless && minzless && !maxzless)
+			if (minBoundContains && maxBoundContains)
 			{
 				return it_contain;
 			}
-			if (!minxless && maxxless && !minyless && maxyless && !minzless && maxzless)
+			else if (minBoundContains || maxBoundContains)
 			{
-				return it_inside;
+				return it_hit;
 			}
+			else
+			{
+				minBoundContains = other.contains(m_min_bound);
+				maxBoundContains = other.contains(m_max_bound);
 
-			return it_hit;
+				if (minBoundContains && maxBoundContains)
+				{
+					return it_inside;
+				}
+				// Impossible minBoundContains and maxBoundContains.
+				else
+				{
+					return it_none;
+				}
+			}
 		}
 		else
 		{

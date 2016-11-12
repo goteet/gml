@@ -58,16 +58,12 @@ namespace gml
 
 	color3::color3(float r, float g, float b)
 	{
-		this->r = r;
-		this->g = g;
-		this->b = b;
+		set(r, g, b);
 	}
 
 	color3::color3(const color4& c4)
 	{
-		this->r = c4.r;
-		this->g = c4.g;
-		this->b = c4.b;
+		set(c4.r, c4.g, c4.b);
 	}
 
 	color3::color3(unsigned int _rgb)
@@ -117,33 +113,25 @@ namespace gml
 	}
 	color3& color3::operator+=(float value)
 	{
-		r += value;
-		g += value;
-		b += value;
+		set(r + value, g + value, b + value);
 		return *this;
 	}
 
 	color3& color3::operator*=(float value)
 	{
-		r *= value;
-		g *= value;
-		b *= value;
+		set(r * value, g * value, b * value);
 		return *this;
 	}
 
 	color3& color3::operator+=(const color3& rhs)
 	{
-		r += rhs.r;
-		g += rhs.g;
-		b += rhs.b;
+		set(r + rhs.r, g + rhs.g, b + rhs.b);
 		return *this;
 	}
 
 	color3& color3::operator*=(const color3& rhs)
 	{
-		r *= rhs.r;
-		g *= rhs.g;
-		b *= rhs.b;
+		set(r * rhs.r, g * rhs.g, b * rhs.b);
 		return *this;
 	}
 
@@ -165,9 +153,9 @@ namespace gml
 
 	void color3::set(float r, float g, float b)
 	{
-		this->r = r;
-		this->g = g;
-		this->b = b;
+		this->r = clamp01(r);
+		this->g = clamp01(g);
+		this->b = clamp01(b);
 	}
 
 	void color3::set(const color4& c4)
@@ -175,33 +163,19 @@ namespace gml
 		set(c4.r, c4.g, c4.b);
 	}
 
-	void color3::clamp()
-	{
-		r = clamp01(r);
-		g = clamp01(g);
-		b = clamp01(b);
-	}
-
-	color3 color3::clamped() const
-	{
-		color3 copy(*this);
-		copy.clamp();
-		return copy;
-	}
-
 	unsigned int color3::rgba()
 	{
-		int nr = gml::clamp(static_cast<int>(r * 255), 0, 255);
-		int ng = gml::clamp(static_cast<int>(g * 255), 0, 255);
-		int nb = gml::clamp(static_cast<int>(b * 255), 0, 255);
+		int nr = static_cast<int>(r * 255);
+		int ng = static_cast<int>(g * 255);
+		int nb = static_cast<int>(b * 255);
 		return (0xFF000000 | nb | (ng << 8) | (nr << 16));
 	}
 
 	unsigned int color3::bgra()
 	{
-		int nr = gml::clamp(static_cast<int>(r * 255), 0, 255);
-		int ng = gml::clamp(static_cast<int>(g * 255), 0, 255);
-		int nb = gml::clamp(static_cast<int>(b * 255), 0, 255);
+		int nr = static_cast<int>(r * 255);
+		int ng = static_cast<int>(g * 255);
+		int nb = static_cast<int>(b * 255);
 		return (0xFF000000 | nr | (ng << 8) | (nb << 16));
 	}
 

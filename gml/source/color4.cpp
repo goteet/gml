@@ -63,10 +63,7 @@ namespace gml
 
 	color4::color4(const color3& c, float a)
 	{
-		this->r = c.r;
-		this->g = c.g;
-		this->b = c.b;
-		this->a = a;
+		set(c.r, c.g, c.b, a);
 	}
 
 	color4::color4(unsigned int _rgba)
@@ -118,37 +115,25 @@ namespace gml
 	}
 	color4& color4::operator+=(float value)
 	{
-		r += value;
-		g += value;
-		b += value;
-		a += value;
+		set(r + value, g + value, b + value, a + value);
 		return *this;
 	}
 
 	color4& color4::operator*=(float value)
 	{
-		r *= value;
-		g *= value;
-		b *= value;
-		a *= value;
+		set(r * value, g * value, b * value, a * value);
 		return *this;
 	}
 
 	color4& color4::operator+=(const color4& rhs)
 	{
-		r += rhs.r;
-		g += rhs.g;
-		b += rhs.b;
-		a += rhs.a;
+		set(r + rhs.r, g + rhs.g, b + rhs.b, a + rhs.a);
 		return *this;
 	}
 
 	color4& color4::operator*=(const color4& rhs)
 	{
-		r *= rhs.r;
-		g *= rhs.g;
-		b *= rhs.b;
-		a *= rhs.a;
+		set(r * rhs.r, g * rhs.g, b * rhs.b, a * rhs.a);
 		return *this;
 	}
 
@@ -171,49 +156,32 @@ namespace gml
 
 	void color4::set(float r, float g, float b, float a)
 	{
-		this->r = r;
-		this->g = g;
-		this->b = b;
-		this->a = a;
+		this->r = clamp01(r);
+		this->g = clamp01(g);
+		this->b = clamp01(b);
+		this->a = clamp01(a);
 	}
 
 	void color4::replace(const color3& c3)
 	{
-		this->r = c3.r;
-		this->g = c3.g;
-		this->b = c3.b;
-	}
-
-	void color4::clamp()
-	{
-		r = clamp01(r);
-		g = clamp01(g);
-		b = clamp01(b);
-		a = clamp01(a);
-	}
-
-	color4 color4::clamped() const
-	{
-		color4 copy(*this);
-		copy.clamp();
-		return copy;
+		set(c3.r, c3.g, c3.b, a);
 	}
 
 	unsigned int color4::rgba()
 	{
-		int nr = gml::clamp(static_cast<int>(r * 255), 0, 255);
-		int ng = gml::clamp(static_cast<int>(g * 255), 0, 255);
-		int nb = gml::clamp(static_cast<int>(b * 255), 0, 255);
-		int na = gml::clamp(static_cast<int>(a * 255), 0, 255);
+		int nr = static_cast<int>(r * 255);
+		int ng = static_cast<int>(g * 255);
+		int nb = static_cast<int>(b * 255);
+		int na = static_cast<int>(a * 255);
 		return (nb | (ng << 8) | (nr << 16) | (na << 24));
 	}
 
 	unsigned int color4::bgra()
 	{
-		int nr = gml::clamp(static_cast<int>(r * 255), 0, 255);
-		int ng = gml::clamp(static_cast<int>(g * 255), 0, 255);
-		int nb = gml::clamp(static_cast<int>(b * 255), 0, 255);
-		int na = gml::clamp(static_cast<int>(a * 255), 0, 255);
+		int nr = static_cast<int>(r * 255);
+		int ng = static_cast<int>(g * 255);
+		int nb = static_cast<int>(b * 255);
+		int na = static_cast<int>(a * 255);
 		return (nr | (ng << 8) | (nb << 16) | (na << 24));
 	}
 
