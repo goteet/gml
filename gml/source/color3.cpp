@@ -56,11 +56,6 @@ namespace gml
 		return color3(rand() * 1.0f, rand() * 1.0f, rand() * 1.0f) * (1.0f / RAND_MAX);
 	}
 
-	color3::color3()
-	{
-
-	}
-
 	color3::color3(float r, float g, float b)
 	{
 		this->r = r;
@@ -194,12 +189,20 @@ namespace gml
 		return copy;
 	}
 
-	color3::operator unsigned int()
+	unsigned int color3::rgba()
 	{
 		int nr = gml::clamp(static_cast<int>(r * 255), 0, 255);
 		int ng = gml::clamp(static_cast<int>(g * 255), 0, 255);
 		int nb = gml::clamp(static_cast<int>(b * 255), 0, 255);
-		return nr | (ng << 8) | (nb << 16);
+		return (0xFF000000 | nb | (ng << 8) | (nr << 16));
+	}
+
+	unsigned int color3::bgra()
+	{
+		int nr = gml::clamp(static_cast<int>(r * 255), 0, 255);
+		int ng = gml::clamp(static_cast<int>(g * 255), 0, 255);
+		int nb = gml::clamp(static_cast<int>(b * 255), 0, 255);
+		return (0xFF000000 | nr | (ng << 8) | (nb << 16));
 	}
 
 	color3 operator+(float value, const color3& rhs)

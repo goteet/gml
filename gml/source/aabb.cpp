@@ -2,15 +2,6 @@
 
 namespace gml
 {
-	aabb::aabb()
-		: m_min_bound(vec3::zero())
-		, m_max_bound(vec3::zero())
-		, m_center(vec3::zero())
-		, m_extend(vec3::zero())
-	{
-
-	}
-
 	aabb::aabb(const vec3& min_bound, const vec3& max_bound)
 	{
 		set(min_bound, max_bound);

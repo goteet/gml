@@ -32,7 +32,7 @@ namespace gml
 		float b = 0.0f;
 
 	public:
-		color3();
+		color3() = default;
 
 		color3(float r, float g, float b);
 
@@ -75,7 +75,9 @@ namespace gml
 
 		color3 clamped() const;
 
-		operator unsigned int();
+		unsigned int rgba();
+
+		unsigned int bgra();
 	};
 
 	class color4
@@ -99,7 +101,7 @@ namespace gml
 		float a = 1.0f;
 
 	public:
-		color4();
+		color4() = default;
 
 		color4(float r, float g, float b, float a);
 
@@ -142,7 +144,9 @@ namespace gml
 
 		color4 clamped() const;
 
-		operator unsigned int();
+		unsigned int rgba();
+
+		unsigned int bgra();
 	};
 
 	color3 operator+(float value, const color3& rhs);

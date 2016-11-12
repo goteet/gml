@@ -2,15 +2,6 @@
 
 namespace gml
 {
-	aabb2d::aabb2d()
-		: m_min_bound(vec3::zero())
-		, m_max_bound(vec3::zero())
-		, m_center(vec3::zero())
-		, m_extend(vec3::zero())
-	{
-
-	}
-
 	aabb2d::aabb2d(const vec2& min_bound, const vec2& max_bound)
 	{
 		set(min_bound, max_bound);

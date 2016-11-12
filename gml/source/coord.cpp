@@ -2,8 +2,6 @@
 
 namespace gml
 {
-	coord::coord() { }
-
 	coord::coord(int x, int y)
 	{
 		set(x, y);

@@ -8,12 +8,12 @@ namespace gml
 	class euler
 	{
 	public:
-		float roll;
-		float pitch;
-		float yaw;
+		float roll = 0.0f;
+		float pitch = 0.0f;
+		float yaw = 0.0f;
 
 	public:
-		euler();
+		euler() = default;
 
 		euler(float roll, float pitch, float yaw);
 
@@ -27,11 +27,11 @@ namespace gml
 		static const quat& Ineg();
 
 	public:
-		float w;
+		float w = 1.0f;
 		vec3 v;
 
 	public:
-		quat();
+		quat() = default;
 
 		quat(const vec3& axis, const radian& r);
 

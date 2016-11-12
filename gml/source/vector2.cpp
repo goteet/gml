@@ -37,10 +37,6 @@ namespace gml
 		return v;
 	}
 
-	vec2::vec2()
-	{
-	}
-
 	vec2::vec2(float x, float y)
 	{
 		set(x, y);

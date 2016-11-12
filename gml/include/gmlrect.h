@@ -10,7 +10,7 @@ namespace gml
 		int y = 0;
 
 	public:
-		coord();
+		coord() = default;
 
 		coord(int x, int y);
 

@@ -16,8 +16,6 @@ namespace gml
 		return ineg;
 	}
 
-	quat::quat() :w(1), v(0, 0, 0) { }
-
 	quat::quat(float rw, const vec3& rv) : w(rw), v(rv) {	}
 
 	quat::quat(float rw, float rx, float ry, float rz) : w(rw), v(rx, ry, rz) { }
