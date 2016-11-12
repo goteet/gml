@@ -250,8 +250,8 @@ namespace gml
 
 	void mat32::set_column(unsigned int index, vec2 v)
 	{
-		assert(index >= 0 && index < 3);
-		for (int i = 0; i < 3; i++)
+		assert(index >= 0 && index < 2);
+		for (int i = 0; i < 2; i++)
 		{
 			m[i][index] = v[i];
 		}
