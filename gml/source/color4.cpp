@@ -199,13 +199,22 @@ namespace gml
 		return copy;
 	}
 
-	color4::operator unsigned int()
+	unsigned int color4::rgba()
 	{
 		int nr = gml::clamp(static_cast<int>(r * 255), 0, 255);
 		int ng = gml::clamp(static_cast<int>(g * 255), 0, 255);
 		int nb = gml::clamp(static_cast<int>(b * 255), 0, 255);
 		int na = gml::clamp(static_cast<int>(a * 255), 0, 255);
-		return nr | (ng << 8) | (nb << 16) | (na << 24);
+		return (nb | (ng << 8) | (nr << 16) | (na << 24));
+	}
+
+	unsigned int color4::bgra()
+	{
+		int nr = gml::clamp(static_cast<int>(r * 255), 0, 255);
+		int ng = gml::clamp(static_cast<int>(g * 255), 0, 255);
+		int nb = gml::clamp(static_cast<int>(b * 255), 0, 255);
+		int na = gml::clamp(static_cast<int>(a * 255), 0, 255);
+		return (nr | (ng << 8) | (nb << 16) | (na << 24));
 	}
 
 	color4 operator+(float value, const color4& rhs)

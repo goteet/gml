@@ -7,7 +7,7 @@ namespace gml
 	class aabb2d
 	{
 	public:
-		aabb2d();
+		aabb2d() = default;
 
 		aabb2d(const vec2& min_bound, const vec2& max_bound);
 
@@ -48,7 +48,7 @@ namespace gml
 	class aabb
 	{
 	public:
-		aabb();
+		aabb() = default;
 
 		aabb(const vec3& min_bound, const vec3& max_bound);
 
@@ -80,9 +80,9 @@ namespace gml
 
 	private:
 		bool m_is_empty = true;
-		vec3 m_min_bound;
-		vec3 m_max_bound;
-		vec3 m_center;
-		vec3 m_extend;
+		vec3 m_min_bound = vec3::zero();
+		vec3 m_max_bound = vec3::zero();
+		vec3 m_center = vec3::zero();
+		vec3 m_extend = vec3::zero();
 	};
 }

@@ -75,7 +75,9 @@ namespace gml
 
 		color3 clamped() const;
 
-		operator unsigned int();
+		unsigned int rgba();
+
+		unsigned int bgra();
 	};
 
 	class color4
@@ -142,7 +144,9 @@ namespace gml
 
 		color4 clamped() const;
 
-		operator unsigned int();
+		unsigned int rgba();
+
+		unsigned int bgra();
 	};
 
 	color3 operator+(float value, const color3& rhs);
