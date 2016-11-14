@@ -1,6 +1,5 @@
 #include "../include/gmlmatrix.h"
 #include "../include/gmlutility.h"
-#include "inner_util.h"
 #include <cassert>
 #include <cmath>
 
@@ -283,17 +282,17 @@ namespace gml
 
 				//to-do det_impl is calculated above in determinant().
 				//try to gcd
-				m[0][0] = +determinant_impl(copy._11, copy._12, copy._21, copy._22) * det;
-				m[1][0] = -determinant_impl(copy._10, copy._12, copy._20, copy._22) * det;
-				m[2][0] = +determinant_impl(copy._10, copy._11, copy._20, copy._21) * det;
+				m[0][0] = +gml_impl::determinant(copy._11, copy._12, copy._21, copy._22) * det;
+				m[1][0] = -gml_impl::determinant(copy._10, copy._12, copy._20, copy._22) * det;
+				m[2][0] = +gml_impl::determinant(copy._10, copy._11, copy._20, copy._21) * det;
 
-				m[0][1] = -determinant_impl(copy._01, copy._02, copy._21, copy._22) * det;
-				m[1][1] = +determinant_impl(copy._00, copy._02, copy._20, copy._22) * det;
-				m[2][1] = -determinant_impl(copy._00, copy._01, copy._20, copy._21) * det;
+				m[0][1] = -gml_impl::determinant(copy._01, copy._02, copy._21, copy._22) * det;
+				m[1][1] = +gml_impl::determinant(copy._00, copy._02, copy._20, copy._22) * det;
+				m[2][1] = -gml_impl::determinant(copy._00, copy._01, copy._20, copy._21) * det;
 
-				m[0][2] = +determinant_impl(copy._01, copy._02, copy._11, copy._12) * det;
-				m[1][2] = -determinant_impl(copy._00, copy._02, copy._10, copy._12) * det;
-				m[2][2] = +determinant_impl(copy._00, copy._01, copy._10, copy._11) * det;
+				m[0][2] = +gml_impl::determinant(copy._01, copy._02, copy._11, copy._12) * det;
+				m[1][2] = -gml_impl::determinant(copy._00, copy._02, copy._10, copy._12) * det;
+				m[2][2] = +gml_impl::determinant(copy._00, copy._01, copy._10, copy._11) * det;
 			}
 			else
 			{
@@ -331,7 +330,7 @@ namespace gml
 
 	float mat33::determinant() const
 	{
-		return determinant_impl(
+		return gml_impl::determinant(
 			_00, _01, _02,
 			_10, _11, _12,
 			_20, _21, _22);

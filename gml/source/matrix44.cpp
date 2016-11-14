@@ -1,6 +1,5 @@
 #include "../include/gmlmatrix.h"
 #include "../include/gmlutility.h"
-#include "inner_util.h"
 #include <cassert>
 #include <cmath>
 
@@ -361,25 +360,25 @@ namespace gml
 
 				//to-do det_impl is calculated above in determinant().
 				//try to gcd
-				m[0][0] = +determinant_impl(copy._11, copy._12, copy._13, copy._21, copy._22, copy._23, copy._31, copy._32, copy._33) * det;
-				m[1][0] = -determinant_impl(copy._10, copy._12, copy._13, copy._20, copy._22, copy._23, copy._30, copy._32, copy._33) * det;
-				m[2][0] = +determinant_impl(copy._10, copy._11, copy._13, copy._20, copy._21, copy._23, copy._30, copy._31, copy._33) * det;
-				m[3][0] = -determinant_impl(copy._10, copy._11, copy._12, copy._20, copy._21, copy._22, copy._30, copy._31, copy._32) * det;
+				m[0][0] = +gml_impl::determinant(copy._11, copy._12, copy._13, copy._21, copy._22, copy._23, copy._31, copy._32, copy._33) * det;
+				m[1][0] = -gml_impl::determinant(copy._10, copy._12, copy._13, copy._20, copy._22, copy._23, copy._30, copy._32, copy._33) * det;
+				m[2][0] = +gml_impl::determinant(copy._10, copy._11, copy._13, copy._20, copy._21, copy._23, copy._30, copy._31, copy._33) * det;
+				m[3][0] = -gml_impl::determinant(copy._10, copy._11, copy._12, copy._20, copy._21, copy._22, copy._30, copy._31, copy._32) * det;
 
-				m[0][1] = -determinant_impl(copy._01, copy._02, copy._03, copy._21, copy._22, copy._23, copy._31, copy._32, copy._33) * det;
-				m[1][1] = +determinant_impl(copy._00, copy._02, copy._03, copy._20, copy._22, copy._23, copy._30, copy._32, copy._33) * det;
-				m[2][1] = -determinant_impl(copy._00, copy._01, copy._03, copy._20, copy._21, copy._23, copy._30, copy._31, copy._33) * det;
-				m[3][1] = +determinant_impl(copy._00, copy._01, copy._02, copy._20, copy._21, copy._22, copy._30, copy._31, copy._32) * det;
+				m[0][1] = -gml_impl::determinant(copy._01, copy._02, copy._03, copy._21, copy._22, copy._23, copy._31, copy._32, copy._33) * det;
+				m[1][1] = +gml_impl::determinant(copy._00, copy._02, copy._03, copy._20, copy._22, copy._23, copy._30, copy._32, copy._33) * det;
+				m[2][1] = -gml_impl::determinant(copy._00, copy._01, copy._03, copy._20, copy._21, copy._23, copy._30, copy._31, copy._33) * det;
+				m[3][1] = +gml_impl::determinant(copy._00, copy._01, copy._02, copy._20, copy._21, copy._22, copy._30, copy._31, copy._32) * det;
 
-				m[0][2] = +determinant_impl(copy._01, copy._02, copy._03, copy._11, copy._12, copy._13, copy._31, copy._32, copy._33) * det;
-				m[1][2] = -determinant_impl(copy._00, copy._02, copy._03, copy._10, copy._12, copy._13, copy._30, copy._32, copy._33) * det;
-				m[2][2] = +determinant_impl(copy._00, copy._01, copy._03, copy._10, copy._11, copy._13, copy._30, copy._31, copy._33) * det;
-				m[3][2] = -determinant_impl(copy._00, copy._01, copy._02, copy._10, copy._11, copy._12, copy._30, copy._31, copy._32) * det;
+				m[0][2] = +gml_impl::determinant(copy._01, copy._02, copy._03, copy._11, copy._12, copy._13, copy._31, copy._32, copy._33) * det;
+				m[1][2] = -gml_impl::determinant(copy._00, copy._02, copy._03, copy._10, copy._12, copy._13, copy._30, copy._32, copy._33) * det;
+				m[2][2] = +gml_impl::determinant(copy._00, copy._01, copy._03, copy._10, copy._11, copy._13, copy._30, copy._31, copy._33) * det;
+				m[3][2] = -gml_impl::determinant(copy._00, copy._01, copy._02, copy._10, copy._11, copy._12, copy._30, copy._31, copy._32) * det;
 
-				m[0][3] = -determinant_impl(copy._01, copy._02, copy._03, copy._11, copy._12, copy._13, copy._21, copy._22, copy._23) * det;
-				m[1][3] = +determinant_impl(copy._00, copy._02, copy._03, copy._10, copy._12, copy._13, copy._20, copy._22, copy._23) * det;
-				m[2][3] = -determinant_impl(copy._00, copy._01, copy._03, copy._10, copy._11, copy._13, copy._20, copy._21, copy._23) * det;
-				m[3][3] = +determinant_impl(copy._00, copy._01, copy._02, copy._10, copy._11, copy._12, copy._20, copy._21, copy._22) * det;
+				m[0][3] = -gml_impl::determinant(copy._01, copy._02, copy._03, copy._11, copy._12, copy._13, copy._21, copy._22, copy._23) * det;
+				m[1][3] = +gml_impl::determinant(copy._00, copy._02, copy._03, copy._10, copy._12, copy._13, copy._20, copy._22, copy._23) * det;
+				m[2][3] = -gml_impl::determinant(copy._00, copy._01, copy._03, copy._10, copy._11, copy._13, copy._20, copy._21, copy._23) * det;
+				m[3][3] = +gml_impl::determinant(copy._00, copy._01, copy._02, copy._10, copy._11, copy._12, copy._20, copy._21, copy._22) * det;
 			}
 			else
 			{
@@ -417,7 +416,7 @@ namespace gml
 
 	float mat44::determinant() const
 	{
-		return determinant_impl(
+		return gml_impl::determinant(
 			_00, _01, _02, _03,
 			_10, _11, _12, _13,
 			_20, _21, _22, _23,

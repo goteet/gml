@@ -1,6 +1,5 @@
 #include "../include/gmlmatrix.h"
 #include "../include/gmlutility.h"
-#include "inner_util.h"
 #include <cassert>
 #include <cmath>
 
@@ -272,7 +271,7 @@ namespace gml
 
 	float mat22::determinant() const
 	{
-		return determinant_impl(
+		return gml_impl::determinant(
 			_00, _01,
 			_10, _11);
 	}

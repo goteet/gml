@@ -11,9 +11,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="source\inner_util.h">
-      <Filter>source</Filter>
-    </ClInclude>
     <ClInclude Include="include\gmlvector.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -49,15 +46,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="source\vector2.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="source\vector3.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="source\vector4.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
     <ClCompile Include="source\matrix44.cpp">
       <Filter>source</Filter>
     </ClCompile>
@@ -101,9 +89,6 @@
       <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="source\aabb2d.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="source\utility.cpp">
       <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="source\angle.cpp">

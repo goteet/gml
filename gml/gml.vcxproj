@@ -30,7 +30,6 @@
     <ClInclude Include="include\gmlray.h" />
     <ClInclude Include="include\gmlrect.h" />
     <ClInclude Include="include\gmlvector.h" />
-    <ClInclude Include="source\inner_util.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\aabb.cpp" />
@@ -42,7 +41,6 @@
     <ClCompile Include="source\coord.cpp" />
     <ClCompile Include="source\dual_quat.cpp" />
     <ClCompile Include="source\eular.cpp" />
-    <ClCompile Include="source\utility.cpp" />
     <ClCompile Include="source\matrix22.cpp" />
     <ClCompile Include="source\matrix32.cpp" />
     <ClCompile Include="source\matrix33.cpp" />
@@ -50,9 +48,6 @@
     <ClCompile Include="source\quaternion.cpp" />
     <ClCompile Include="source\ray.cpp" />
     <ClCompile Include="source\rect.cpp" />
-    <ClCompile Include="source\vector2.cpp" />
-    <ClCompile Include="source\vector3.cpp" />
-    <ClCompile Include="source\vector4.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{C384FDDC-5910-4E73-915D-7B520A068163}</ProjectGuid>
