@@ -987,37 +987,37 @@ namespace gml {
 			//return rst.transpose();
 		}
 
-		inline static mat44 perspective_lh(float fov, float aspect, float near, float far)
+		inline static mat44 perspective_lh(const radian& fov, float aspect, float znear, float zfar)
 		{
-			float near_top = tanf(fov * 0.5f);
+			float near_top = tanf(fov.value * 0.5f);
 			float near_right = near_top * aspect;
 
-			float z_range = near - far;
+			float z_range = znear - zfar;
 			mat44 rst(
 				1.0f / near_right, 0, 0, 0,
 				0, 1.0f / near_top, 0, 0,
-				0, 0, -far / z_range, far * near / z_range,
+				0, 0, -zfar / z_range, zfar * znear / z_range,
 				0, 0, 1, 0);
 
 
 			return rst;
 		}
 
-		constexpr static mat44 center_ortho_lh(float width, float height, float near, float far)
+		constexpr static mat44 center_ortho_lh(float width, float height, float znear, float zfar)
 		{
 			return mat44(
 				2.0f / width, 0, 0, 0,
 				0, -2.0f / height, 0, 0,
-				0, 0, 1.0f / (far - near), near / (near - far),
+				0, 0, 1.0f / (zfar - znear), znear / (znear - zfar),
 				0, 0, 0, 1);
 		}
 
-		constexpr static mat44 ortho2d_lh(float width, float height, float near, float far)
+		constexpr static mat44 ortho2d_lh(float width, float height, float znear, float zfar)
 		{
 			return mat44(
 				2.0f / width, 0, 0, -1,
 				0, -2.0f / height, 0, 1,
-				0, 0, 1.0f / (far - near), near / (near - far),
+				0, 0, 1.0f / (zfar - znear), znear / (znear - zfar),
 				0, 0, 0, 1);
 		}
 
@@ -1068,7 +1068,7 @@ namespace gml {
 				row[0] = rhs.row[0];
 				row[1] = rhs.row[1];
 				row[2] = rhs.row[2];
-				row[4] = rhs.row[4];
+				row[3] = rhs.row[3];
 			}
 			return *this;
 		}
