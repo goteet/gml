@@ -149,13 +149,15 @@ namespace gml
 	{
 		return aabb(
 			gml::transform_point(mat, inaabb.min_bound()),
-			gml::transform_point(mat, inaabb.max_bound()));
+			gml::transform_point(mat, inaabb.max_bound())
+			);
 	}
 
 	inline aabb2d transform(const mat32& mat, const aabb2d& inaabb2d)
 	{
 		return aabb2d(
 			gml::transform_point(mat, inaabb2d.min_bound()),
-			gml::transform_point(mat, inaabb2d.max_bound()));
+			gml::transform_point(mat, inaabb2d.max_bound())
+			);
 	}
 }

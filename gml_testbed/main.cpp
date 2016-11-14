@@ -362,8 +362,8 @@ IMPL(AllStructure)
 		<< m32[3] << "," << m32[4] << "," << m32[5] << "|"
 		<< std::endl;
 	OUTPUT << "\tm32={ 1,2,3,4,5,6 } = |"
-		<< m32.row(0).x << "," << m32.row(0)[1] << "," << m32.row(0)[2] << ","
-		<< m32.row(1).x << "," << m32.row(1).y << "," << m32.row(1).z << "|"
+		<< m32.row[0].x << "," << m32.row[0][1] << "," << m32.row[0][2] << ","
+		<< m32.row[1].x << "," << m32.row[1].y << "," << m32.row[1].z << "|"
 		<< std::endl;
 
 	mat33 m3 = { 1,2,3,4,5,6,7,8,9 };
@@ -411,8 +411,8 @@ IMPL(Color)
 
 IMPL(Quaternion)
 {
-	gml::quat r1(vec3::right(), gml::degree(90));
-	gml::quat r2(vec3::left(), gml::degree(90));
+	gml::quat r1(vec3::right(), (gml::radian)gml::degree(90));
+	gml::quat r2(vec3::left(), (gml::radian)gml::degree(90));
 	gml::vec3 position(0, 0, 1);
 
 	OUTPUT << "## slerp\n";
@@ -428,8 +428,8 @@ IMPL(Quaternion)
 	}
 
 	OUTPUT << "\n## q1*q2 \n";
-	r1 = quat(vec3::forward(), gml::degree(90));
-	r2 = quat(vec3::up(), gml::degree(90));
+	r1 = quat(vec3::forward(), (gml::radian)gml::degree(90));
+	r2 = quat(vec3::up(), (gml::radian)gml::degree(90));
 
 	auto r = r1 * r2;
 	position = gml::rotate(r, vec3(0, 0, 1));
@@ -445,7 +445,7 @@ IMPL(Quaternion)
 IMPL(DualQuaternion)
 {
 	gml::dquat trans(0, 1, 0);
-	gml::dquat rot(vec3(0, 1, 0), degree(180));
+	gml::dquat rot(vec3(0, 1, 0), (gml::radian)degree(180));
 	gml::mat44 mTrans = to_mat44(trans);
 	gml::mat44 mRotation = to_mat44(rot);
 

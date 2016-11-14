@@ -14,185 +14,181 @@ namespace gml
 
 		constexpr coord(int _x, int _y) :x(_x), y(_y) { }
 
-		friend constexpr bool operator==(const coord& lhs, const coord& rhs)
-		{
-			return (&lhs == &rhs) ||
-				((lhs.x == rhs.x) && (lhs.y == rhs.y));
-		}
+		friend bool operator==(const coord& lhs, const coord& rhs);
 
-		friend constexpr bool operator!=(const coord& lhs, const coord& rhs)
-		{
-			return !(lhs == rhs);
-		}
+		friend inline bool operator!=(const coord& lhs, const coord& rhs) { return !(lhs == rhs); }
 
-		inline void set(int _x, int _y)
-		{
-			x = _x;
-			y = _y;
-		}
+		void set(int _x, int _y);
 
-		inline void move(int offsetx, int offsety)
-		{
-			set(x + offsetx, y + offsety);
-		}
+		void move(int offsetx, int offsety);
 	};
 
 	class rect
 	{
 	public:
-		friend constexpr bool operator==(const rect& lhs, const rect& rhs)
+		constexpr rect() = default;
+
+		friend bool operator==(const rect& lhs, const rect& rhs);
+
+		friend inline bool operator!=(const rect& lhs, const rect& rhs) { return !(lhs == rhs); }
+
+		constexpr int left() const { return m_pos.x; }
+
+		constexpr int right() const { return left() + width(); }
+
+		constexpr int top() const { return m_pos.y; }
+
+		constexpr int bottom() const { return  top() + height(); }
+
+		constexpr int width() const { return m_size.x; }
+
+		constexpr int height() const { return m_size.y; }
+
+		constexpr coord center() const;
+
+		constexpr coord position() const { return m_pos; }
+
+		constexpr coord size() const { return m_size; }
+
+		inline void set_pos(int x, int y) { m_pos.set(x, y); }
+
+		inline void set_pos(const coord& pos) { m_pos = pos; }
+
+		inline void set_width(int w) { m_size.x = w > 0 ? w : 0; }
+
+		inline void set_height(int h) { m_size.y = h > 0 ? h : 0; }
+
+		inline void set_size(int w, int h) { m_size.set(w, h); }
+
+		inline void set_size(const coord& size) { m_size = size; }
+
+		constexpr bool contains(int x, int y) const;
+
+		constexpr bool contains(const coord& point) const;
+
+		it_mode hit_test(const rect& other) const;
+
+		void move(int offsetx, int offsety);
+
+		void enlarge(int offsetw, int offseth);
+
+	private:
+		coord m_pos;
+		coord m_size;
+	};
+}
+
+namespace gml_impl
+{
+	inline int get_contain_count(const gml::rect& container, const gml::rect& to_check)
+	{
+		int inside_count = 0;
+		if (container.contains(to_check.left(), to_check.top()))		inside_count++;
+		if (container.contains(to_check.left(), to_check.bottom()))		inside_count++;
+		if (container.contains(to_check.right(), to_check.top()))		inside_count++;
+		if (container.contains(to_check.right(), to_check.bottom()))	inside_count++;
+		return inside_count;
+	}
+}
+
+namespace gml
+{
+	inline bool operator==(const coord& lhs, const coord& rhs)
+	{
+		if (&lhs != &rhs)
 		{
-			return (&lhs == &rhs) ||
-				((lhs.m_pos == rhs.m_pos) &&
-					(lhs.m_size == rhs.m_size));
+			return lhs.x == rhs.x && lhs.y == rhs.y;
+		}
+		else
+		{
+			return true;
+		}
+	}
+
+	inline void coord::set(int _x, int _y)
+	{
+		x = _x;
+		y = _y;
+	}
+
+	inline void coord::move(int offsetx, int offsety)
+	{
+		set(x + offsetx, y + offsety);
+	}
+
+	inline bool operator==(const rect& lhs, const rect& rhs)
+	{
+		if (&lhs != &rhs)
+		{
+			return lhs.m_pos == rhs.m_pos && lhs.m_size == rhs.m_size;
+		}
+		else
+		{
+			return true;
+		}
+	}
+
+	constexpr coord rect::center() const
+	{
+		return coord(
+			(left() + right()) / 2,
+			(top() + bottom()) / 2
+			);
+	}
+
+	constexpr bool rect::contains(int x, int y) const
+	{
+		return !(x < left() || x > right() || y < top() || y > bottom());
+	}
+
+	constexpr bool rect::contains(const coord& point) const
+	{
+		return contains(point.x, point.y);
+	}
+
+	inline it_mode rect::hit_test(const rect& other) const
+	{
+		if (*this == other)
+		{
+			return it_same;
 		}
 
-		constexpr int left() const
+		int contain_count = gml_impl::get_contain_count(other, *this);
+		if (contain_count == 4)
 		{
-			return m_pos.x;
+			return it_inside;
 		}
-
-		constexpr int right() const
+		else if (contain_count > 0)
 		{
-			return left() + width();
+			return it_hit;
 		}
-
-		constexpr int top() const
+		else
 		{
-			return m_pos.y;
-		}
-
-		constexpr int bottom() const
-		{
-			return  top() + height();
-		}
-
-		constexpr int width() const
-		{
-			return m_size.x;
-		}
-
-		constexpr int height() const
-		{
-			return m_size.y;
-		}
-
-		constexpr coord center() const
-		{
-			return coord((left() + right()) / 2, (top() + bottom()) / 2);
-		}
-
-		constexpr coord position() const
-		{
-			return m_pos;
-		}
-
-		constexpr coord size() const
-		{
-			return m_size;
-		}
-
-		inline void set_width(int w)
-		{
-			m_size.x = w > 0 ? w : 0;
-		}
-
-		inline void set_height(int h)
-		{
-			m_size.y = h > 0 ? h : 0;
-		}
-
-		inline void set_pos(int x, int y)
-		{
-			m_pos.set(x, y);
-		}
-
-		inline void set_pos(const coord& pos)
-		{
-			m_pos = pos;
-		}
-
-		inline void set_size(int w, int h)
-		{
-			m_size.set(w, h);
-		}
-
-		inline void set_size(const coord& size)
-		{
-			m_size = size;
-		}
-
-		constexpr bool contains(int x, int y) const
-		{
-			return !(x < left() || x > right() || y < top() || y > bottom());
-		}
-
-		constexpr bool contains(const coord& point)
-			const {
-			return contains(point.x, point.y);
-		}
-
-		inline it_mode hit_test(const rect& other) const
-		{
-			if (*this == other)
+			contain_count = gml_impl::get_contain_count(*this, other);
+			if (contain_count == 4)
 			{
-				return it_same;
+				return it_contain;
 			}
-
-			int intersection_count = get_intersection_count(other, *this);
-			if (intersection_count == 4)
-			{
-				return it_inside;
-			}
-			// Impossible 3.
-			else if (intersection_count == 2 || intersection_count == 1)
+			else if (contain_count > 0)
 			{
 				return it_hit;
 			}
 			else
 			{
-				intersection_count = get_intersection_count(*this, other);
-				if (intersection_count == 4)
-				{
-					return it_contain;
-				}
-				// Impossible 3.
-				else if (intersection_count == 2) // Impossible 1
-				{
-					return it_hit;
-				}
-				else
-				{
-					return it_none;
-				}
+				return it_none;
 			}
 		}
+	}
 
-		inline void move(int offsetx, int offsety)
-		{
-			m_pos.move(offsetx, offsety);
-		}
+	inline void rect::move(int offsetx, int offsety)
+	{
+		m_pos.move(offsetx, offsety);
+	}
 
-		inline void enlarge(int offsetw, int offseth)
-		{
-			m_size.move(offsetw, offseth);
-			if (m_size.x < 0) m_size.x = 0;
-			if (m_size.y < 0) m_size.y = 0;
-		}
-
-	private:
-		inline int get_intersection_count(const rect& container, const rect& to_check) const
-		{
-			int intersect_other = 0;
-
-			if (container.contains(to_check.left(), to_check.top()))		intersect_other++;
-			if (container.contains(to_check.left(), to_check.bottom()))		intersect_other++;
-			if (container.contains(to_check.right(), to_check.top()))		intersect_other++;
-			if (container.contains(to_check.right(), to_check.bottom()))	intersect_other++;
-			return intersect_other;
-		}
-
-		coord m_pos;
-		coord m_size;
-	};
+	inline void rect::enlarge(int offsetw, int offseth)
+	{
+		m_size.move(offsetw, offseth);
+		if (m_size.x < 0) m_size.x = 0;
+		if (m_size.y < 0) m_size.y = 0;
+	}
 }

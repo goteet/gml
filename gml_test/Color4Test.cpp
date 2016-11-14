@@ -31,7 +31,7 @@ namespace gml
 			GML_FEQUAL(0.1f, c3.a);
 
 			// color4(unsigned int)
-			color4 c4(0xFFFF00FFu);
+			color4 c4 = color4::from_rgba(0xFFFF00FFu);
 			GML_FEQUAL(1.0f, c4.r);
 			GML_FEQUAL(0.0f, c4.g);
 			GML_FEQUAL(1.0f, c4.b);

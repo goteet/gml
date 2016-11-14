@@ -2,19 +2,110 @@
 
 namespace gml_impl
 {
-	constexpr int get_fexp_base2(float d)
+	int get_fexp_base2(float d);
+
+	constexpr float determinant(
+		float a00, float a01,
+		float a10, float a11);
+
+	constexpr float determinant(
+		float a00, float a01, float a02,
+		float a10, float a11, float a12,
+		float a20, float a21, float a22);
+
+	constexpr float determinant(
+		float a00, float a01, float a02, float a03,
+		float a10, float a11, float a12, float a13,
+		float a20, float a21, float a22, float a23,
+		float a30, float a31, float a32, float a33);
+}
+
+namespace gml
+{
+	enum it_mode
 	{
-		return ((((short *)&d)[1] & (short)0x7FC0) >> 7) - 127;
+		it_none,
+		it_hit,
+		it_contain,
+		it_inside,
+		it_same,
+	};
+
+	constexpr double PI_d = 3.14159265358979323846;
+
+	constexpr float PI = static_cast<float>(PI_d);
+
+	inline bool fequal(float lhs, float rhs)
+	{
+		if (lhs != rhs)
+		{
+			auto exp_diff = gml_impl::get_fexp_base2(lhs - rhs);
+			if (exp_diff > -30)//epsilon
+			{
+				exp_diff += 20;
+				auto exp_lhs = gml_impl::get_fexp_base2(lhs);
+				auto exp_rhs = gml_impl::get_fexp_base2(rhs);
+				return exp_lhs > exp_diff && exp_rhs > exp_diff;
+			}
+			else
+			{
+				return true;
+			}
+		}
+		else
+		{
+			return true;
+		}
 	}
 
-	constexpr inline float determinant(
+	template<typename T>
+	constexpr inline T lerp(T left, T right, float fac)
+	{
+		return left * (1.0f - fac) + right * fac;
+	}
+
+	template<typename T>
+	inline void swap(T& lhs, T& rhs)
+	{
+		T tmp = lhs;
+		lhs = rhs;
+		rhs = tmp;
+	}
+
+	template<typename T>
+	inline T clamp(T value, T minValue, T maxValue)
+	{
+		if (value < minValue)
+			return minValue;
+		else if (value > maxValue)
+			return maxValue;
+		else return value;
+	}
+
+	template<typename T>
+	inline T clamp01(T value)
+	{
+		return clamp(value, T(0), T(1));
+	}
+}
+
+namespace gml_impl
+{
+	inline int get_fexp_base2(float d)
+	{
+		auto binary = reinterpret_cast<short*>(&d);
+		short exp_bits = (binary[1] & 0x7FC0);
+		return (exp_bits >> 7) - 127;
+	}
+
+	constexpr float determinant(
 		float a00, float a01,
 		float a10, float a11)
 	{
 		return a00 * a11 - a01 * a10;
 	}
 
-	constexpr inline float determinant(
+	constexpr float determinant(
 		float a00, float a01, float a02,
 		float a10, float a11, float a12,
 		float a20, float a21, float a22)
@@ -24,7 +115,7 @@ namespace gml_impl
 			+ a02 * determinant(a10, a11, a20, a21);
 	}
 
-	constexpr inline float determinant(
+	constexpr float determinant(
 		float a00, float a01, float a02, float a03,
 		float a10, float a11, float a12, float a13,
 		float a20, float a21, float a22, float a23,
@@ -35,53 +126,4 @@ namespace gml_impl
 			+ a02 * determinant(a10, a11, a13, a20, a21, a23, a30, a31, a33)
 			- a03 * determinant(a10, a11, a12, a20, a21, a22, a30, a31, a32);
 	}
-}
-
-namespace gml
-{
-	constexpr double PI_d = 3.14159265358979323846;
-	constexpr float PI = static_cast<float>(PI_d);
-
-	constexpr bool fequal(float a, float b)
-	{
-		return a == b ||
-			gml_impl::get_fexp_base2(a - b) < -30 ||
-			(gml_impl::get_fexp_base2(a - b) - gml_impl::get_fexp_base2(a) < -20 &&
-				gml_impl::get_fexp_base2(a - b) - gml_impl::get_fexp_base2(b) < -20);
-	}
-
-	template<typename T>
-	constexpr inline T lerp(T left, T right, float fac)
-	{
-		return left * (1.0f - fac) + right * fac;
-	}
-
-	template<typename T>
-	inline void swap(T& a, T& b)
-	{
-		T tmp = a; a = b; b = tmp;
-	}
-
-	template<typename T>
-	constexpr T clamp01(T value)
-	{
-		return (value < T(0)) ? T(0) :
-			((value > T(1)) ? T(1) : value);
-	}
-
-	template<typename T>
-	constexpr T clamp(T value, T minValue, T maxValue)
-	{
-		return (value < T(minValue)) ? T(minValue) :
-			((value > T(maxValue)) ? T(maxValue) : value);
-	}
-
-	enum it_mode
-	{
-		it_none,
-		it_hit,
-		it_contain,
-		it_inside,
-		it_same,
-	};
 }
