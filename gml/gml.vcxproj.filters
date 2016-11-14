@@ -73,9 +73,6 @@
     <ClCompile Include="source\rect.cpp">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="source\quaternion.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
     <ClCompile Include="source\convertion.cpp">
       <Filter>source</Filter>
     </ClCompile>
@@ -83,9 +80,6 @@
       <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="source\matrix32.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="source\eular.cpp">
       <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="source\aabb2d.cpp">
