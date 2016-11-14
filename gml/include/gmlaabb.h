@@ -7,82 +7,336 @@ namespace gml
 	class aabb2d
 	{
 	public:
-		aabb2d() = default;
+		constexpr aabb2d()
+			: m_is_empty(true)
+			, m_min_bound(0, 0)
+			, m_max_bound(0, 0)
+			, m_center(0, 0)
+			, m_extend(0, 0) { }
 
-		aabb2d(const vec2& min_bound, const vec2& max_bound);
+		inline aabb2d(const vec2& min_bound, const vec2& max_bound)
+		{
+			set(min_bound, max_bound);
+		}
 
-		bool operator==(const aabb2d& other) const;
+		constexpr friend bool operator==(const aabb2d& lhs, const aabb2d& rhs)
+		{
+			return &lhs == &rhs ||
+				(lhs.is_empty() && rhs.is_empty()) ||
+				(!lhs.is_empty() && !rhs.is_empty() && lhs.m_min_bound == rhs.m_min_bound && lhs.m_max_bound == rhs.m_max_bound);
+		}
 
-		void set(const vec2& min_bound, const vec2& max_bound);
+		inline void set(const vec2& min_bound, const vec2& max_bound)
+		{
+			m_min_bound = min_combine(min_bound, max_bound);
+			m_max_bound = max_combine(min_bound, max_bound);
+			m_center = (m_min_bound + m_max_bound) * 0.5f;
+			m_extend = m_center - m_min_bound;
+			m_is_empty = false;
+		}
 
-		inline const vec2& center() const { return m_center; }
-					 
-		inline const vec2& min_bound() const { return m_min_bound; }
-					 
-		inline const vec2& max_bound() const { return m_max_bound; }
-					 
-		inline const vec2& extend() const { return m_extend; }
+		constexpr const vec2& center() const
+		{
+			return m_center;
+		}
 
-		inline bool is_empty() const { return m_is_empty; }
+		constexpr const vec2& min_bound() const
+		{
+			return m_min_bound;
+		}
 
-		bool contains(const aabb2d& other) const;
+		constexpr const vec2& max_bound() const
+		{
+			return m_max_bound;
+		}
 
-		it_mode is_intersect(const aabb2d& other) const;
+		constexpr const vec2& extend() const
+		{
+			return m_extend;
+		}
 
-		bool contains(const vec2& point) const;
+		constexpr bool is_empty() const
+		{
+			return m_is_empty;
+		}
 
-		void expand(const vec2& point);
+		inline it_mode is_intersect(const aabb2d& other) const
+		{
+			if (is_empty() && other.is_empty())
+			{
+				return it_same;
+			}
+			else if (!is_empty() && !other.is_empty())
+			{
+				if (m_min_bound == other.m_min_bound && m_max_bound == other.m_max_bound)
+				{
+					return it_same;
+				}
 
-		void expand(const aabb2d& other);
+				if (m_min_bound.x > other.m_max_bound.x || m_max_bound.x < other.m_min_bound.x ||
+					m_min_bound.y > other.m_max_bound.y || m_max_bound.y < other.m_min_bound.y)
+				{
+					return it_none;
+				}
 
-		void clear();
+				bool minxless = m_min_bound.x < other.m_min_bound.x;
+				bool maxxless = m_max_bound.x < other.m_max_bound.x;
+				bool minyless = m_min_bound.y < other.m_min_bound.y;
+				bool maxyless = m_max_bound.y < other.m_max_bound.y;
+
+				if (minxless && !maxxless && minyless && !maxyless)
+				{
+					return it_contain;
+				}
+				if (!minxless && maxxless && !minyless && maxyless)
+				{
+					return it_inside;
+				}
+
+				return it_hit;
+			}
+			else
+			{
+				return it_none;
+			}
+		}
+
+		constexpr bool contains(const aabb2d& other) const
+		{
+			return (!is_empty() && !other.is_empty()) &&
+				(!(m_min_bound.x > other.m_min_bound.x || m_max_bound.x < other.m_max_bound.x ||
+					m_min_bound.y > other.m_min_bound.y || m_max_bound.y < other.m_max_bound.y));
+		}
+
+		constexpr bool contains(const vec2& point) const
+		{
+			return !is_empty() &&
+				(!(m_min_bound.x > point.x || m_max_bound.x < point.x ||
+					m_min_bound.y > point.y || m_max_bound.y < point.y));
+		}
+
+		inline void expand(const vec2& point)
+		{
+			if (is_empty())
+			{
+				m_min_bound = m_max_bound = point;
+				m_is_empty = false;
+			}
+			else
+			{
+				m_min_bound = min_combine(m_min_bound, point);
+				m_max_bound = max_combine(m_max_bound, point);
+			}
+
+			m_center = (m_min_bound + m_max_bound) * 0.5f;
+			m_extend = m_center - m_min_bound;
+		}
+
+		inline void expand(const aabb2d& other)
+		{
+			if (other.is_empty())
+			{
+				return;
+			}
+
+			if (is_empty())
+			{
+				*this = other;
+			}
+			else
+			{
+				m_min_bound = min_combine(m_min_bound, other.m_min_bound);
+				m_max_bound = max_combine(m_max_bound, other.m_max_bound);
+				m_center = (m_min_bound + m_max_bound) * 0.5f;
+				m_extend = m_center - m_min_bound;
+			}
+		}
+
+		inline void clear()
+		{
+			m_min_bound = vec2::zero();
+			m_max_bound = vec2::zero();
+			m_center = vec2::zero();
+			m_extend = vec2::zero();
+			m_is_empty = true;
+		}
 
 	private:
-		bool m_is_empty = true;
-		vec2 m_min_bound = vec2::zero();
-		vec2 m_max_bound = vec2::zero();
-		vec2 m_center = vec2::zero();
-		vec2 m_extend = vec2::zero();
+		bool m_is_empty;
+		vec2 m_min_bound;
+		vec2 m_max_bound;
+		vec2 m_center;
+		vec2 m_extend;
 	};
 
 	class aabb
 	{
 	public:
-		aabb() = default;
+		constexpr aabb()
+			: m_is_empty(true)
+			, m_min_bound(0, 0, 0)
+			, m_max_bound(0, 0, 0)
+			, m_center(0, 0, 0)
+			, m_extend(0, 0, 0) { }
 
-		aabb(const vec3& min_bound, const vec3& max_bound);
+		inline aabb(const vec3& min_bound, const vec3& max_bound)
+		{
+			set(min_bound, max_bound);
+		}
 
-		bool operator==(const aabb& other) const;
+		constexpr friend bool operator==(const aabb& lhs, const aabb& rhs)
+		{
+			return &lhs == &rhs ||
+				(lhs.is_empty() && rhs.is_empty()) ||
+				(!lhs.is_empty() && !rhs.is_empty() && lhs.m_min_bound == rhs.m_min_bound && lhs.m_max_bound == rhs.m_max_bound);
+		}
 
-		void set(const vec3& min_bound, const vec3& max_bound);
+		inline void set(const vec3& min_bound, const vec3& max_bound)
+		{
+			m_min_bound = min_combine(min_bound, max_bound);
+			m_max_bound = max_combine(min_bound, max_bound);
+			m_center = (m_min_bound + m_max_bound) * 0.5f;
+			m_extend = m_center - m_min_bound;
+			m_is_empty = false;
+		}
 
-		inline const vec3& center() const { return m_center; }
+		constexpr const vec3& center() const
+		{
+			return m_center;
+		}
 
-		inline const vec3& min_bound() const { return m_min_bound; }
+		constexpr const vec3& min_bound() const
+		{
+			return m_min_bound;
+		}
 
-		inline const vec3& max_bound() const { return m_max_bound; }
+		constexpr const vec3& max_bound() const
+		{
+			return m_max_bound;
+		}
 
-		inline const vec3& extend() const { return m_extend; }
+		constexpr const vec3& extend() const
+		{
+			return m_extend;
+		}
 
-		inline bool is_empty() const { return m_is_empty; }
+		constexpr bool is_empty() const
+		{
+			return m_is_empty;
+		}
 
-		bool contains(const aabb& other) const;
+		inline it_mode is_intersect(const aabb& other) const
+		{
+			if (is_empty() && other.is_empty())
+			{
+				return it_same;
+			}
+			else if (!is_empty() && !other.is_empty())
+			{
+				if (m_min_bound == other.m_min_bound && m_max_bound == other.m_max_bound)
+				{
+					return it_same;
+				}
 
-		it_mode is_intersect(const aabb& other) const;
+				if (m_min_bound.x > other.m_max_bound.x || m_max_bound.x < other.m_min_bound.x ||
+					m_min_bound.y > other.m_max_bound.y || m_max_bound.y < other.m_min_bound.y ||
+					m_min_bound.z > other.m_max_bound.z || m_max_bound.z < other.m_min_bound.z)
+				{
+					return it_none;
+				}
 
-		bool contains(const vec3& point) const;
+				bool minxless = m_min_bound.x < other.m_min_bound.x;
+				bool maxxless = m_max_bound.x < other.m_max_bound.x;
+				bool minyless = m_min_bound.y < other.m_min_bound.y;
+				bool maxyless = m_max_bound.y < other.m_max_bound.y;
+				bool minzless = m_min_bound.z < other.m_min_bound.z;
+				bool maxzless = m_max_bound.z < other.m_max_bound.z;
 
-		void expand(const vec3& point);
+				if (minxless && !maxxless && minyless && !maxyless && minzless && !maxzless)
+				{
+					return it_contain;
+				}
+				if (!minxless && maxxless && !minyless && maxyless && !minzless && maxzless)
+				{
+					return it_inside;
+				}
 
-		void expand(const aabb& other);
+				return it_hit;
+			}
+			else
+			{
+				return it_none;
+			}
+		}
 
-		void clear();
+		constexpr bool contains(const aabb& other) const
+		{
+			return (!is_empty() && !other.is_empty()) &&
+				(!(m_min_bound.x > other.m_min_bound.x || m_max_bound.x < other.m_max_bound.x ||
+					m_min_bound.y > other.m_min_bound.y || m_max_bound.y < other.m_max_bound.y ||
+					m_min_bound.z > other.m_min_bound.z || m_max_bound.z < other.m_max_bound.z));
+
+		}
+
+		constexpr bool contains(const vec3& point) const
+		{
+			return !is_empty() &&
+				(!(m_min_bound.x > point.x || m_max_bound.x < point.x ||
+					m_min_bound.y > point.y || m_max_bound.y < point.y ||
+					m_min_bound.z > point.z || m_max_bound.z < point.z));
+		}
+
+		inline void expand(const vec3& point)
+		{
+			if (is_empty())
+			{
+				m_min_bound = m_max_bound = point;
+				m_is_empty = false;
+			}
+			else
+			{
+				m_min_bound = min_combine(m_min_bound, point);
+				m_max_bound = max_combine(m_max_bound, point);
+			}
+
+			m_center = (m_min_bound + m_max_bound) * 0.5f;
+			m_extend = m_center - m_min_bound;
+		}
+
+		inline void expand(const aabb& other)
+		{
+			if (other.is_empty())
+			{
+				return;
+			}
+
+			if (is_empty())
+			{
+				*this = other;
+			}
+			else
+			{
+				m_min_bound = min_combine(m_min_bound, other.m_min_bound);
+				m_max_bound = max_combine(m_max_bound, other.m_max_bound);
+				m_center = (m_min_bound + m_max_bound) * 0.5f;
+				m_extend = m_center - m_min_bound;
+			}
+		}
+
+		inline void clear()
+		{
+			m_min_bound = vec3::zero();
+			m_max_bound = vec3::zero();
+			m_center = vec3::zero();
+			m_extend = vec3::zero();
+			m_is_empty = true;
+		}
 
 	private:
-		bool m_is_empty = true;
-		vec3 m_min_bound = vec3::zero();
-		vec3 m_max_bound = vec3::zero();
-		vec3 m_center = vec3::zero();
-		vec3 m_extend = vec3::zero();
+		bool m_is_empty;
+		vec3 m_min_bound;
+		vec3 m_max_bound;
+		vec3 m_center;
+		vec3 m_extend;
 	};
 }

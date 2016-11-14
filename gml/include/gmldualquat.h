@@ -8,70 +8,223 @@ namespace gml
 	class dquat
 	{
 	public:
-		static const dquat& I();
+		static const dquat& I()
+		{
+			static dquat dq;
+			return dq;
+		}
 
 	public:
 		quat real;
 		quat dual;
 
 	public:
-		dquat();
+		constexpr dquat() : real(1, 0, 0, 0), dual(0, 0, 0, 0) { }
 
-		dquat(const quat& rotation, const vec3 translation);
+		inline dquat(const quat& rotation, const vec3 translation)
+			: real(rotation)
+			, dual(0, translation)
+		{
+			real.normalize();
+			dual = 0.5 * dual * real;
+		}
 
-		dquat(const vec3& axis, const radian& r, const vec3& translation);//rotate and translate
+		//rotate and translate
+		inline dquat(const vec3& axis, const radian& r, const vec3& translation)
+			: real(axis, r)
+			, dual(0, translation)
+		{
+			dual = 0.5f * dual * real;
+		}
 
-		dquat(const vec3& axis, const radian& r); //only rotate
+		//only rotate
+		inline dquat(const vec3& axis, const radian& r) : real(axis, r), dual(0, 0, 0, 0) { }
 
-		dquat(const vec3& translation);//only translation
+		//only translation
+		constexpr dquat(const vec3& translation) : real(1, 0, 0, 0), dual(0, translation * 0.5f) { }
 
-		dquat(float x, float y, float z);//only translation
+		//only translation
+		constexpr dquat(float x, float y, float z) : real(1, 0, 0, 0), dual(0, x*0.5f, y*0.5f, z*0.5f) { }
 
-		quat get_rotation() const;
+		constexpr quat get_rotation() const
+		{
+			return real;
+		}
 
-		vec3 get_translation() const;
+		constexpr vec3 get_translation() const
+		{
+			return (2.0f * dual * real.conjugated()).v;
+		}
 
-		radian get_rotate_radian() const;
+		inline radian get_rotate_radian() const
+		{
+			return radian(2 * acos(real.w));
+		}
 
-		dquat operator+ (const dquat& rhs) const;
+		friend inline dquat operator+ (const dquat& lhs, const dquat& rhs)
+		{
+			return dquat((lhs.real + rhs.real).normalized(), lhs.dual + rhs.dual);
+		}
 
-		dquat operator* (const dquat& rhs) const;
+		friend inline dquat operator* (const dquat& lhs, const dquat& rhs)
+		{
+			quat newR = lhs.real*rhs.real;
+			quat newD = lhs.real*rhs.dual + lhs.dual*rhs.real; //noticing the order.
+			newR.normalize();
+			return dquat(newR, newD);
+		}
 
-		dquat operator* (float scaler) const;
+		friend inline dquat operator* (const dquat& lhs, float scaler)
+		{
+			quat newR = lhs.real*scaler;
+			quat newD = lhs.dual*scaler;
+			newR.normalize();
+			return dquat(newR, newD);
+		}
 
-		dquat& operator+=(const dquat& rhs);
+		friend inline dquat operator*(float lhs, dquat& rhs)
+		{
+			return rhs * lhs;
+		}
 
-		dquat& operator*=(const dquat& rhs);
+		friend inline dquat& operator+=(dquat& lhs, const dquat& rhs)
+		{
+			return (lhs = lhs + rhs);
+		}
 
-		dquat& operator*=(float scaler);
+		friend inline dquat& operator*=(dquat& lhs, const dquat& rhs)
+		{
+			return (lhs = lhs * rhs);
+		}
 
-		void normalize();
+		friend inline dquat& operator*=(dquat& lhs, float rhs)
+		{
+			return (lhs = lhs * rhs);
+		}
 
-		dquat normalized() const;
+		inline void normalize()
+		{
+			float l = length();
+			if (!fequal(l, 0.0f))
+			{
+				if (!fequal(l, 1.0f))
+				{
+					auto invL = 1.0f / l;
+					this->real *= invL;
+					this->dual *= invL;
+				}
+			}
+		}
 
-		void conjugate();
+		inline dquat normalized() const
+		{
+			dquat rst(*this);
+			rst.normalize();
+			return rst;
+		}
 
-		dquat conjugated() const;
+		inline void conjugate()
+		{
+			real.conjugate();
+			//q = -q && q.w =0;
+			// => q.conjugate() = -q = q
+			// so.... what....
+			dual.conjugate();
+		}
 
-		void inverse();
+		inline dquat conjugated() const
+		{
+			dquat rst(*this);
+			rst.conjugate();
+			return rst;
+		}
 
-		dquat inversed() const;
+		inline void inverse()
+		{
+			normalize();
+			conjugate();
+		}
 
-		void exponent(float t);
+		inline dquat inversed() const
+		{
+			dquat rst(*this);
+			rst.inverse();
+			return rst;
+		}
 
-		dquat exponented(float t) const;
+		inline void exponent(float t)
+		{
+			float invr = 1.0f / sqrtf(length());
+			// change the pitch. //
+			// Screw parameters
+			radian r = get_rotate_radian();
+			float pitch = dual.w * invr; //-2 * dual.w * invr
+			vec3 direction = real.v * invr;
+			vec3 moment = (dual.v + direction * pitch * real.w) * invr;	//(dual.v - direction * pitch * real.w * 0.5f) * invr
 
-		float length() const;
+			// Exponential power 
+			r *= t * 0.5f;
+			pitch *= t;
 
-	public:
-		dquat(const quat &r, const quat& t);//unless you know what u r doing.
+			// Convert back to dual-quaternion
+			float sinAngle = sin(r); // angle/2
+			float cosAngle = cos(r); // angle/2
+
+			real = quat(cosAngle, direction * sinAngle);
+
+			//dual = quat(-pitch * sinAngle * 0.5f , sinAngle * moment + 0.5f * pitch * cosAngle * direction);
+			dual = quat(pitch * sinAngle, sinAngle * moment - pitch * cosAngle * direction);
+		}
+
+		inline dquat exponented(float t) const
+		{
+			auto result(*this);
+			result.exponent(t);
+			return result;
+		}
+
+		constexpr inline float length()
+			const {
+			return dot(real, real);
+		}
+
+	public://unless you know what u r doing.
+		constexpr dquat(const quat &r, const quat& d) : real(r), dual(d) { }
 	};
 
-	dquat operator*(float scaler, const dquat& rhs);
+	constexpr float dot(const dquat& lhs, const dquat& rhs)
+	{
+		return dot(lhs.real, rhs.real);
+	}
 
-	float dot(const dquat& lhs, const dquat& rhs);
+	inline vec3 transform(const dquat& dq, const vec3& point)
+	{
+		dquat inv = dq.inversed();
+		inv.dual = -inv.dual;
 
-	vec3 transform(const dquat& dq, const vec3& point);
+		dquat pt = dquat(quat::Ipos(), quat(0, point));
+		dquat rst = dq * pt * inv;
+		return rst.dual.v;
+	}
 
-	dquat sc_lerp(const dquat& from, const dquat& to, float t);
+	inline dquat sc_lerp(const dquat& from, const dquat& to, float t)
+	{
+		/* this code piece may cause an unexpected result,
+		which the translation is oppsite from the right direction.
+
+		// Shortest path
+		float dotReal = dot(from.real, to.real);
+		dquat to_n(to);
+		if (dotReal < 0)
+		{
+		to_n.real = -to_n.real;
+		to_n.dual = -to_n.dual;
+		}
+		*/
+
+		// ScLERP = Qa * (Qa^-1 * Qb)^t 
+		dquat diff = from.conjugated() * to;
+		diff.exponent(t);
+		return from * diff;
+	}
 }

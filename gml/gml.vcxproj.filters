@@ -11,9 +11,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="source\inner_util.h">
-      <Filter>source</Filter>
-    </ClInclude>
     <ClInclude Include="include\gmlvector.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -35,9 +32,6 @@
     <ClInclude Include="include\gmlutility.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\gmlconv.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="include\gmldualquat.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -47,67 +41,8 @@
     <ClInclude Include="include\gmlangle.h">
       <Filter>include</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="source\vector2.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="source\vector3.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="source\vector4.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="source\matrix44.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="source\matrix22.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="source\matrix33.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="source\ray.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="source\aabb.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="source\color4.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="source\color3.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="source\coord.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="source\rect.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="source\quaternion.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="source\convertion.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="source\dual_quat.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="source\matrix32.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="source\eular.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="source\aabb2d.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="source\utility.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="source\angle.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
+    <ClInclude Include="include\gmlconversion.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,9 +1,12 @@
-﻿#include "../include/gmlconv.h"
-#include <cmath>
+#pragma once
+#include <gmlaabb.h>
+#include <gmlmatrix.h>
+#include <gmlrotation.h>
+#include <gmldualquat.h>
 
 namespace gml
 {
-	mat33 to_mat33(const quat& q)
+	inline mat33 to_mat33(const quat& q)
 	{
 		mat33 rst;
 		vec3 vsqr2 = q.v * q.v * 2;
@@ -29,12 +32,13 @@ namespace gml
 
 		return rst;
 	}
-	mat44 to_mat44(const quat& q)
+
+	inline mat44 to_mat44(const quat& q)
 	{
-		mat44 rst(to_mat33(q));
-		return rst;
+		return (mat44)to_mat33(q);
 	}
-	quat to_quat(const mat44& mat)
+
+	inline quat to_quat(const mat44& mat)
 	{
 		float wsqr = mat._00 + mat._11 + mat._22;
 		float xsqr = mat._00 - mat._11 - mat._22;
@@ -93,7 +97,7 @@ namespace gml
 		return rst;
 	}
 
-	mat44 to_mat44(const dquat& q)
+	inline mat44 to_mat44(const dquat& q)
 	{
 		mat44 rst;
 		auto normalDQ = q.normalized();
@@ -141,17 +145,17 @@ namespace gml
 		return rst;
 	}
 
-	aabb transform(const mat44& mat, const aabb& inaabb)
+	inline aabb transform(const mat44& mat, const aabb& inaabb)
 	{
-		auto minb = gml::transform_point(mat, inaabb.min_bound());
-		auto maxb = gml::transform_point(mat, inaabb.max_bound());
-		return aabb(minb, maxb);
+		return aabb(
+			gml::transform_point(mat, inaabb.min_bound()),
+			gml::transform_point(mat, inaabb.max_bound()));
 	}
 
-	aabb2d transform(const mat32& mat, const aabb2d& inaabb2d)
+	inline aabb2d transform(const mat32& mat, const aabb2d& inaabb2d)
 	{
-		auto minb = gml::transform_point(mat, inaabb2d.min_bound());
-		auto maxb = gml::transform_point(mat, inaabb2d.max_bound());
-		return aabb2d(minb, maxb);
+		return aabb2d(
+			gml::transform_point(mat, inaabb2d.min_bound()),
+			gml::transform_point(mat, inaabb2d.max_bound()));
 	}
 }
