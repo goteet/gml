@@ -58,9 +58,6 @@
     <ClCompile Include="source\aabb.cpp">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="source\rect.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
     <ClCompile Include="source\dual_quat.cpp">
       <Filter>source</Filter>
     </ClCompile>

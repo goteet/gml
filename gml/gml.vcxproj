@@ -39,7 +39,6 @@
     <ClCompile Include="source\matrix32.cpp" />
     <ClCompile Include="source\matrix33.cpp" />
     <ClCompile Include="source\matrix44.cpp" />
-    <ClCompile Include="source\rect.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{C384FDDC-5910-4E73-915D-7B520A068163}</ProjectGuid>
