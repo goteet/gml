@@ -35,8 +35,7 @@ namespace gml
 
 	inline mat44 to_mat44(const quat& q)
 	{
-		mat44 rst(to_mat33(q));
-		return rst;
+		return (mat44)to_mat33(q);
 	}
 
 	inline quat to_quat(const mat44& mat)

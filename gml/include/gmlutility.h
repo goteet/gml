@@ -2,11 +2,9 @@
 
 namespace gml_impl
 {
-	inline int get_float_exponent_base2(float d)
+	constexpr int get_fexp_base2(float d)
 	{
-		int i = 0;
-		((short *)(&i))[0] = (((short *)(&d))[1] & (short)0x7FC0); // _123456789ab____ & 0111111110000000
-		return (i >> 7) - 127;
+		return ((((short *)&d)[1] & (short)0x7FC0) >> 7) - 127;
 	}
 
 	constexpr inline float determinant(
@@ -44,26 +42,12 @@ namespace gml
 	constexpr double PI_d = 3.14159265358979323846;
 	constexpr float PI = static_cast<float>(PI_d);
 
-	inline bool fequal(float a, float b)
+	constexpr bool fequal(float a, float b)
 	{
-		if (a != b)
-		{
-			int ediff = gml_impl::get_float_exponent_base2(a - b);
-			if (ediff > -50)
-			{
-				int ea = gml_impl::get_float_exponent_base2(a);
-				int eb = gml_impl::get_float_exponent_base2(b);
-				return ((ediff - eb < -20) && (ediff - ea < -20));
-			}
-			else
-			{
-				return true;
-			}
-		}
-		else
-		{
-			return true;
-		}
+		return a == b ||
+			gml_impl::get_fexp_base2(a - b) < -30 ||
+			(gml_impl::get_fexp_base2(a - b) - gml_impl::get_fexp_base2(a) < -20 &&
+				gml_impl::get_fexp_base2(a - b) - gml_impl::get_fexp_base2(b) < -20);
 	}
 
 	template<typename T>

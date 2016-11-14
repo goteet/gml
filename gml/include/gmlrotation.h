@@ -18,6 +18,19 @@ namespace gml
 		constexpr euler(float _roll, float _pitch, float _yaw) : roll(_roll), pitch(_pitch), yaw(_yaw) { }
 
 		constexpr euler(const vec3& v) : roll(v.x), pitch(v.y), yaw(v.z) { }
+
+		friend constexpr bool operator== (const euler& lhs, const euler& rhs)
+		{
+			return &lhs == &rhs ||
+				(fequal(lhs.roll, rhs.roll) &&
+					fequal(lhs.pitch, rhs.pitch) &&
+					fequal(lhs.yaw, rhs.yaw));
+		}
+
+		friend constexpr bool operator!= (const euler& lhs, const euler& rhs)
+		{
+			return !(lhs == rhs);
+		}
 	};
 }
 
@@ -26,8 +39,16 @@ namespace gml
 	class quat
 	{
 	public:
-		inline static const quat& Ipos() { static quat ipos;				return ipos; }
-		inline static const quat& Ineg() { static quat ineg(-1, 0, 0, 0);	return ineg; }
+		inline static const quat& Ipos()
+		{
+			static quat ipos;
+			return ipos;
+		}
+		inline static const quat& Ineg()
+		{
+			static quat ineg(-1, 0, 0, 0);
+			return ineg;
+		}
 
 	public:
 		float w = 1.0f;
@@ -49,11 +70,31 @@ namespace gml
 			normalize();
 		}
 
-		constexpr const quat& operator+() const { return *this; }
+		friend constexpr bool operator== (const quat& lhs, const quat& rhs)
+		{
+			return &lhs == &rhs ||
+				(fequal(lhs.w, rhs.w) && lhs.v == rhs.v);
+		}
 
-		constexpr quat operator-() const { return quat(w, v); }
+		friend constexpr bool operator!= (const quat& lhs, const quat& rhs)
+		{
+			return !(lhs == rhs);
+		}
 
-		friend constexpr quat operator+(const quat& lhs, const quat& rhs) { return quat(lhs.w + rhs.w, lhs.v + rhs.v); }
+		constexpr const quat& operator+() const
+		{
+			return *this;
+		}
+
+		constexpr quat operator-() const
+		{
+			return quat(w, v);//return the same.
+		}
+
+		friend constexpr quat operator+(const quat& lhs, const quat& rhs)
+		{
+			return quat(lhs.w + rhs.w, lhs.v + rhs.v);
+		}
 
 		friend constexpr quat operator*(const quat& lhs, const quat& rhs)
 		{
@@ -63,15 +104,30 @@ namespace gml
 				);
 		}
 
-		friend constexpr quat operator*(const quat& lhs, float rhs) { return quat(lhs.w * rhs, lhs.v * rhs); }
+		friend constexpr quat operator*(const quat& lhs, float rhs)
+		{
+			return quat(lhs.w * rhs, lhs.v * rhs);
+		}
 
-		friend constexpr quat operator*(float lhs, const quat& rhs) { return rhs*lhs; }
+		friend constexpr quat operator*(float lhs, const quat& rhs)
+		{
+			return rhs*lhs;
+		}
 
-		friend inline quat& operator+=(quat& lhs, const quat& rhs) { return (lhs = lhs + rhs); }
+		friend inline quat& operator+=(quat& lhs, const quat& rhs)
+		{
+			return (lhs = lhs + rhs);
+		}
 
-		friend inline quat& operator*=(quat& lhs, const quat& rhs) { return (lhs = lhs * rhs); }
+		friend inline quat& operator*=(quat& lhs, const quat& rhs)
+		{
+			return (lhs = lhs * rhs);
+		}
 
-		friend inline quat& operator*=(quat& lhs, float rhs) { return (lhs = lhs * rhs); }
+		friend inline quat& operator*=(quat& lhs, float rhs)
+		{
+			return (lhs = lhs * rhs);
+		}
 
 		inline void normalize()
 		{
@@ -91,13 +147,15 @@ namespace gml
 			return rst;
 		}
 
-		inline void conjugate() { v = -v;	/*w = -w;*/ }
-
-		inline quat conjugated() const
+		inline void conjugate()
 		{
-			quat rst(*this);
-			rst.conjugate();
-			return rst;
+			v = -v;
+			/*w = -w;*/
+		}
+
+		constexpr quat conjugated() const
+		{
+			return quat(w, -v);
 		}
 
 		inline void inverse()
@@ -106,23 +164,31 @@ namespace gml
 			normalize();
 		}
 
-		inline quat inversed() const
+		constexpr quat inversed() const
 		{
-			quat rst(*this);
-			rst.inverse();
-			return rst;
+			return conjugated();
 		}
 
-		inline float length() const { return sqrtf(length_sqr()); }
+		inline float length() const
+		{
+			return sqrtf(length_sqr());
+		}
 
-		constexpr float length_sqr() const { return w*w + v.length_sqr(); }
+		constexpr float length_sqr() const
+		{
+			return w*w + v.length_sqr();
+		}
 
 	public: //do not use unless you know what happen.
 		constexpr quat(float rw, const vec3& rv) : w(rw), v(rv) {	}
+
 		constexpr quat(float rw, float rx, float ry, float rz) : w(rw), v(rx, ry, rz) { }
 	};
 
-	constexpr float dot(const quat& lhs, const quat& rhs) { return lhs.w*rhs.w + dot(lhs.v, rhs.v); }
+	constexpr float dot(const quat& lhs, const quat& rhs)
+	{
+		return lhs.w*rhs.w + dot(lhs.v, rhs.v);
+	}
 
 	inline vec3 rotate(const quat& rotation, const vec3& point)
 	{

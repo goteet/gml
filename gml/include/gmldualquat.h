@@ -8,7 +8,11 @@ namespace gml
 	class dquat
 	{
 	public:
-		static const dquat& I() { static dquat dq; return dq; }
+		static const dquat& I()
+		{
+			static dquat dq;
+			return dq;
+		}
 
 	public:
 		quat real;
@@ -42,54 +46,60 @@ namespace gml
 		//only translation
 		constexpr dquat(float x, float y, float z) : real(1, 0, 0, 0), dual(0, x*0.5f, y*0.5f, z*0.5f) { }
 
-		constexpr quat get_rotation() const { return real; }
-
-		inline vec3 get_translation() const { return (2.0f * dual * real.conjugated()).v; }
-
-		inline radian get_rotate_radian() const { return radian(2 * acos(real.w)); }
-
-		inline dquat operator+ (const dquat& rhs) const
+		constexpr quat get_rotation() const
 		{
-			dquat rst(*this);
-			rst += rhs;
-			return rst;
+			return real;
 		}
 
-		inline dquat operator* (const dquat& rhs) const
+		constexpr vec3 get_translation() const
 		{
-			dquat rst(*this);
-			rst *= rhs;
-			return rst;
+			return (2.0f * dual * real.conjugated()).v;
 		}
 
-		inline dquat operator* (float rhs) const
+		inline radian get_rotate_radian() const
 		{
-			dquat rst(*this);
-			rst *= rhs;
-			return rst;
+			return radian(2 * acos(real.w));
 		}
 
-		inline dquat& operator+=(const dquat& rhs)
+		friend inline dquat operator+ (const dquat& lhs, const dquat& rhs)
 		{
-			this->real += rhs.real;
-			this->dual += rhs.dual;
-			return *this;
+			return dquat((lhs.real + rhs.real).normalized(), lhs.dual + rhs.dual);
 		}
 
-		inline dquat& operator*=(const dquat& rhs)
+		friend inline dquat operator* (const dquat& lhs, const dquat& rhs)
 		{
-			quat newR = real*rhs.real;
-			quat newD = real*rhs.dual + dual*rhs.real; //noticing the order.
-			real = newR;
-			dual = newD;
-			return *this;
+			quat newR = lhs.real*rhs.real;
+			quat newD = lhs.real*rhs.dual + lhs.dual*rhs.real; //noticing the order.
+			newR.normalize();
+			return dquat(newR, newD);
 		}
 
-		inline dquat& operator*=(float scaler)
+		friend inline dquat operator* (const dquat& lhs, float scaler)
 		{
-			real *= scaler;
-			dual *= scaler;
-			return *this;
+			quat newR = lhs.real*scaler;
+			quat newD = lhs.dual*scaler;
+			newR.normalize();
+			return dquat(newR, newD);
+		}
+
+		friend inline dquat operator*(float lhs, dquat& rhs)
+		{
+			return rhs * lhs;
+		}
+
+		friend inline dquat& operator+=(dquat& lhs, const dquat& rhs)
+		{
+			return (lhs = lhs + rhs);
+		}
+
+		friend inline dquat& operator*=(dquat& lhs, const dquat& rhs)
+		{
+			return (lhs = lhs * rhs);
+		}
+
+		friend inline dquat& operator*=(dquat& lhs, float rhs)
+		{
+			return (lhs = lhs * rhs);
 		}
 
 		inline void normalize()
@@ -116,7 +126,6 @@ namespace gml
 		inline void conjugate()
 		{
 			real.conjugate();
-
 			//q = -q && q.w =0;
 			// => q.conjugate() = -q = q
 			// so.... what....
@@ -153,7 +162,7 @@ namespace gml
 			vec3 direction = real.v * invr;
 			vec3 moment = (dual.v + direction * pitch * real.w) * invr;	//(dual.v - direction * pitch * real.w * 0.5f) * invr
 
-																		// Exponential power 
+			// Exponential power 
 			r *= t * 0.5f;
 			pitch *= t;
 
@@ -174,15 +183,19 @@ namespace gml
 			return result;
 		}
 
-		constexpr inline float length() const { return dot(real, real); }
+		constexpr inline float length()
+			const {
+			return dot(real, real);
+		}
 
 	public://unless you know what u r doing.
-		inline dquat(const quat &rotation, const quat& translation) : real(rotation.normalized()), dual(translation) {		}
+		constexpr dquat(const quat &r, const quat& d) : real(r), dual(d) { }
 	};
 
-	inline dquat operator*(float scaler, const dquat& rhs) { return rhs * scaler; }
-
-	constexpr float dot(const dquat& lhs, const dquat& rhs) { return dot(lhs.real, rhs.real); }
+	constexpr float dot(const dquat& lhs, const dquat& rhs)
+	{
+		return dot(lhs.real, rhs.real);
+	}
 
 	inline vec3 transform(const dquat& dq, const vec3& point)
 	{
@@ -196,7 +209,6 @@ namespace gml
 
 	inline dquat sc_lerp(const dquat& from, const dquat& to, float t)
 	{
-
 		/* this code piece may cause an unexpected result,
 		which the translation is oppsite from the right direction.
 

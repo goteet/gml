@@ -1,26 +1,70 @@
 #pragma once
 #include <gmlutility.h>
-#include <cassert>
 #include <stdlib.h>
 
 namespace gml
 {
 	class color3;
 	class color4;
+}
 
+namespace gml
+{
 	class color3
 	{
 	public:
-		inline static const color3& black() { static color3 c(0, 0, 0);			return c; }
-		inline static const color3& gray() { static color3 c(0.5f, 0.5f, 0.5f);	return c; }
-		inline static const color3& white() { static color3 c(1, 1, 1);			return c; }
-		inline static const color3& red() { static color3 c(1, 0, 0);			return c; }
-		inline static const color3& green() { static color3 c(0, 1, 0);			return c; }
-		inline static const color3& blue() { static color3 c(0, 0, 1);			return c; }
-		inline static const color3& yellow() { static color3 c(1, 1, 0);		return c; }
-		inline static const color3& cyan() { static color3 c(0, 1, 1);			return c; }
-		inline static const color3& purple() { static color3 c(1, 0, 1);		return c; }
-		inline static color3 random() { return color3((float)rand(), (float)rand(), (float)rand()) * (1.0f / RAND_MAX); }
+		inline static const color3& black()
+		{
+			static color3 c(0, 0, 0);
+			return c;
+		}
+		inline static const color3& gray()
+		{
+			static color3 c(0.5f, 0.5f, 0.5f);
+			return c;
+		}
+		inline static const color3& white()
+		{
+			static color3 c(1, 1, 1);
+			return c;
+		}
+		inline static const color3& red()
+		{
+			static color3 c(1, 0, 0);
+			return c;
+		}
+		inline static const color3& green()
+		{
+			static color3 c(0, 1, 0);
+			return c;
+		}
+		inline static const color3& blue()
+		{
+			static color3 c(0, 0, 1);
+			return c;
+		}
+		inline static const color3& yellow()
+		{
+			static color3 c(1, 1, 0);
+			return c;
+		}
+		inline static const color3& cyan()
+		{
+			static color3 c(0, 1, 1);
+			return c;
+		}
+		inline static const color3& purple()
+		{
+			static color3 c(1, 0, 1);
+			return c;
+		}
+		inline static color3 random()
+		{
+			return color3(
+				(float)rand(),
+				(float)rand(),
+				(float)rand()) * (1.0f / RAND_MAX);
+		}
 
 	public:
 		float r = 0.0f;
@@ -39,53 +83,96 @@ namespace gml
 			, g(((_rgb >> 8) & 0xFF) / 255.0f)
 			, b(((_rgb >> 16) & 0xFF) / 255.0f) { }
 
-		friend inline bool operator==(const color3& lhs, const color3& rhs)
+		friend constexpr bool operator==(const color3& lhs, const color3& rhs)
 		{
-			if (&rhs == &lhs)
-			{
-				return true;
-			}
-			else
-			{
-				return fequal(lhs.r, rhs.r) && fequal(lhs.g, rhs.g) && fequal(lhs.b, rhs.b);
-			}
+			return &rhs == &lhs ||
+				(fequal(lhs.r, rhs.r) &&
+					fequal(lhs.g, rhs.g) &&
+					fequal(lhs.b, rhs.b));
 		}
-		friend inline bool operator!=(const color3& lhs, const color3& rhs) { return !(lhs == rhs); }
 
-		friend constexpr color3 operator+(const color3& lhs, float rhs) { return color3(lhs.r + rhs, lhs.g + rhs, lhs.b + rhs); }
+		friend constexpr bool operator!=(const color3& lhs, const color3& rhs)
+		{
+			return !(lhs == rhs);
+		}
 
-		friend constexpr color3 operator+(float lhs, const color3& rhs) { return rhs + lhs; }
+		friend constexpr color3 operator+(const color3& lhs, float rhs)
+		{
+			return color3(lhs.r + rhs, lhs.g + rhs, lhs.b + rhs);
+		}
 
-		friend constexpr color3 operator*(const color3& lhs, float rhs) { return color3(lhs.r * rhs, lhs.g * rhs, lhs.b * rhs); }
+		friend constexpr color3 operator+(float lhs, const color3& rhs)
+		{
+			return rhs + lhs;
+		}
 
-		friend constexpr color3 operator*(float lhs, const color3& rhs) { return rhs * lhs; }
+		friend constexpr color3 operator*(const color3& lhs, float rhs)
+		{
+			return color3(lhs.r * rhs, lhs.g * rhs, lhs.b * rhs);
+		}
 
-		friend constexpr color3 operator+(const color3& lhs, const color3& rhs) { return color3(lhs.r + rhs.r, lhs.g + rhs.g, lhs.b + rhs.b); }
+		friend constexpr color3 operator*(float lhs, const color3& rhs)
+		{
+			return rhs * lhs;
+		}
 
-		friend constexpr color3 operator*(const color3& lhs, const color3& rhs) { return color3(lhs.r * rhs.r, lhs.g * rhs.g, lhs.b * rhs.b); }
+		friend constexpr color3 operator+(const color3& lhs, const color3& rhs)
+		{
+			return color3(lhs.r + rhs.r, lhs.g + rhs.g, lhs.b + rhs.b);
+		}
 
-		friend inline color3& operator+=(color3& lhs, float rhs) { return (lhs = lhs + rhs); }
+		friend constexpr color3 operator*(const color3& lhs, const color3& rhs)
+		{
+			return color3(lhs.r * rhs.r, lhs.g * rhs.g, lhs.b * rhs.b);
+		}
 
-		friend inline color3& operator*=(color3& lhs, float rhs) { return (lhs = lhs * rhs); }
+		friend inline color3& operator+=(color3& lhs, float rhs)
+		{
+			return (lhs = lhs + rhs);
+		}
 
-		friend inline color3& operator+=(color3& lhs, const color3& rhs) { return (lhs = lhs + rhs); }
+		friend inline color3& operator*=(color3& lhs, float rhs)
+		{
+			return (lhs = lhs * rhs);
+		}
 
-		friend inline color3& operator*=(color3& lhs, const color3& rhs) { return (lhs = lhs * rhs); }
+		friend inline color3& operator+=(color3& lhs, const color3& rhs)
+		{
+			return (lhs = lhs + rhs);
+		}
+
+		friend inline color3& operator*=(color3& lhs, const color3& rhs)
+		{
+			return (lhs = lhs * rhs);
+		}
 
 		//hack
-		inline float& operator[](int index) { return const_cast<float&>(const_cast<const color3*>(this)->operator[](index)); }
-
-		inline const float& operator[](int index) const
+		inline float& operator[](int index)
 		{
-			assert(index >= 0 && index < 3);
+			return const_cast<float&>(const_cast<const color3*>(this)->operator[](index));
+		}
+
+		constexpr const float& operator[](int index) const
+		{
 			return (index < 0 || index >= 3) ? r : *(&r + index);
 		}
 
-		inline explicit operator float*() { return const_cast<float*>(const_cast<const color3*>(this)->operator const float*()); }
+		inline explicit operator float*()
+		{
+			return const_cast<float*>(const_cast<const color3*>(this)->operator const float*());
+		}
 
-		inline explicit operator const float*() const { return &(r); }
+		constexpr explicit operator const float*() const
+		{
+			return &(r);
+		}
 
-		inline void set(float _r, float _g, float _b) { r = _r; g = _g; b = _b; }
+		inline void set(float _r, float _g, float _b)
+		{
+			r = _r;
+			g = _g;
+			b = _b;
+		}
 
 		void set(const color4& c4);
 
@@ -105,12 +192,6 @@ namespace gml
 
 		constexpr unsigned int rgba() const
 		{
-			/*
-			int nr = gml::clamp(static_cast<int>(r * 255), 0, 255);
-			int ng = gml::clamp(static_cast<int>(g * 255), 0, 255);
-			int nb = gml::clamp(static_cast<int>(b * 255), 0, 255);
-			return (0xFF000000 | nb | (ng << 8) | (nr << 16));
-			*/
 			return (0xFF000000 |
 				gml::clamp(static_cast<int>(b * 255), 0, 255) |
 				(gml::clamp(static_cast<int>(g * 255), 0, 255) << 8) |
@@ -119,12 +200,6 @@ namespace gml
 
 		constexpr unsigned int bgra() const
 		{
-			/*
-			int nr = gml::clamp(static_cast<int>(r * 255), 0, 255);
-			int ng = gml::clamp(static_cast<int>(g * 255), 0, 255);
-			int nb = gml::clamp(static_cast<int>(b * 255), 0, 255);
-			return (0xFF000000 | nr | (ng << 8) | (nb << 16));
-			*/
 			return (0xFF000000 |
 				gml::clamp(static_cast<int>(r * 255), 0, 255) |
 				(gml::clamp(static_cast<int>(g * 255), 0, 255) << 8) |
@@ -132,7 +207,10 @@ namespace gml
 		}
 	};
 
-	constexpr float dot(const color3& lhs, const color3& rhs) { return lhs.r * rhs.r + lhs.g * rhs.g + lhs.b * rhs.b; }
+	constexpr float dot(const color3& lhs, const color3& rhs)
+	{
+		return lhs.r * rhs.r + lhs.g * rhs.g + lhs.b * rhs.b;
+	}
 }
 
 namespace gml
@@ -140,16 +218,59 @@ namespace gml
 	class color4
 	{
 	public:
-		inline static const color4& black() { static color4 c(0, 0, 0, 1);			return c; }
-		inline static const color4& gray() { static color4 c(0.5f, 0.5f, 0.5f, 1);	return c; }
-		inline static const color4& white() { static color4 c(1, 1, 1, 1);			return c; }
-		inline static const color4& red() { static color4 c(1, 0, 0, 1);			return c; }
-		inline static const color4& green() { static color4 c(0, 1, 0, 1);			return c; }
-		inline static const color4& blue() { static color4 c(0, 0, 1, 1);			return c; }
-		inline static const color4& yellow() { static color4 c(1, 1, 0, 1);			return c; }
-		inline static const color4& cyan() { static color4 c(0, 1, 1, 1);			return c; }
-		inline static const color4& purple() { static color4 c(1, 0, 1, 1);			return c; }
-		inline static color4 random() { return (color4((float)rand(), (float)rand(), (float)rand(), (float)rand()) * (1.0f / RAND_MAX)); }
+		inline static const color4& black()
+		{
+			static color4 c(0, 0, 0, 1);
+			return c;
+		}
+		inline static const color4& gray()
+		{
+			static color4 c(0.5f, 0.5f, 0.5f, 1);
+			return c;
+		}
+		inline static const color4& white()
+		{
+			static color4 c(1, 1, 1, 1);
+			return c;
+		}
+		inline static const color4& red()
+		{
+			static color4 c(1, 0, 0, 1);
+			return c;
+		}
+		inline static const color4& green()
+		{
+			static color4 c(0, 1, 0, 1);
+			return c;
+		}
+		inline static const color4& blue()
+		{
+			static color4 c(0, 0, 1, 1);
+			return c;
+		}
+		inline static const color4& yellow()
+		{
+			static color4 c(1, 1, 0, 1);
+			return c;
+		}
+		inline static const color4& cyan()
+		{
+			static color4 c(0, 1, 1, 1);
+			return c;
+		}
+		inline static const color4& purple()
+		{
+			static color4 c(1, 0, 1, 1);
+			return c;
+		}
+		inline static color4 random()
+		{
+			return color4(
+				(float)rand(),
+				(float)rand(),
+				(float)rand(),
+				(float)rand()) * (1.0f / RAND_MAX);
+		}
 
 	public:
 		float r = 0.0f;
@@ -170,57 +291,106 @@ namespace gml
 			, b(((_rgba >> 16) & 0xFF) / 255.0f)
 			, a(((_rgba >> 24) & 0xFF) / 255.0f) { }
 
-		friend inline bool operator==(const color4& lhs, const color4& rhs)
+		friend constexpr bool operator==(const color4& lhs, const color4& rhs)
 		{
-			if (&rhs == &lhs)
-			{
-				return true;
-			}
-			else
-			{
-				return fequal(lhs.r, rhs.r) && fequal(lhs.g, rhs.g) && fequal(lhs.b, rhs.b) && fequal(lhs.a, rhs.a);
-			}
+			return &rhs == &lhs ||
+				(fequal(lhs.r, rhs.r) &&
+					fequal(lhs.g, rhs.g) &&
+					fequal(lhs.b, rhs.b) &&
+					fequal(lhs.a, rhs.a));
 		}
 
 
-		friend inline bool operator!=(const color4& lhs, const color4& rhs) { return !(lhs == rhs); }
+		friend constexpr bool operator!=(const color4& lhs, const color4& rhs)
+		{
+			return !(lhs == rhs);
+		}
 
-		friend constexpr color4 operator+(const color4& lhs, float rhs) { return color4(lhs.r + rhs, lhs.g + rhs, lhs.b + rhs, lhs.a + rhs); }
+		friend constexpr color4 operator+(const color4& lhs, float rhs)
+		{
+			return color4(lhs.r + rhs, lhs.g + rhs, lhs.b + rhs, lhs.a + rhs);
+		}
 
-		friend constexpr color4 operator+(float lhs, const color4& rhs) { return rhs + lhs; }
+		friend constexpr color4 operator+(float lhs, const color4& rhs)
+		{
+			return rhs + lhs;
+		}
 
-		friend constexpr color4 operator*(const color4& lhs, float rhs) { return color4(lhs.r * rhs, lhs.g * rhs, lhs.b * rhs, lhs.a * rhs); }
+		friend constexpr color4 operator*(const color4& lhs, float rhs)
+		{
+			return color4(lhs.r * rhs, lhs.g * rhs, lhs.b * rhs, lhs.a * rhs);
+		}
 
-		friend constexpr color4 operator*(float lhs, const color4& rhs) { return rhs * lhs; }
+		friend constexpr color4 operator*(float lhs, const color4& rhs)
+		{
+			return rhs * lhs;
+		}
 
-		friend constexpr color4 operator+(const color4& lhs, const color4& rhs) { return color4(lhs.r + rhs.r, lhs.g + rhs.g, lhs.b + rhs.b, lhs.a + rhs.a); }
+		friend constexpr color4 operator+(const color4& lhs, const color4& rhs)
+		{
+			return color4(lhs.r + rhs.r, lhs.g + rhs.g, lhs.b + rhs.b, lhs.a + rhs.a);
+		}
 
-		friend constexpr color4 operator*(const color4& lhs, const color4& rhs) { return color4(lhs.r * rhs.r, lhs.g * rhs.g, lhs.b * rhs.b, lhs.a * rhs.a); }
+		friend constexpr color4 operator*(const color4& lhs, const color4& rhs)
+		{
+			return color4(lhs.r * rhs.r, lhs.g * rhs.g, lhs.b * rhs.b, lhs.a * rhs.a);
+		}
 
-		friend inline color4& operator+=(color4& lhs, float rhs) { return (lhs = lhs + rhs); }
+		friend inline color4& operator+=(color4& lhs, float rhs)
+		{
+			return (lhs = lhs + rhs);
+		}
 
-		friend inline color4& operator*=(color4& lhs, float rhs) { return (lhs = lhs * rhs); }
+		friend inline color4& operator*=(color4& lhs, float rhs)
+		{
+			return (lhs = lhs * rhs);
+		}
 
-		friend inline color4& operator+=(color4& lhs, const color4& rhs) { return (lhs = lhs + rhs); }
+		friend inline color4& operator+=(color4& lhs, const color4& rhs)
+		{
+			return (lhs = lhs + rhs);
+		}
 
-		friend inline color4& operator*=(color4& lhs, const color4& rhs) { return (lhs = lhs * rhs); }
+		friend inline color4& operator*=(color4& lhs, const color4& rhs)
+		{
+			return (lhs = lhs * rhs);
+		}
 
 		//hack
-		inline float& operator[](int index) { return const_cast<float&>(const_cast<const color4*>(this)->operator[](index)); }
-
-		inline const float& operator[](int index) const
+		inline float& operator[](int index)
 		{
-			assert(index >= 0 && index < 44);
+			return const_cast<float&>(const_cast<const color4*>(this)->operator[](index));
+		}
+
+		constexpr const float& operator[](int index) const
+		{
 			return (index < 0 || index >= 4) ? r : *(&r + index);
 		}
 
-		inline explicit operator float*() { return const_cast<float*>(const_cast<const color4*>(this)->operator const float*()); }
+		inline explicit operator float*()
+		{
+			return const_cast<float*>(const_cast<const color4*>(this)->operator const float*());
+		}
 
-		inline explicit operator const float*() const { return &(r); }
+		constexpr explicit operator const float*() const
+		{
+			return &(r);
+		}
 
-		inline void set(float _r, float _g, float _b, float _a) { r = _r; g = _g; b = _b; a = _a; }
+		inline void set(float _r, float _g, float _b, float _a)
+		{
+			r = _r;
+			g = _g;
+			b = _b;
+			a = _a;
+		}
 
-		inline void replace(const color3& c3) { r = c3.r; g = c3.g; b = c3.b; }
+		inline void replace(const color3& c3)
+		{
+			r = c3.r;
+			g = c3.g;
+			b = c3.b;
+		}
 
 		inline void clamp()
 		{
@@ -239,13 +409,6 @@ namespace gml
 
 		constexpr unsigned int rgba() const
 		{
-			/*
-			int nr = gml::clamp(static_cast<int>(r * 255), 0, 255);
-			int ng = gml::clamp(static_cast<int>(g * 255), 0, 255);
-			int nb = gml::clamp(static_cast<int>(b * 255), 0, 255);
-			int na = gml::clamp(static_cast<int>(a * 255), 0, 255);
-			return (nb | (ng << 8) | (nr << 16) | (na << 24));
-			*/
 			return (gml::clamp(static_cast<int>(b * 255), 0, 255) |
 				(gml::clamp(static_cast<int>(g * 255), 0, 255) << 8) |
 				(gml::clamp(static_cast<int>(r * 255), 0, 255) << 16) |
@@ -254,12 +417,6 @@ namespace gml
 
 		constexpr unsigned int bgra() const
 		{
-			/*
-			int nr = gml::clamp(static_cast<int>(r * 255), 0, 255);
-			int ng = gml::clamp(static_cast<int>(g * 255), 0, 255);
-			int nb = gml::clamp(static_cast<int>(b * 255), 0, 255);
-			int na = gml::clamp(static_cast<int>(a * 255), 0, 255);
-			*/
 			return (gml::clamp(static_cast<int>(r * 255), 0, 255) |
 				(gml::clamp(static_cast<int>(g * 255), 0, 255) << 8) |
 				(gml::clamp(static_cast<int>(b * 255), 0, 255) << 16) |
@@ -267,14 +424,20 @@ namespace gml
 		}
 	};
 
-	constexpr float dot(const color4& lhs, const color4& rhs) { return lhs.r * rhs.r + lhs.g * rhs.g + lhs.b * rhs.b + lhs.a * rhs.a; }
+	constexpr float dot(const color4& lhs, const color4& rhs)
+	{
+		return lhs.r * rhs.r + lhs.g * rhs.g + lhs.b * rhs.b + lhs.a * rhs.a;
+	}
 }
 
 namespace gml
 {
 	constexpr color3::color3(const color4& c4) : r(c4.r), g(c4.g), b(c4.b) { }
 
-	inline void color3::set(const color4& c4) { set(c4.r, c4.g, c4.b); }
+	inline void color3::set(const color4& c4)
+	{
+		set(c4.r, c4.g, c4.b);
+	}
 }
 namespace gml
 {
