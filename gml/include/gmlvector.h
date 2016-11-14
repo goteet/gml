@@ -16,12 +16,12 @@ namespace gml
 	class vec2
 	{
 	public:
-		inline static const vec2& vec2::zero() { static vec2 v(0.0f, 0.0f);		return v; }
-		inline static const vec2& vec2::one() { static vec2 v(1.0f, 1.0f);		return v; }
-		inline static const vec2& vec2::left() { static vec2 v(-1.0f, 0.0f);	return v; }
-		inline static const vec2& vec2::right() { static vec2 v(1.0f, 0.0f);	return v; }
-		inline static const vec2& vec2::up() { static vec2 v(0.0f, 1.0f);		return v; }
-		inline static const vec2& vec2::down() { static vec2 v(0.0f, -1.0f);	return v; }
+		inline static const vec2& zero() { static vec2 v(0.0f, 0.0f);	return v; }
+		inline static const vec2& one() { static vec2 v(1.0f, 1.0f);	return v; }
+		inline static const vec2& left() { static vec2 v(-1.0f, 0.0f);	return v; }
+		inline static const vec2& right() { static vec2 v(1.0f, 0.0f);	return v; }
+		inline static const vec2& up() { static vec2 v(0.0f, 1.0f);		return v; }
+		inline static const vec2& down() { static vec2 v(0.0f, -1.0f);	return v; }
 
 	public:
 		float x = 0.0f;
@@ -36,11 +36,11 @@ namespace gml
 
 		constexpr explicit vec2(const vec4& v4);
 
-		constexpr vec2 operator+() const { return vec2(x, y); }
+		constexpr const vec2& operator+() const { return *this; }
 
 		constexpr vec2 operator-() const { return vec2(-x, -y); }
 
-		friend inline bool vec2::operator==(const vec2& lhs, const vec2& rhs)
+		friend inline bool operator==(const vec2& lhs, const vec2& rhs)
 		{
 			if (&lhs == &rhs) return true;
 			else return fequal(lhs.x, rhs.x) && fequal(lhs.y, rhs.y);
@@ -166,14 +166,14 @@ namespace gml
 			lhs.y > rhs.y ? lhs.y : rhs.y);
 	}
 
-	constexpr float det22(const gml::vec2& row1, const gml::vec2& row2)
+	constexpr float det22(const vec2& row1, const vec2& row2)
 	{
 		return gml_impl::determinant(
 			row1.x, row1.y,
 			row2.x, row2.y);
 	}
 
-	constexpr float det22_t(const gml::vec2& row1, const gml::vec2& row2)
+	constexpr float det22_t(const vec2& row1, const vec2& row2)
 	{
 		return gml_impl::determinant(
 			row1.x, row2.x,
@@ -186,14 +186,14 @@ namespace gml
 	class vec3
 	{
 	public:
-		inline static const vec3& vec3::zero() { static vec3 v(0.0f, 0.0f, 0.0f);		return v; }
-		inline static const vec3& vec3::one() { static vec3 v(1.0f, 1.0f, 1.0f);		return v; }
-		inline static const vec3& vec3::left() { static vec3 v(-1.0f, 0.0f, 0.0f);		return v; }
-		inline static const vec3& vec3::right() { static vec3 v(1.0f, 0.0f, 0.0f);		return v; }
-		inline static const vec3& vec3::up() { static vec3 v(0.0f, 1.0f, 0.0f);			return v; }
-		inline static const vec3& vec3::down() { static vec3 v(0.0f, -1.0f, 0.0f);		return v; }
-		inline static const vec3& vec3::forward() { static vec3 v(0.0f, 0.0f, 1.0f);	return v; }
-		inline static const vec3& vec3::backward() { static vec3 v(0.0f, 0.0f, -1.0f);	return v; }
+		inline static const vec3& zero() { static vec3 v(0.0f, 0.0f, 0.0f);		return v; }
+		inline static const vec3& one() { static vec3 v(1.0f, 1.0f, 1.0f);		return v; }
+		inline static const vec3& left() { static vec3 v(-1.0f, 0.0f, 0.0f);		return v; }
+		inline static const vec3& right() { static vec3 v(1.0f, 0.0f, 0.0f);		return v; }
+		inline static const vec3& up() { static vec3 v(0.0f, 1.0f, 0.0f);			return v; }
+		inline static const vec3& down() { static vec3 v(0.0f, -1.0f, 0.0f);		return v; }
+		inline static const vec3& forward() { static vec3 v(0.0f, 0.0f, 1.0f);	return v; }
+		inline static const vec3& backward() { static vec3 v(0.0f, 0.0f, -1.0f);	return v; }
 
 	public:
 		float x = 0.0f;
@@ -209,11 +209,11 @@ namespace gml
 
 		constexpr explicit vec3(const vec4& v4);
 
-		constexpr vec3 operator+() const { return vec3(x, y, z); }
+		constexpr const vec3& operator+() const { return *this; }
 
 		constexpr vec3 operator-() const { return vec3(-x, -y, -z); }
 
-		friend inline bool vec3::operator==(const vec3& lhs, const vec3& rhs)
+		friend inline bool operator==(const vec3& lhs, const vec3& rhs)
 		{
 			if (&rhs == &lhs)
 			{
@@ -225,7 +225,7 @@ namespace gml
 			}
 		}
 
-		friend inline bool vec3::operator!=(const vec3& lhs, const vec3& rhs) { return !(lhs == rhs); }
+		friend inline bool operator!=(const vec3& lhs, const vec3& rhs) { return !(lhs == rhs); }
 
 		friend constexpr vec3 operator+(const vec3& lhs, float rhs) { return vec3(lhs.x + rhs, lhs.y + rhs, lhs.z + rhs); }
 
@@ -356,7 +356,7 @@ namespace gml
 			);
 	}
 
-	constexpr float det33(const gml::vec3& row1, const gml::vec3& row2, const gml::vec3& row3)
+	constexpr float det33(const vec3& row1, const vec3& row2, const vec3& row3)
 	{
 		return gml_impl::determinant(
 			row1.x, row1.y, row1.z,
@@ -364,7 +364,7 @@ namespace gml
 			row3.x, row3.y, row3.z);
 	}
 
-	constexpr float det33_t(const gml::vec3& row1, const gml::vec3& row2, const gml::vec3& row3)
+	constexpr float det33_t(const vec3& row1, const vec3& row2, const vec3& row3)
 	{
 		return gml_impl::determinant(
 			row1.x, row2.x, row3.x,
@@ -391,6 +391,10 @@ namespace gml
 		constexpr vec4(const vec2& v2, float _z, float _w) : x(v2.x), y(v2.y), z(_z), w(_w) { }
 
 		constexpr vec4(const vec3& v3, float _w) : x(v3.x), y(v3.y), z(v3.z), w(_w) { }
+
+		constexpr const vec4& operator+() const { return *this; }
+
+		constexpr vec4 operator-() const { return vec4(-x, -y, -z, -w); }
 
 		friend inline bool operator==(const vec4& lhs, const vec4& rhs)
 		{
@@ -438,7 +442,7 @@ namespace gml
 
 	constexpr float dot(const vec4& lhs, const vec4& rhs) { return lhs.x * rhs.x + lhs.y * rhs.y + lhs.z * rhs.z + lhs.w * rhs.w; }
 
-	constexpr float det44(const gml::vec4& row1, const gml::vec4& row2, const gml::vec4& row3, const gml::vec4& row4)
+	constexpr float det44(const vec4& row1, const vec4& row2, const vec4& row3, const vec4& row4)
 	{
 		return gml_impl::determinant(
 			row1.x, row1.y, row1.z, row1.w,
@@ -448,7 +452,7 @@ namespace gml
 			);
 	}
 
-	constexpr float det44_t(const gml::vec4& row1, const gml::vec4& row2, const gml::vec4& row3, const gml::vec4& row4)
+	constexpr float det44_t(const vec4& row1, const vec4& row2, const vec4& row3, const vec4& row4)
 	{
 		return gml_impl::determinant(
 			row1.x, row2.y, row3.z, row4.w,
