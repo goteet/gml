@@ -64,7 +64,7 @@ namespace gml
 
 		inline it_mode hit_test(const rect& other) const
 		{
-			if (this == &other)
+			if (*this == other)
 			{
 				return it_same;
 			}

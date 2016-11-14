@@ -55,16 +55,10 @@
     <ClCompile Include="source\matrix33.cpp">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="source\aabb.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
     <ClCompile Include="source\dual_quat.cpp">
       <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="source\matrix32.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="source\aabb2d.cpp">
       <Filter>source</Filter>
     </ClCompile>
   </ItemGroup>
