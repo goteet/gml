@@ -3,7 +3,7 @@
 #include <gmlcolor.h>
 #include <gmlutility.h>
 #include <gmlrotation.h>
-#include <gmlconv.h>
+#include <gmlconversion.h>
 #include <gmldualquat.h>
 
 //#define WRITE_TO_FILE

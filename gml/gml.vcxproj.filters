@@ -32,9 +32,6 @@
     <ClInclude Include="include\gmlutility.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\gmlconv.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="include\gmldualquat.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -42,6 +39,9 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\gmlangle.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\gmlconversion.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>
@@ -68,9 +68,6 @@
       <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="source\rect.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="source\convertion.cpp">
       <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="source\dual_quat.cpp">
