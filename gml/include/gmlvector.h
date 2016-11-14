@@ -634,6 +634,16 @@ namespace gml
 			return vec4(lhs.x * rhs.x, lhs.y * rhs.y, lhs.z * rhs.z, lhs.w * rhs.w);
 		}
 
+		friend constexpr vec4 operator*(const vec4& lhs, float rhs)
+		{
+			return vec4(lhs.x * rhs, lhs.y * rhs, lhs.z * rhs, lhs.w * rhs);
+		}
+
+		friend constexpr vec4 operator*(float lhs, const vec4& rhs)
+		{
+			return rhs * lhs;
+		}
+
 		//hack
 		inline float& operator[](int index)
 		{

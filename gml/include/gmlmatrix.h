@@ -2,7 +2,6 @@
 #include <gmlvector.h>
 #include <gmlutility.h>
 #include <gmlangle.h>
-#include <cassert>
 
 namespace gml
 {
@@ -34,28 +33,28 @@ namespace gml
 				sinr, cosr);
 		}
 
-		inline static mat22 scale(float scaler)
+		constexpr static mat22 scale(float scaler)
 		{
 			return mat22(
 				scaler, 0,
 				0, scaler);
 		}
 
-		inline static mat22 scale(float sx, float sy)
+		constexpr static mat22 scale(float sx, float sy)
 		{
 			return mat22(
 				sx, 0,
 				0, sy);
 		}
 
-		inline static mat22 flip_x()
+		constexpr static mat22 flip_x()
 		{
 			return mat22(
 				-1, 0,
 				0, 1);
 		}
 
-		inline static mat22 flip_y()
+		constexpr static mat22 flip_y()
 		{
 			return mat22(
 				1, 0,
@@ -92,123 +91,109 @@ namespace gml
 		{
 			if (&rhs != this)
 			{
-				for (int i = 0; i < 4; i++)
-				{
-					(*this)[i] = rhs[i];
-				}
+				row[0] = rhs.row[0];
+				row[1] = rhs.row[1];
 			}
 			return *this;
 		}
 
-		inline mat22 operator* (float scaler) const
+		friend constexpr mat22 operator* (const mat22& lhs, float rhs)
 		{
-			mat22 result(*this);
-			result *= scaler;
-			return result;
+			return mat22(lhs.row[0] * rhs, lhs.row[1] * rhs);
 		}
 
-		inline mat22 operator* (const mat22& rhs) const
+		friend constexpr mat22 operator* (float lhs, const mat22& rhs)
 		{
-			mat22 result(*this);
-			result *= rhs;
-			return result;
+			return rhs * lhs;
 		}
 
-		inline vec2 operator* (const vec2& rhs) const
+		friend constexpr mat22 operator* (const mat22& lhs, const mat22& rhs)
 		{
-			vec2 result;
-			for (int i = 0; i < 2; i++)
-			{
-				result[i] = dot(row[i], rhs);
-			}
-			return result;
+			return mat22(
+				dot(lhs.row[0], rhs.column(0)), dot(lhs.row[0], rhs.column(1)),
+				dot(lhs.row[1], rhs.column(0)), dot(lhs.row[1], rhs.column(1))
+				);
 		}
 
-		inline mat22& operator*= (float scaler)
+		friend constexpr vec2 operator* (const mat22& lhs, const vec2& rhs)
 		{
-			for (int i = 0; i < 4; i++)
-			{
-				(*this)[i] *= scaler;
-			}
-			return *this;
+			return vec2(dot(lhs.row[0], rhs), dot(lhs.row[1], rhs));
 		}
 
-		inline mat22& operator*=(const mat22& rhs)
+		friend constexpr vec2 operator* (const vec2& lhs, const mat22& rhs)
 		{
-			mat22 copy(*this);
-			for (int i = 0; i < 2; i++)
-			{
-				for (int j = 0; j < 2; j++)
-				{
-					m[i][j] = dot(copy.row[i], rhs.column(j));
-				}
-			}
-			return *this;
+			return vec2(dot(lhs, rhs.column(0)), dot(lhs, rhs.column(1)));
 		}
 
-		inline bool operator== (const mat22& rhs) const
+		friend inline mat22& operator*= (mat22& lhs, float rhs)
 		{
-			if (&rhs != this)
-			{
-				for (int i = 0; i < 4; i++)
-				{
-					if ((*this)[i] != rhs[i])
-						return false;
-				}
-			}
-			return true;
+			return (lhs = lhs * rhs);
 		}
 
-		inline bool operator!= (const mat22& rhs) const { return !(*this == rhs); }
+		friend inline mat22& operator*= (mat22& lhs, const mat22& rhs)
+		{
+			return (lhs = lhs * rhs);
+		}
 
+		friend constexpr bool operator== (const mat22& lhs, const mat22& rhs)
+		{
+			return &rhs == &lhs ||
+				(lhs.row[0] == rhs.row[0] &&
+					lhs.row[1] == rhs.row[1]);
+		}
+
+		friend constexpr bool operator!= (const mat22& lhs, const mat22& rhs)
+		{
+			return !(lhs == rhs);
+		}
+
+		//hack
 		inline float& operator[] (int index)
 		{
 			return const_cast<float&>(const_cast<const mat22*>(this)->operator[](index));
 		}
 
-		inline const float& operator[] (int index) const
+		constexpr const float& operator[] (int index) const
 		{
-			assert(index >= 0 && index < 4);
-			return *(&(m[0][0]) + index);
+			return (index < 0 || index >= 4) ? m[0][0] : *(&(m[0][0]) + index);
 		}
 
-		inline vec2 column(int index) const
+		constexpr vec2 column(int index) const
 		{
-			assert(index >= 0 && index < 2);
-			return vec2(m[0][index], m[1][index]);
+			return (index < 0 || index >= 2) ? vec2(m[0][0], m[1][0]) : vec2(m[0][index], m[1][index]);
 		}
 
 		inline void set_column(int index, vec2 v)
 		{
-			assert(index >= 0 && index < 2);
-			for (int i = 0; i < 2; i++)
+			if (index >= 0 && index < 2)
 			{
-				m[i][index] = v[i];
+				for (int i = 0; i < 2; i++)
+				{
+					m[i][index] = v[i];
+				}
 			}
 		}
 
-		inline void identity() { *this = I(); }
-
-		inline void transpose() { swap(this->_10, this->_01); }
-
-		inline mat22 transposed() const
+		inline void identity()
 		{
-			mat22 result(*this);
-			result.transpose();
-			return result;
+			*this = I();
 		}
 
-		inline bool can_invert() const
+		inline void transpose()
 		{
-			if (is_orthogonal())
-			{
-				return true;
-			}
-			else
-			{
-				float det = determinant();
-				return !fequal(det, 0.0f);
-			}
+			swap(this->_10, this->_01);
+		}
+
+		constexpr mat22 transposed() const
+		{
+			return mat22(
+				_00, _10,
+				_01, _11);
+		}
+
+		constexpr bool can_invert() const
+		{
+			return is_orthogonal() || !fequal(determinant(), 0.0f);
 		}
 
 		inline void inverse()
@@ -245,46 +230,20 @@ namespace gml
 			return result;
 		}
 
-		inline bool is_orthogonal() const
+		constexpr bool is_orthogonal() const
 		{
-			for (int i = 0; i < 2; i++)
-			{
-				if (!fequal(row[i].length_sqr(), 1.0f))
-				{
-					return false;
-				}
-
-				for (int j = i + 1; j < 2; j++)
-				{
-					if (!fequal(dot(row[i], row[j]), 0.0f))
-						return false;
-				}
-			}
-			return true;
+			return fequal(row[0].length_sqr(), 1.0f) &&
+				fequal(row[1].length_sqr(), 1.0f) &&
+				fequal(dot(row[0], row[1]), 0.0f);
 		}
 
-		inline float determinant() const
+		constexpr float determinant() const
 		{
 			return gml_impl::determinant(
 				_00, _01,
 				_10, _11);
 		}
 	};
-
-	inline mat22 operator* (float scaler, const mat22& rhs)
-	{
-		return rhs * scaler;
-	}
-
-	inline vec2 operator* (const vec2& lhs, const mat22& rhs)
-	{
-		vec2 result;
-		for (int i = 0; i < 2; i++)
-		{
-			result[i] = dot(lhs, rhs.column(i));
-		}
-		return result;
-	}
 }
 
 namespace gml
@@ -310,35 +269,35 @@ namespace gml
 				sinr, cosr, 0);
 		}
 
-		inline static mat32 scale(float scaler)
+		constexpr static mat32 scale(float scaler)
 		{
 			return mat32(
 				scaler, 0, 0,
 				0, scaler, 0);
 		}
 
-		inline static mat32 scale(float sx, float sy)
+		constexpr static mat32 scale(float sx, float sy)
 		{
 			return mat32(
 				sx, 0, 0,
 				0, sy, 0);
 		}
 
-		inline static mat32 translate(float x, float y)
+		constexpr static mat32 translate(float x, float y)
 		{
 			return mat32(
 				1, 0, x,
 				0, 1, y);
 		}
 
-		inline static mat32 flip_x()
+		constexpr static mat32 flip_x()
 		{
 			return mat32(
 				-1, 0, 0,
 				0, 1, 0);
 		}
 
-		inline static mat32 flip_y()
+		constexpr static mat32 flip_y()
 		{
 			return mat32(
 				1, 0, 0,
@@ -468,108 +427,115 @@ namespace gml
 			return *this;
 		}
 
-		inline mat32 operator* (const mat32& rhs) const
+		friend constexpr mat32 operator* (const mat32& lhs, const mat32& rhs)
 		{
-			mat32 result(*this);
-			result *= rhs;
-			return result;
+			return mat32(
+				dot(lhs.rows[0].r, vec3(rhs.column(0), 0.0f)),
+				dot(lhs.rows[0].r, vec3(rhs.column(1), 0.0f)),
+				dot(lhs.rows[0].r, vec3(rhs.column(2), 1.0f)),
+
+				dot(lhs.rows[1].r, vec3(rhs.column(0), 0.0f)),
+				dot(lhs.rows[1].r, vec3(rhs.column(1), 0.0f)),
+				dot(lhs.rows[1].r, vec3(rhs.column(2), 1.0f)));
 		}
 
-		inline mat32& operator*=(const mat32& rhs)
+		friend constexpr vec3 operator* (const mat32& lhs, const vec3& rhs)
 		{
-			mat32 copy(*this);
-			for (int i = 0; i < 2; i++)
-			{
-				for (int j = 0; j < 3; j++)
-				{
-					m[i][j] = dot(copy.rows[i].r, vec3(rhs.column(j), ((j == 2) ? 1.0f : 0.0f)));
-				}
-			}
-			return *this;
+			return vec3(
+				dot(lhs.rows[0].r, rhs),
+				dot(lhs.rows[1].r, rhs),
+				rhs.z);
 		}
 
-		inline bool operator== (const mat32& rhs) const
+		friend constexpr vec3 operator* (const vec3& lhs, const mat32& rhs)
 		{
-			if (&rhs != this)
-			{
-				rows[0].r == rhs.rows[0].r;
-				rows[1].r == rhs.rows[1].r;
-			}
-			return true;
+			return vec3(
+				dot(lhs, vec3(rhs.column(0), 0)),
+				dot(lhs, vec3(rhs.column(0), 0)),
+				lhs.z);
 		}
 
-		inline bool operator!= (const mat32& rhs) const { return !(*this == rhs); }
+		friend inline mat32& operator*= (mat32& lhs, const mat32& rhs)
+		{
+			return (lhs = lhs * rhs);
+		}
 
-		inline float& operator[] (unsigned int index)
+		friend constexpr bool operator== (const mat32& lhs, const mat32& rhs)
+		{
+			return &rhs == &lhs ||
+				(lhs.rows[0].r == rhs.rows[0].r &&
+					lhs.rows[1].r == rhs.rows[1].r);
+		}
+
+		friend constexpr bool operator!= (const mat32& lhs, const mat32& rhs)
+		{
+			return !(lhs == rhs);
+		}
+
+		//hack
+		inline float& operator[] (int index)
 		{
 			return const_cast<float&>(const_cast<const mat32*>(this)->operator[](index));
 		}
 
-		inline const float& operator[] (unsigned int index) const
+		constexpr const float& operator[] (int index) const
 		{
-			assert(index >= 0 && index < 6);
-			if (index > 2) index++;
-			return *(&(m[0][0]) + index);
+			return (index < 0 || index >= 6) ? m[0][0] :
+				(index <= 2 ? *(&(m[0][0]) + index) : *(&(m[0][0]) + index + 1));
 		}
 
-		inline vec3& row(unsigned int index)
+		inline vec3& row(int index)
 		{
 			return const_cast<vec3&>(const_cast<const mat32*>(this)->row(index));
 		}
 
-		inline const vec3& row(unsigned int index) const
+		constexpr const vec3& row(int index) const
 		{
-			assert(index >= 0 && index < 2);
-			return rows[index].r;
+			return (index < 0 || index >= 2) ?
+				rows[0].r : rows[index].r;
 		}
 
-		inline vec2 column(unsigned int index) const
+		constexpr vec2 column(int index) const
 		{
-			assert(index >= 0 && index < 3);
-			return vec2(m[0][index], m[1][index]);
+			return (index < 0 || index >= 3) ?
+				vec2(m[0][0], m[1][0]) :
+				vec2(m[0][index], m[1][index]);
 		}
 
-		inline void set_column(unsigned int index, vec2 v)
+		inline void set_column(int index, vec2 v)
 		{
-			assert(index >= 0 && index < 2);
-			for (int i = 0; i < 2; i++)
+			if (index >= 0 && index < 2)
 			{
-				m[i][index] = v[i];
+				for (int i = 0; i < 2; i++)
+				{
+					m[i][index] = v[i];
+				}
 			}
 		}
 
-		inline void identity() { *this = I(); }
+		inline void identity()
+		{
+			*this = I();
+		}
 	};
 
-
-	//matrix32
-	inline vec2 transform_vector(const mat32& lhs, const vec2& rhs)
+	constexpr vec2 transform_vector(const mat32& lhs, const vec2& rhs)
 	{
-		vec2 result;
-		vec3 rhs3(rhs, 0);
-		for (int i = 0; i < 2; i++)
-		{
-			result[i] = dot(lhs.rows[i].r, rhs3);
-		}
-		return result;
+		return vec2(
+			dot(lhs.rows[0].r, vec3(rhs, 0)),
+			dot(lhs.rows[1].r, vec3(rhs, 0)));
 	}
 
-	inline vec2 transform_point(const mat32& lhs, const vec2& rhs)
+	constexpr vec2 transform_point(const mat32& lhs, const vec2& rhs)
 	{
-		vec2 result;
-		vec3 rhs3(rhs, 1);
-		for (int i = 0; i < 2; i++)
-		{
-			result[i] = dot(lhs.rows[i].r, rhs3);
-		}
-		return result;
+		return vec2(
+			dot(lhs.rows[0].r, vec3(rhs, 1)),
+			dot(lhs.rows[1].r, vec3(rhs, 1)));
 	}
-
 }
 
 namespace gml
 {
-
 	class mat33
 	{
 	public:
@@ -619,7 +585,7 @@ namespace gml
 				);
 		}
 
-		inline static mat33 scale(float scaler)
+		constexpr static mat33 scale(float scaler)
 		{
 			return mat33(
 				scaler, 0, 0,
@@ -628,7 +594,7 @@ namespace gml
 				);
 		}
 
-		inline static mat33 scale(float sx, float sy, float sz)
+		constexpr static mat33 scale(float sx, float sy, float sz)
 		{
 			return mat33(
 				sx, 0, 0,
@@ -637,7 +603,7 @@ namespace gml
 				);
 		}
 
-		inline static mat33 flip_x()
+		constexpr static mat33 flip_x()
 		{
 			return mat33(
 				-1, 0, 0,
@@ -646,7 +612,7 @@ namespace gml
 				);
 		}
 
-		inline static mat33 flip_y()
+		constexpr static mat33 flip_y()
 		{
 			return mat33(
 				1, 0, 0,
@@ -655,7 +621,7 @@ namespace gml
 				);
 		}
 
-		inline static mat33 flip_z()
+		constexpr static mat33 flip_z()
 		{
 			return mat33(
 				1, 0, 0,
@@ -699,108 +665,103 @@ namespace gml
 		{
 			if (&rhs != this)
 			{
-				for (int i = 0; i < 9; i++)
-				{
-					(*this)[i] = rhs[i];
-				}
+				row[0] = rhs.row[0];
+				row[1] = rhs.row[1];
+				row[2] = rhs.row[2];
 			}
 			return *this;
 		}
 
-		inline mat33 operator* (float scaler) const
+		friend constexpr mat33 operator* (const mat33& lhs, float rhs)
 		{
-			mat33 result(*this);
-			result *= scaler;
-			return result;
+			return mat33(lhs.row[0] * rhs, lhs.row[1] * rhs, lhs.row[2] * rhs);
 		}
 
-		inline mat33 operator* (const mat33& rhs) const
+		friend constexpr mat33 operator* (float lhs, const mat33& rhs)
 		{
-			mat33 result(*this);
-			result *= rhs;
-			return result;
+			return rhs * lhs;
 		}
 
-		inline vec3 operator* (const vec3& rhs) const
+		friend constexpr mat33 operator* (const mat33& lhs, const mat33& rhs)
 		{
-			vec3 result;
-			for (int i = 0; i < 3; i++)
-			{
-				result[i] = dot(row[i], rhs);
-			}
-			return result;
+			return mat33(
+				dot(lhs.row[0], rhs.column(0)), dot(lhs.row[0], rhs.column(1)), dot(lhs.row[0], rhs.column(2)),
+				dot(lhs.row[1], rhs.column(0)), dot(lhs.row[1], rhs.column(1)), dot(lhs.row[1], rhs.column(2)),
+				dot(lhs.row[2], rhs.column(0)), dot(lhs.row[2], rhs.column(1)), dot(lhs.row[2], rhs.column(2)));
 		}
 
-		inline mat33& operator*= (float scaler)
+		friend constexpr vec3 operator* (const mat33& lhs, const vec3& rhs)
 		{
-			for (int i = 0; i < 4; i++)
-			{
-				(*this)[i] *= scaler;
-			}
-			return *this;
+			return vec3(dot(lhs.row[0], rhs), dot(lhs.row[1], rhs), dot(lhs.row[2], rhs));
 		}
 
-		inline mat33& operator*=(const mat33& rhs)
+		friend constexpr vec3 operator* (const vec3& lhs, const mat33& rhs)
 		{
-			mat33 copy(*this);
-			for (int i = 0; i < 3; i++)
-			{
-				for (int j = 0; j < 3; j++)
-				{
-					m[i][j] = dot(copy.row[i], rhs.column(j));
-				}
-			}
-			return *this;
+			return vec3(dot(lhs, rhs.column(0)), dot(lhs, rhs.column(1)), dot(lhs, rhs.column(2)));
 		}
 
-		inline bool operator== (const mat33& rhs) const
+		friend inline mat33& operator*= (mat33& lhs, float rhs)
 		{
-			if (&rhs != this)
-			{
-				for (int i = 0; i < 4; i++)
-				{
-					if ((*this)[i] != rhs[i])
-						return false;
-				}
-			}
-			return true;
+			return (lhs = lhs * rhs);
 		}
 
-		inline bool operator!= (const mat33& rhs) const { return !(*this == rhs); }
+		friend inline mat33& operator*= (mat33& lhs, const mat33& rhs)
+		{
+			return (lhs = lhs * rhs);
+		}
+
+		friend constexpr bool operator== (const mat33& lhs, const mat33& rhs)
+		{
+			return &rhs == &lhs ||
+				(lhs.row[0] == rhs.row[0] &&
+					lhs.row[1] == rhs.row[1] &&
+					lhs.row[2] == rhs.row[2]);
+		}
+
+		friend constexpr bool operator!= (const mat33& lhs, const mat33& rhs)
+		{
+			return !(lhs == rhs);
+		}
 
 		inline float& operator[] (int index)
 		{
 			return const_cast<float&>(const_cast<const mat33*>(this)->operator[](index));
 		}
 
-		inline const float& operator[] (int index) const
+		constexpr const float& operator[] (int index) const
 		{
-			assert(index >= 0 && index < 9);
-			return *(&(m[0][0]) + index);
+			return (index >= 0 && index < 9) ?
+				*(&(m[0][0]) + index) :
+				m[0][0];
 		}
 
-		inline vec3 column(int index) const
+		constexpr vec3 column(int index) const
 		{
-			assert(index >= 0 && index < 3);
-			return vec3(m[0][index], m[1][index], row[2][index]);
+			return (index >= 0 && index < 3) ?
+				vec3(m[0][index], m[1][index], row[2][index]) :
+				vec3(m[0][0], m[1][0], row[2][0]);
 		}
 
 		inline void set_column(int index, vec3 v)
 		{
-			assert(index >= 0 && index < 3);
-			for (int i = 0; i < 3; i++)
+			if (index >= 0 && index < 3)
 			{
-				m[i][index] = v[i];
+				for (int i = 0; i < 3; i++)
+				{
+					m[i][index] = v[i];
+				}
 			}
 		}
 
-		inline void identity() { *this = I(); }
+		inline void identity()
+		{
+			*this = I();
+		}
 
 		inline void transpose()
 		{
 			swap(this->_10, this->_01);
 			swap(this->_20, this->_02);
-
 			swap(this->_21, this->_12);
 		}
 
@@ -811,17 +772,9 @@ namespace gml
 			return result;
 		}
 
-		inline bool can_invert() const
+		constexpr bool can_invert() const
 		{
-			if (is_orthogonal())
-			{
-				return true;
-			}
-			else
-			{
-				float det = determinant();
-				return !fequal(det, 0.0f);
-			}
+			return is_orthogonal() || !fequal(determinant(), 0.0f);
 		}
 
 		inline void inverse()
@@ -868,25 +821,17 @@ namespace gml
 			return result;
 		}
 
-		inline bool is_orthogonal() const
+		constexpr bool is_orthogonal() const
 		{
-			for (int i = 0; i < 3; i++)
-			{
-				if (!fequal(row[i].length_sqr(), 1.0f))
-				{
-					return false;
-				}
-
-				for (int j = i + 1; j < 3; j++)
-				{
-					if (!fequal(dot(row[i], row[j]), 0.0f))
-						return false;
-				}
-			}
-			return false;
+			return fequal(row[0].length_sqr(), 1.0f) &&
+				fequal(row[1].length_sqr(), 1.0f) &&
+				fequal(row[2].length_sqr(), 1.0f) &&
+				fequal(dot(row[0], row[1]), 0.0f) &&
+				fequal(dot(row[1], row[2]), 0.0f) &&
+				fequal(dot(row[0], row[2]), 0.0f);
 		}
 
-		inline float determinant() const
+		constexpr float determinant() const
 		{
 			return gml_impl::determinant(
 				_00, _01, _02,
@@ -895,42 +840,18 @@ namespace gml
 		}
 	};
 
-	//matrix33
-	inline mat33 operator* (float scaler, const mat33& rhs)
-	{
-		return rhs * scaler;
-	}
-
-	inline vec3 operator* (const vec3& lhs, const mat33& rhs)
-	{
-		vec3 result;
-		for (int i = 0; i < 3; i++)
-		{
-			result[i] = dot(lhs, rhs.column(i));
-		}
-		return result;
-	}
-
 	inline vec2 transform_vector(const mat33& lhs, const vec2& rhs)
 	{
-		vec2 result;
-		vec3 rhs3(rhs, 0);
-		for (int i = 0; i < 3; i++)
-		{
-			result[i] = dot(lhs.row[i], rhs3);
-		}
-		return result;
+		return vec2(
+			dot(lhs.row[0], vec3(rhs, 0)),
+			dot(lhs.row[1], vec3(rhs, 0)));
 	}
 
 	inline vec2 transform_point(const mat33& lhs, const vec2& rhs)
 	{
-		vec2 result;
-		vec3 rhs3(rhs, 1);
-		for (int i = 0; i < 3; i++)
-		{
-			result[i] = dot(lhs.row[i], rhs3);
-		}
-		return result;
+		return vec2(
+			dot(lhs.row[0], vec3(rhs, 1)),
+			dot(lhs.row[1], vec3(rhs, 1)));
 	}
 
 }
@@ -990,7 +911,7 @@ namespace gml {
 				);
 		}
 
-		inline static mat44 scale(float scale)
+		constexpr static mat44 scale(float scale)
 		{
 			return mat44(
 				scale, 0, 0, 0,
@@ -1000,7 +921,7 @@ namespace gml {
 				);
 		}
 
-		inline static mat44 scale(float sx, float sy, float sz)
+		constexpr static mat44 scale(float sx, float sy, float sz)
 		{
 			return mat44(
 				sx, 0, 0, 0,
@@ -1010,7 +931,7 @@ namespace gml {
 				);
 		}
 
-		inline static mat44 translate(float x, float y, float z)
+		constexpr static mat44 translate(float x, float y, float z)
 		{
 			return mat44(
 				1, 0, 0, x,
@@ -1020,8 +941,7 @@ namespace gml {
 				);
 		}
 
-		inline static mat44 flip_x()
-
+		constexpr static mat44 flip_x()
 		{
 			return mat44(
 				-1, 0, 0, 0,
@@ -1031,7 +951,7 @@ namespace gml {
 				);
 		}
 
-		inline static mat44 flip_y()
+		constexpr static mat44 flip_y()
 		{
 			return mat44(
 				1, 0, 0, 0,
@@ -1041,7 +961,7 @@ namespace gml {
 				);
 		}
 
-		inline static mat44 flip_z()
+		constexpr static mat44 flip_z()
 		{
 			return mat44(
 				1, 0, 0, 0,
@@ -1083,26 +1003,22 @@ namespace gml {
 			return rst;
 		}
 
-		inline static mat44 center_ortho_lh(float width, float height, float near, float far)
+		constexpr static mat44 center_ortho_lh(float width, float height, float near, float far)
 		{
-			float z_range = far - near;
-			mat44 rst(
+			return mat44(
 				2.0f / width, 0, 0, 0,
 				0, -2.0f / height, 0, 0,
-				0, 0, 1.0f / z_range, -near / z_range,
+				0, 0, 1.0f / (far - near), near / (near - far),
 				0, 0, 0, 1);
-			return rst;
 		}
 
-		inline static mat44 ortho2d_lh(float width, float height, float near, float far)
+		constexpr static mat44 ortho2d_lh(float width, float height, float near, float far)
 		{
-			float z_range = far - near;
-			mat44 rst(
+			return mat44(
 				2.0f / width, 0, 0, -1,
 				0, -2.0f / height, 0, 1,
-				0, 0, 1.0f / z_range, -near / z_range,
+				0, 0, 1.0f / (far - near), near / (near - far),
 				0, 0, 0, 1);
-			return rst;
 		}
 
 	public:
@@ -1113,116 +1029,113 @@ namespace gml {
 			struct { vec4 row[4]; };
 		};
 
-		constexpr mat44(){}
+		constexpr mat44() {}
 
-		inline mat44(float _00, float _01, float _02, float _03, float _10, float _11, float _12, float _13, float _20, float _21, float _22, float _23, float _30, float _31, float _32, float _33)
-		{
-			this->_00 = _00;	this->_01 = _01;	this->_02 = _02;	this->_03 = _03;
-			this->_10 = _10;	this->_11 = _11;	this->_12 = _12;	this->_13 = _13;
-			this->_20 = _20;	this->_21 = _21;	this->_22 = _22;	this->_23 = _23;
-			this->_30 = _30;	this->_31 = _31;	this->_32 = _32;	this->_33 = _33;
-		}
+		constexpr mat44(float _m00, float _m01, float _m02, float _m03,
+			float _m10, float _m11, float _m12, float _m13,
+			float _m20, float _m21, float _m22, float _m23,
+			float _m30, float _m31, float _m32, float _m33)
+			: _00(_m00), _01(_m01), _02(_m02), _03(_m03)
+			, _10(_m10), _11(_m11), _12(_m12), _13(_m13)
+			, _20(_m20), _21(_m21), _22(_m22), _23(_m23)
+			, _30(_m30), _31(_m31), _32(_m32), _33(_m33) { }
 
-		inline mat44(const vec4& row1, const vec4& row2, const vec4& row3, const vec4& row4)
-		{
-			this->row[0] = row1;
-			this->row[1] = row2;
-			this->row[2] = row3;
-			this->row[3] = row4;
-		}
+		constexpr mat44(const vec4& row1, const vec4& row2, const vec4& row3, const vec4& row4)
+			: _00(row1.x), _01(row1.y), _02(row1.z), _03(row1.w)
+			, _10(row2.x), _11(row2.y), _12(row2.z), _13(row2.w)
+			, _20(row3.x), _21(row3.y), _22(row3.z), _23(row3.w)
+			, _30(row4.x), _31(row4.y), _32(row4.z), _33(row4.w) { }
 
-		inline mat44(const mat44& other)
-		{
-			*this = other;
-		}
+		constexpr mat44(const mat44& m)
+			: _00(m._00), _01(m._01), _02(m._02), _03(m._03)
+			, _10(m._10), _11(m._11), _12(m._12), _13(m._13)
+			, _20(m._20), _21(m._21), _22(m._22), _23(m._23)
+			, _30(m._30), _31(m._31), _32(m._32), _33(m._33) { }
 
-		inline explicit mat44(const mat22& mat2)
-		{
-			row[0].set(mat2.row[0], 0, 0);
-			row[1].set(mat2.row[1], 0, 0);
-			row[2].set(0, 0, 1, 0);
-			row[3].set(0, 0, 0, 1);
-		}
+		constexpr explicit mat44(const mat22& mat2)
+			: _00(mat2._00), _01(mat2._01)
+			, _10(mat2._10), _11(mat2._11) { }
 
-		inline explicit mat44(const mat33& mat3)
-		{
-			row[0].set(mat3.row[0], 0);
-			row[1].set(mat3.row[1], 0);
-			row[2].set(mat3.row[2], 0);
-			row[3].set(0, 0, 0, 1);
-		}
+		constexpr explicit mat44(const mat33& mat3)
+			: _00(mat3._00), _01(mat3._01), _02(mat3._02)
+			, _10(mat3._10), _11(mat3._11), _12(mat3._12)
+			, _20(mat3._20), _21(mat3._21), _22(mat3._22) { }
 
 		inline mat44& operator=(const mat44& rhs)
 		{
-			for (int i = 0; i < 16; i++)
-			{
-				(*this)[i] = rhs[i];
-			}
-			return *this;
-		}
-
-		inline mat44 operator* (float scaler) const
-		{
-			mat44 result(*this);
-			result *= scaler;
-			return result;
-		}
-
-		inline mat44 operator* (const mat44& rhs) const
-		{
-			mat44 result(*this);
-			result *= rhs;
-			return result;
-		}
-
-		inline vec4 operator* (const vec4& rhs) const
-		{
-			vec4 result;
-			for (int i = 0; i < 4; i++)
-			{
-				result[i] = dot(row[i], rhs);
-			}
-			return result;
-		}
-
-		inline mat44& operator*= (float scaler)
-		{
-			for (int i = 0; i < 4; i++)
-			{
-				(*this)[i] *= scaler;
-			}
-			return *this;
-		}
-
-		inline mat44& operator*=(const mat44& rhs)
-		{
-			mat44 copy(*this);
-			for (int i = 0; i < 4; i++)
-			{
-				for (int j = 0; j < 4; j++)
-				{
-					m[i][j] = dot(copy.row[i], rhs.column(j));
-				}
-			}
-			return *this;
-		}
-
-		inline bool operator== (const mat44& rhs) const
-		{
 			if (&rhs != this)
 			{
-				for (int i = 0; i < 4; i++)
-				{
-					if ((*this)[i] != rhs[i])
-						return false;
-				}
+				row[0] = rhs.row[0];
+				row[1] = rhs.row[1];
+				row[2] = rhs.row[2];
+				row[4] = rhs.row[4];
 			}
-			return true;
+			return *this;
 		}
 
-		inline bool operator!= (const mat44& rhs) const
+		friend constexpr mat44 operator* (const mat44& lhs, float rhs)
 		{
-			return !(*this == rhs);
+			return mat44(
+				lhs.row[0] * rhs,
+				lhs.row[1] * rhs,
+				lhs.row[2] * rhs,
+				lhs.row[3] * rhs);
+		}
+
+		friend constexpr mat44 operator* (float lhs, const mat44& rhs)
+		{
+			return rhs * lhs;
+		}
+
+		friend constexpr mat44 operator* (const mat44& lhs, const mat44& rhs)
+		{
+			return mat44(
+				dot(lhs.row[0], rhs.column(0)), dot(lhs.row[0], rhs.column(1)), dot(lhs.row[0], rhs.column(2)), dot(lhs.row[0], rhs.column(3)),
+				dot(lhs.row[1], rhs.column(0)), dot(lhs.row[1], rhs.column(1)), dot(lhs.row[1], rhs.column(2)), dot(lhs.row[1], rhs.column(3)),
+				dot(lhs.row[2], rhs.column(0)), dot(lhs.row[2], rhs.column(1)), dot(lhs.row[2], rhs.column(2)), dot(lhs.row[2], rhs.column(3)),
+				dot(lhs.row[3], rhs.column(0)), dot(lhs.row[3], rhs.column(1)), dot(lhs.row[3], rhs.column(2)), dot(lhs.row[3], rhs.column(3)));
+		}
+
+		friend constexpr vec4 operator* (const mat44& lhs, const vec4& rhs)
+		{
+			return vec4(
+				dot(lhs.row[0], rhs),
+				dot(lhs.row[1], rhs),
+				dot(lhs.row[2], rhs),
+				dot(lhs.row[3], rhs));
+		}
+
+		friend constexpr vec4 operator* (const vec4& lhs, const mat44& rhs)
+		{
+			return vec4(
+				dot(lhs, rhs.column(0)),
+				dot(lhs, rhs.column(1)),
+				dot(lhs, rhs.column(2)),
+				dot(lhs, rhs.column(3)));
+		}
+
+		friend inline mat44& operator*= (mat44& lhs, float rhs)
+		{
+			return (lhs = lhs * rhs);
+		}
+
+		friend inline mat44& operator*= (mat44& lhs, const mat44& rhs)
+		{
+			return (lhs = lhs * rhs);
+		}
+
+		friend constexpr bool operator== (const mat44& lhs, const mat44& rhs)
+		{
+			return &rhs == &lhs ||
+				(lhs.row[0] == rhs.row[0] &&
+					lhs.row[1] == rhs.row[1] &&
+					lhs.row[2] == rhs.row[2] &&
+					lhs.row[3] == rhs.row[3]);
+		}
+
+		friend constexpr bool operator!= (const mat44& lhs, const mat44& rhs)
+		{
+			return !(lhs == rhs);
 		}
 
 		inline float& operator[] (int index)
@@ -1230,24 +1143,27 @@ namespace gml {
 			return const_cast<float&>(const_cast<const mat44*>(this)->operator[](index));
 		}
 
-		inline const float& operator[] (int index) const
+		constexpr const float& operator[] (int index) const
 		{
-			assert(index >= 0 && index < 16);
-			return *(&(m[0][0]) + index);
+			return (index >= 0 && index < 16) ?
+				*(&(m[0][0]) + index) : m[0][0];
 		}
 
-		inline vec4 column(int index) const
+		constexpr vec4 column(int index) const
 		{
-			assert(index >= 0 && index < 4);
-			return vec4(m[0][index], m[1][index], m[2][index], m[3][index]);
+			return (index >= 0 && index < 4) ?
+				vec4(m[0][index], m[1][index], m[2][index], m[3][index]) :
+				vec4(m[0][0], m[1][0], m[2][0], m[3][0]);
 		}
 
 		inline void set_column(int index, vec4 v)
 		{
-			assert(index >= 0 && index < 4);
-			for (int i = 0; i < 4; i++)
+			if (index >= 0 && index < 4)
 			{
-				m[i][index] = v[i];
+				for (int i = 0; i < 4; i++)
+				{
+					m[i][index] = v[i];
+				}
 			}
 		}
 
@@ -1272,17 +1188,9 @@ namespace gml {
 			return result;
 		}
 
-		inline bool can_invert() const
+		constexpr bool can_invert() const
 		{
-			if (is_orthogonal())
-			{
-				return true;
-			}
-			else
-			{
-				float det = determinant();
-				return !fequal(det, 0.0f);
-			}
+			return is_orthogonal() || !fequal(determinant(), 0.0f);
 		}
 
 		inline void inverse()
@@ -1337,25 +1245,21 @@ namespace gml {
 			return result;
 		}
 
-		inline bool is_orthogonal() const
+		constexpr bool is_orthogonal() const
 		{
-			for (int i = 0; i < 4; i++)
-			{
-				if (!fequal(row[i].length_sqr(), 1.0f))
-				{
-					return false;
-				}
-
-				for (int j = i + 1; j < 4; j++)
-				{
-					if (!fequal(dot(row[i], row[j]), 0.0f))
-						return false;
-				}
-			}
-			return false;
+			return fequal(row[0].length_sqr(), 1.0f) &&
+				fequal(row[1].length_sqr(), 1.0f) &&
+				fequal(row[2].length_sqr(), 1.0f) &&
+				fequal(row[3].length_sqr(), 1.0f) &&
+				fequal(dot(row[0], row[1]), 0.0f) &&
+				fequal(dot(row[1], row[2]), 0.0f) &&
+				fequal(dot(row[2], row[3]), 0.0f) &&
+				fequal(dot(row[0], row[2]), 0.0f) &&
+				fequal(dot(row[1], row[3]), 0.0f) &&
+				fequal(dot(row[0], row[3]), 0.0f);
 		}
 
-		inline float determinant() const
+		constexpr float determinant() const
 		{
 			return gml_impl::determinant(
 				_00, _01, _02, _03,
@@ -1365,42 +1269,20 @@ namespace gml {
 		}
 	};
 
-	//matrix44
-	inline mat44 operator* (float scaler, const mat44& rhs)
-	{
-		return rhs * scaler;
-	}
-
-	inline vec4 operator* (const vec4& lhs, const mat44& rhs)
-	{
-		vec4 result;
-		for (int i = 0; i < 4; i++)
-		{
-			result[i] = dot(lhs, rhs.column(i));
-		}
-		return result;
-	}
-
 	inline vec3 transform_vector(const mat44& lhs, const vec3& rhs)
 	{
-		vec3 result;
-		vec4 rhs4(rhs, 0);
-		for (int i = 0; i < 3; i++)
-		{
-			result[i] = dot(lhs.row[i], rhs4);
-		}
-		return result;
+		return vec3(
+			dot(lhs.row[0], vec4(rhs, 0)),
+			dot(lhs.row[1], vec4(rhs, 0)),
+			dot(lhs.row[2], vec4(rhs, 0)));
 	}
 
-	inline vec3 transform_point(const mat44& lhs, const vec3& rhs)
+	constexpr vec3 transform_point(const mat44& lhs, const vec3& rhs)
 	{
-		vec3 result;
-		vec4 rhs4(rhs, 1);
-		for (int i = 0; i < 3; i++)
-		{
-			result[i] = dot(lhs.row[i], rhs4);
-		}
-		return result;
+		return vec3(
+			dot(lhs.row[0], vec4(rhs, 1)),
+			dot(lhs.row[1], vec4(rhs, 1)),
+			dot(lhs.row[2], vec4(rhs, 1)));
 	}
 }
 
