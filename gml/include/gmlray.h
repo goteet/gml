@@ -6,19 +6,23 @@ namespace gml
 	class ray
 	{
 	public:
-		inline const vec3& origin() const { return m_origin; }
+		constexpr const vec3& origin() const { return m_origin; }
 
-		inline const vec3& direction() const { return m_dir; }
+		constexpr const vec3& direction() const { return m_dir; }
 
-		void set_origin(float x, float y, float z);
+		inline void set_origin(float x, float y, float z) { m_origin.set(x, y, z); }
 
-		void set_origin(const vec3& origin);
+		inline void set_origin(const vec3& origin) { m_origin = origin; }
 
-		void set_dir(float x, float y, float z);
+		inline void set_dir(float x, float y, float z)
+		{
+			m_dir.set(x, y, z);
+			m_dir.normalize();
+		}
 
-		void set_dir(const vec3& dir);
+		inline void set_dir(const vec3& dir) { m_dir = dir.normalized(); }
 
-		vec3 get_pos_by_len(float length) const;
+		constexpr vec3 get_pos_by_len(float length) const { return m_origin + m_dir * length; }
 
 	private:
 		vec3 m_origin;

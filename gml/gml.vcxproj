@@ -43,7 +43,6 @@
     <ClCompile Include="source\matrix32.cpp" />
     <ClCompile Include="source\matrix33.cpp" />
     <ClCompile Include="source\matrix44.cpp" />
-    <ClCompile Include="source\ray.cpp" />
     <ClCompile Include="source\rect.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

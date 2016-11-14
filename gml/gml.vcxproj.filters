@@ -55,9 +55,6 @@
     <ClCompile Include="source\matrix33.cpp">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="source\ray.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
     <ClCompile Include="source\aabb.cpp">
       <Filter>source</Filter>
     </ClCompile>
