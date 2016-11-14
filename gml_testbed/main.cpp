@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include <gmlvector.h>
 #include <gmlmatrix.h>
 #include <gmlcolor.h>
