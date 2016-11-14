@@ -22,13 +22,21 @@ namespace gml
 
 		constexpr degree(radian r);
 
-		friend constexpr bool operator==(degree l, degree r)
+		friend inline bool operator==(degree l, degree r)
 		{
-			return l.value == r.value;
+			if (&l == &r)
+			{
+				return true;
+			}
+			else
+			{
+				return fequal(l.value, r.value);
+			}
 		}
-		friend constexpr bool operator!=(degree l, degree r)
+
+		friend inline bool operator!=(degree l, degree r)
 		{
-			return l.value != r.value;
+			return !(l == r);
 		}
 		friend constexpr bool operator<(degree l, degree r)
 		{

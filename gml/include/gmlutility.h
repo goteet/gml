@@ -79,23 +79,17 @@ namespace gml
 	}
 
 	template<typename T>
-	inline T clamp01(T value)
+	constexpr T clamp01(T value)
 	{
-		if (value < T(0))
-			return T(0);
-		else if (value > T(1))
-			return T(1);
-		return value;
+		return (value < T(0)) ? T(0) :
+			((value > T(1)) ? T(1) : value);
 	}
 
 	template<typename T>
-	inline T clamp(T value, T minValue, T maxValue)
+	constexpr T clamp(T value, T minValue, T maxValue)
 	{
-		if (value < T(minValue))
-			return T(minValue);
-		else if (value > T(maxValue))
-			return T(maxValue);
-		return value;
+		return (value < T(minValue)) ? T(minValue) :
+			((value > T(maxValue)) ? T(maxValue) : value);
 	}
 
 	enum it_mode

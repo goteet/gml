@@ -410,6 +410,8 @@ namespace gml
 
 		friend inline bool operator!=(const vec4& lhs, const vec4& rhs) { return !(lhs == rhs); }
 
+		friend constexpr vec4 operator*(const vec4& lhs, const vec4& rhs) { return vec4(lhs.x * rhs.x, lhs.y * rhs.y, lhs.z * rhs.z, lhs.w * rhs.w); }
+
 		//hack
 		inline float& operator[](int index) { return const_cast<float&>(const_cast<const vec4*>(this)->operator[](index)); }
 
@@ -418,8 +420,6 @@ namespace gml
 			assert(index >= 0 && index < 4);
 			return (index < 0 || index >= 4) ? x : *(&x + index);
 		}
-
-		friend constexpr vec4 operator*(const vec4& lhs, const vec4& rhs) { return vec4(lhs.x * rhs.x, lhs.y * rhs.y, lhs.z * rhs.z, lhs.w * rhs.w); }
 
 		inline explicit operator float*() { return const_cast<float*>(const_cast<const vec4*>(this)->operator const float*()); }
 
