@@ -34,7 +34,6 @@
   <ItemGroup>
     <ClCompile Include="source\aabb.cpp" />
     <ClCompile Include="source\aabb2d.cpp" />
-    <ClCompile Include="source\angle.cpp" />
     <ClCompile Include="source\color3.cpp" />
     <ClCompile Include="source\color4.cpp" />
     <ClCompile Include="source\convertion.cpp" />

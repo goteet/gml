@@ -1,6 +1,7 @@
 #pragma once
 
 #include <gmlutility.h>
+#include <cmath>
 
 namespace gml
 {
@@ -165,9 +166,9 @@ namespace gml
 		}
 	};
 
-	float cos(const radian&);
+	inline float cos(const radian& r) { return cosf(r.value); }
 
-	float sin(const radian&);
+	inline float sin(const radian& r) { return sinf(r.value); }
 
 	// definition of radian is after degree.
 	constexpr degree::degree(radian r) : value(r.value * r2d_factor) { }
