@@ -38,5 +38,11 @@
     <ClCompile Include="RectTest.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Color3Test.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Color4Test.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
