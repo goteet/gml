@@ -573,23 +573,97 @@ namespace gml
 	class mat33
 	{
 	public:
-		static const mat33& I();
+		inline static const mat33& I()
+		{
+			static mat33 i(
+				1.0f, 0.0f, 0.0f,
+				0.0f, 1.0f, 0.0f,
+				0.0f, 0.0f, 1.0f
+				);
+			return i;
+		}
 
-		static mat33 rotate_x(const radian& r);
+		inline static mat33 rotate_x(const radian& r)
+		{
+			float cosr = gml::cos(r);
+			float sinr = gml::sin(r);
 
-		static mat33 rotate_y(const radian& r);
+			return mat33(
+				1, 0, 0,
+				0, cosr, -sinr,
+				0, sinr, cosr
+				);
+		}
 
-		static mat33 rotate_z(const radian& r);
+		inline static mat33 rotate_y(const radian& r)
+		{
+			float cosr = gml::cos(r);
+			float sinr = gml::sin(r);
 
-		static mat33 scale(float scale);
+			return mat33(
+				cosr, 0, -sinr,
+				0, 1, 0,
+				sinr, 0, cosr
+				);
+		}
 
-		static mat33 scale(float sx, float sy, float sz);
+		inline static mat33 rotate_z(const radian& r)
+		{
+			float cosr = gml::cos(r);
+			float sinr = gml::sin(r);
 
-		static mat33 flip_x();
+			return mat33(
+				cosr, -sinr, 0,
+				sinr, cosr, 0,
+				0, 0, 1
+				);
+		}
 
-		static mat33 flip_y();
+		inline static mat33 scale(float scaler)
+		{
+			return mat33(
+				scaler, 0, 0,
+				0, scaler, 0,
+				0, 0, scaler
+				);
+		}
 
-		static mat33 flip_z();
+		inline static mat33 scale(float sx, float sy, float sz)
+		{
+			return mat33(
+				sx, 0, 0,
+				0, sy, 0,
+				0, 0, sz
+				);
+		}
+
+		inline static mat33 flip_x()
+		{
+			return mat33(
+				-1, 0, 0,
+				0, 1, 0,
+				0, 0, 1
+				);
+		}
+
+		inline static mat33 flip_y()
+		{
+			return mat33(
+				1, 0, 0,
+				0, -1, 0,
+				0, 0, 1
+				);
+		}
+
+		inline static mat33 flip_z()
+		{
+			return mat33(
+				1, 0, 0,
+				0, 1, 0,
+				0, 0, -1
+				);
+		}
+
 	public:
 		union
 		{
@@ -598,105 +672,438 @@ namespace gml
 			struct { vec3 row[3]; };
 		};
 
-		mat33();
+		constexpr mat33() { }
 
-		mat33(float _00, float _01, float _02, float _10, float _11, float _12, float _20, float _21, float _22);
+		constexpr mat33(float _m00, float _m01, float _m02, float _m10, float _m11, float _m12, float _m20, float _m21, float _m22)
+			: _00(_m00), _01(_m01), _02(_m02)
+			, _10(_m10), _11(_m11), _12(_m12)
+			, _20(_m20), _21(_m21), _22(_m22) { }
 
-		mat33(const vec3& row1, const vec3& row2, const vec3& row3);
+		constexpr mat33(const vec3& row1, const vec3& row2, const vec3& row3)
+			: _00(row1.x), _01(row1.y), _02(row1.z)
+			, _10(row2.x), _11(row2.y), _12(row2.z)
+			, _20(row3.x), _21(row3.y), _22(row3.z) { }
 
-		mat33(const mat33& other);
+		constexpr mat33(const mat33& m)
+			: _00(m._00), _01(m._01), _02(m._02)
+			, _10(m._10), _11(m._11), _12(m._12)
+			, _20(m._20), _21(m._21), _22(m._22) { }
 
-		explicit mat33(const mat22&);
+		constexpr explicit mat33(const mat22& m)
+			: _00(m._00), _01(m._01)
+			, _10(m._10), _11(m._11) { }
 
-		explicit mat33(const mat44&);
+		constexpr explicit mat33(const mat44& m);
 
-		mat33& operator=(const mat33& rhs);
+		inline mat33& operator=(const mat33& rhs)
+		{
+			if (&rhs != this)
+			{
+				for (int i = 0; i < 9; i++)
+				{
+					(*this)[i] = rhs[i];
+				}
+			}
+			return *this;
+		}
 
-		mat33 operator* (float scaler) const;
+		inline mat33 operator* (float scaler) const
+		{
+			mat33 result(*this);
+			result *= scaler;
+			return result;
+		}
 
-		mat33 operator* (const mat33& rhs) const;
+		inline mat33 operator* (const mat33& rhs) const
+		{
+			mat33 result(*this);
+			result *= rhs;
+			return result;
+		}
 
-		vec3 operator* (const vec3& rhs) const;
+		inline vec3 operator* (const vec3& rhs) const
+		{
+			vec3 result;
+			for (int i = 0; i < 3; i++)
+			{
+				result[i] = dot(row[i], rhs);
+			}
+			return result;
+		}
 
-		mat33& operator*= (float scaler);
+		inline mat33& operator*= (float scaler)
+		{
+			for (int i = 0; i < 4; i++)
+			{
+				(*this)[i] *= scaler;
+			}
+			return *this;
+		}
 
-		mat33& operator*=(const mat33& rhs);
+		inline mat33& operator*=(const mat33& rhs)
+		{
+			mat33 copy(*this);
+			for (int i = 0; i < 3; i++)
+			{
+				for (int j = 0; j < 3; j++)
+				{
+					m[i][j] = dot(copy.row[i], rhs.column(j));
+				}
+			}
+			return *this;
+		}
 
-		bool operator== (const mat33& rhs) const;
+		inline bool operator== (const mat33& rhs) const
+		{
+			if (&rhs != this)
+			{
+				for (int i = 0; i < 4; i++)
+				{
+					if ((*this)[i] != rhs[i])
+						return false;
+				}
+			}
+			return true;
+		}
 
-		bool operator!= (const mat33& rhs) const;
+		inline bool operator!= (const mat33& rhs) const { return !(*this == rhs); }
 
-		float& operator[] (int index);
+		inline float& operator[] (int index)
+		{
+			return const_cast<float&>(const_cast<const mat33*>(this)->operator[](index));
+		}
 
-		const float& operator[] (int index) const;
+		inline const float& operator[] (int index) const
+		{
+			assert(index >= 0 && index < 9);
+			return *(&(m[0][0]) + index);
+		}
 
-		vec3 column(int index) const;
+		inline vec3 column(int index) const
+		{
+			assert(index >= 0 && index < 3);
+			return vec3(m[0][index], m[1][index], row[2][index]);
+		}
 
-		void set_column(int index, vec3);
+		inline void set_column(int index, vec3 v)
+		{
+			assert(index >= 0 && index < 3);
+			for (int i = 0; i < 3; i++)
+			{
+				m[i][index] = v[i];
+			}
+		}
 
-		void identity();
+		inline void identity() { *this = I(); }
 
-		void transpose();
+		inline void transpose()
+		{
+			swap(this->_10, this->_01);
+			swap(this->_20, this->_02);
 
-		mat33 transposed() const;
+			swap(this->_21, this->_12);
+		}
 
-		bool can_invert() const;
+		inline mat33 transposed() const
+		{
+			mat33 result(*this);
+			result.transpose();
+			return result;
+		}
 
-		void inverse();
+		inline bool can_invert() const
+		{
+			if (is_orthogonal())
+			{
+				return true;
+			}
+			else
+			{
+				float det = determinant();
+				return !fequal(det, 0.0f);
+			}
+		}
 
-		mat33 inversed() const;
+		inline void inverse()
+		{
+			if (is_orthogonal())
+			{
+				transpose();
+			}
+			else
+			{
+				float det = determinant();
+				if (!fequal(det, 0.0f))
+				{
+					det = 1.0f / det;
+					mat33 copy(*this);
 
-		bool is_orthogonal() const;
+					//to-do det_impl is calculated above in determinant().
+					//try to gcd
+					m[0][0] = +gml_impl::determinant(copy._11, copy._12, copy._21, copy._22) * det;
+					m[1][0] = -gml_impl::determinant(copy._10, copy._12, copy._20, copy._22) * det;
+					m[2][0] = +gml_impl::determinant(copy._10, copy._11, copy._20, copy._21) * det;
 
-		float determinant() const;
+					m[0][1] = -gml_impl::determinant(copy._01, copy._02, copy._21, copy._22) * det;
+					m[1][1] = +gml_impl::determinant(copy._00, copy._02, copy._20, copy._22) * det;
+					m[2][1] = -gml_impl::determinant(copy._00, copy._01, copy._20, copy._21) * det;
+
+					m[0][2] = +gml_impl::determinant(copy._01, copy._02, copy._11, copy._12) * det;
+					m[1][2] = -gml_impl::determinant(copy._00, copy._02, copy._10, copy._12) * det;
+					m[2][2] = +gml_impl::determinant(copy._00, copy._01, copy._10, copy._11) * det;
+				}
+				else
+				{
+					//TODO:
+					// can not invert here,
+					// what should i do when this occur ?
+				}
+			}
+		}
+
+		inline mat33 inversed() const
+		{
+			mat33 result(*this);
+			result.inverse();
+			return result;
+		}
+
+		inline bool is_orthogonal() const
+		{
+			for (int i = 0; i < 3; i++)
+			{
+				if (!fequal(row[i].length_sqr(), 1.0f))
+				{
+					return false;
+				}
+
+				for (int j = i + 1; j < 3; j++)
+				{
+					if (!fequal(dot(row[i], row[j]), 0.0f))
+						return false;
+				}
+			}
+			return false;
+		}
+
+		inline float determinant() const
+		{
+			return gml_impl::determinant(
+				_00, _01, _02,
+				_10, _11, _12,
+				_20, _21, _22);
+		}
 	};
 
-
-
 	//matrix33
-	mat33 operator* (float scaler, const mat33& rhs);
+	inline mat33 operator* (float scaler, const mat33& rhs)
+	{
+		return rhs * scaler;
+	}
 
-	vec3 operator* (const vec3& lhs, const mat33& rhs);
+	inline vec3 operator* (const vec3& lhs, const mat33& rhs)
+	{
+		vec3 result;
+		for (int i = 0; i < 3; i++)
+		{
+			result[i] = dot(lhs, rhs.column(i));
+		}
+		return result;
+	}
 
-	vec2 transform_vector(const mat33& lhs, const vec2& rhs);
+	inline vec2 transform_vector(const mat33& lhs, const vec2& rhs)
+	{
+		vec2 result;
+		vec3 rhs3(rhs, 0);
+		for (int i = 0; i < 3; i++)
+		{
+			result[i] = dot(lhs.row[i], rhs3);
+		}
+		return result;
+	}
 
-	vec2 transform_point(const mat33& lhs, const vec2& rhs);
+	inline vec2 transform_point(const mat33& lhs, const vec2& rhs)
+	{
+		vec2 result;
+		vec3 rhs3(rhs, 1);
+		for (int i = 0; i < 3; i++)
+		{
+			result[i] = dot(lhs.row[i], rhs3);
+		}
+		return result;
+	}
 
 }
-
 
 namespace gml {
 
 	class mat44
 	{
 	public:
-		static const mat44& I();
+		inline static const mat44& I()
+		{
+			static mat44 i(
+				1.0f, 0.0f, 0.0f, 0.0f,
+				0.0f, 1.0f, 0.0f, 0.0f,
+				0.0f, 0.0f, 1.0f, 0.0f,
+				0.0f, 0.0f, 0.0f, 1.0f
+				);
+			return i;
+		}
 
-		static mat44 rotate_x(const radian& r);
+		inline static mat44 rotate_x(const radian& r)
+		{
+			float cosr = gml::cos(r);
+			float sinr = gml::sin(r);
 
-		static mat44 rotate_y(const radian& r);
+			return mat44(
+				1, 0, 0, 0,
+				0, cosr, -sinr, 0,
+				0, sinr, cosr, 0,
+				0, 0, 0, 1
+				);
+		}
 
-		static mat44 rotate_z(const radian& r);
+		inline static mat44 rotate_y(const radian& r)
+		{
+			float cosr = gml::cos(r);
+			float sinr = gml::sin(r);
 
-		static mat44 scale(float scale);
+			return mat44(
+				cosr, 0, -sinr, 0,
+				0, 1, 0, 0,
+				sinr, 0, cosr, 0,
+				0, 0, 0, 1
+				);
+		}
 
-		static mat44 scale(float sx, float sy, float sz);
+		inline static mat44 rotate_z(const radian& r)
+		{
+			float cosr = gml::cos(r);
+			float sinr = gml::sin(r);
 
-		static mat44 translate(float x, float y, float z);
+			return mat44(
+				cosr, -sinr, 0, 0,
+				sinr, cosr, 0, 0,
+				0, 0, 1, 0,
+				0, 0, 0, 1
+				);
+		}
 
-		static mat44 flip_x();
+		inline static mat44 scale(float scale)
+		{
+			return mat44(
+				scale, 0, 0, 0,
+				0, scale, 0, 0,
+				0, 0, scale, 0,
+				0, 0, 0, 1
+				);
+		}
 
-		static mat44 flip_y();
+		inline static mat44 scale(float sx, float sy, float sz)
+		{
+			return mat44(
+				sx, 0, 0, 0,
+				0, sy, 0, 0,
+				0, 0, sz, 0,
+				0, 0, 0, 1
+				);
+		}
 
-		static mat44 flip_z();
+		inline static mat44 translate(float x, float y, float z)
+		{
+			return mat44(
+				1, 0, 0, x,
+				0, 1, 0, y,
+				0, 0, 1, z,
+				0, 0, 0, 1
+				);
+		}
 
-		static mat44 look_at(const vec3& eye, const vec3& look, const vec3& up);
+		inline static mat44 flip_x()
 
-		static mat44 perspective_lh(float fov, float aspect, float near, float far);
+		{
+			return mat44(
+				-1, 0, 0, 0,
+				0, 1, 0, 0,
+				0, 0, 1, 0,
+				0, 0, 0, 1
+				);
+		}
 
-		static mat44 center_ortho_lh(float width, float height, float near, float far);
+		inline static mat44 flip_y()
+		{
+			return mat44(
+				1, 0, 0, 0,
+				0, -1, 0, 0,
+				0, 0, 1, 0,
+				0, 0, 0, 1
+				);
+		}
 
-		static mat44 ortho2d_lh(float width, float height, float near, float far);
+		inline static mat44 flip_z()
+		{
+			return mat44(
+				1, 0, 0, 0,
+				0, 1, 0, 0,
+				0, 0, -1, 0,
+				0, 0, 0, 1
+				);
+		}
+
+		inline static mat44 look_at(const vec3& eye, const vec3& look, const vec3& up)
+		{
+			vec3 forward = (look - eye).normalized();
+			vec3 real_up = (up - forward * dot(forward, up.normalized())).normalized();
+			vec3 right = cross(real_up, forward).normalized();
+			mat44 rst(
+				vec4(right, -dot(eye, right)),
+				vec4(real_up, -dot(eye, real_up)),
+				vec4(forward, -dot(eye, forward)),
+				vec4(0, 0, 0, 1)
+				);
+
+			return rst;
+			//return rst.transpose();
+		}
+
+		inline static mat44 perspective_lh(float fov, float aspect, float near, float far)
+		{
+			float near_top = tanf(fov * 0.5f);
+			float near_right = near_top * aspect;
+
+			float z_range = near - far;
+			mat44 rst(
+				1.0f / near_right, 0, 0, 0,
+				0, 1.0f / near_top, 0, 0,
+				0, 0, -far / z_range, far * near / z_range,
+				0, 0, 1, 0);
+
+
+			return rst;
+		}
+
+		inline static mat44 center_ortho_lh(float width, float height, float near, float far)
+		{
+			float z_range = far - near;
+			mat44 rst(
+				2.0f / width, 0, 0, 0,
+				0, -2.0f / height, 0, 0,
+				0, 0, 1.0f / z_range, -near / z_range,
+				0, 0, 0, 1);
+			return rst;
+		}
+
+		inline static mat44 ortho2d_lh(float width, float height, float near, float far)
+		{
+			float z_range = far - near;
+			mat44 rst(
+				2.0f / width, 0, 0, -1,
+				0, -2.0f / height, 0, 1,
+				0, 0, 1.0f / z_range, -near / z_range,
+				0, 0, 0, 1);
+			return rst;
+		}
 
 	public:
 		union
@@ -706,69 +1113,296 @@ namespace gml {
 			struct { vec4 row[4]; };
 		};
 
-		mat44();
+		constexpr mat44(){}
 
-		mat44(float _00, float _01, float _02, float _03, float _10, float _11, float _12, float _13, float _20, float _21, float _22, float _23, float _30, float _31, float _32, float _33);
+		inline mat44(float _00, float _01, float _02, float _03, float _10, float _11, float _12, float _13, float _20, float _21, float _22, float _23, float _30, float _31, float _32, float _33)
+		{
+			this->_00 = _00;	this->_01 = _01;	this->_02 = _02;	this->_03 = _03;
+			this->_10 = _10;	this->_11 = _11;	this->_12 = _12;	this->_13 = _13;
+			this->_20 = _20;	this->_21 = _21;	this->_22 = _22;	this->_23 = _23;
+			this->_30 = _30;	this->_31 = _31;	this->_32 = _32;	this->_33 = _33;
+		}
 
-		mat44(const vec4& row1, const vec4& row2, const vec4& row3, const vec4& row4);
+		inline mat44(const vec4& row1, const vec4& row2, const vec4& row3, const vec4& row4)
+		{
+			this->row[0] = row1;
+			this->row[1] = row2;
+			this->row[2] = row3;
+			this->row[3] = row4;
+		}
 
-		mat44(const mat44& other);
+		inline mat44(const mat44& other)
+		{
+			*this = other;
+		}
 
-		explicit mat44(const mat22&);
+		inline explicit mat44(const mat22& mat2)
+		{
+			row[0].set(mat2.row[0], 0, 0);
+			row[1].set(mat2.row[1], 0, 0);
+			row[2].set(0, 0, 1, 0);
+			row[3].set(0, 0, 0, 1);
+		}
 
-		explicit mat44(const mat33&);
+		inline explicit mat44(const mat33& mat3)
+		{
+			row[0].set(mat3.row[0], 0);
+			row[1].set(mat3.row[1], 0);
+			row[2].set(mat3.row[2], 0);
+			row[3].set(0, 0, 0, 1);
+		}
 
-		mat44& operator=(const mat44& rhs);
+		inline mat44& operator=(const mat44& rhs)
+		{
+			for (int i = 0; i < 16; i++)
+			{
+				(*this)[i] = rhs[i];
+			}
+			return *this;
+		}
 
-		mat44 operator* (float scaler) const;
+		inline mat44 operator* (float scaler) const
+		{
+			mat44 result(*this);
+			result *= scaler;
+			return result;
+		}
 
-		mat44 operator* (const mat44& rhs) const;
+		inline mat44 operator* (const mat44& rhs) const
+		{
+			mat44 result(*this);
+			result *= rhs;
+			return result;
+		}
 
-		vec4 operator* (const vec4& rhs) const;
+		inline vec4 operator* (const vec4& rhs) const
+		{
+			vec4 result;
+			for (int i = 0; i < 4; i++)
+			{
+				result[i] = dot(row[i], rhs);
+			}
+			return result;
+		}
 
-		mat44& operator*= (float scaler);
+		inline mat44& operator*= (float scaler)
+		{
+			for (int i = 0; i < 4; i++)
+			{
+				(*this)[i] *= scaler;
+			}
+			return *this;
+		}
 
-		mat44& operator*=(const mat44& rhs);
+		inline mat44& operator*=(const mat44& rhs)
+		{
+			mat44 copy(*this);
+			for (int i = 0; i < 4; i++)
+			{
+				for (int j = 0; j < 4; j++)
+				{
+					m[i][j] = dot(copy.row[i], rhs.column(j));
+				}
+			}
+			return *this;
+		}
 
-		bool operator== (const mat44& rhs) const;
+		inline bool operator== (const mat44& rhs) const
+		{
+			if (&rhs != this)
+			{
+				for (int i = 0; i < 4; i++)
+				{
+					if ((*this)[i] != rhs[i])
+						return false;
+				}
+			}
+			return true;
+		}
 
-		bool operator!= (const mat44& rhs) const;
+		inline bool operator!= (const mat44& rhs) const
+		{
+			return !(*this == rhs);
+		}
 
-		float& operator[] (int index);
+		inline float& operator[] (int index)
+		{
+			return const_cast<float&>(const_cast<const mat44*>(this)->operator[](index));
+		}
 
-		const float& operator[] (int index) const;
+		inline const float& operator[] (int index) const
+		{
+			assert(index >= 0 && index < 16);
+			return *(&(m[0][0]) + index);
+		}
 
-		vec4 column(int index) const;
+		inline vec4 column(int index) const
+		{
+			assert(index >= 0 && index < 4);
+			return vec4(m[0][index], m[1][index], m[2][index], m[3][index]);
+		}
 
-		void set_column(int index, vec4);
+		inline void set_column(int index, vec4 v)
+		{
+			assert(index >= 0 && index < 4);
+			for (int i = 0; i < 4; i++)
+			{
+				m[i][index] = v[i];
+			}
+		}
 
-		void identity();
+		inline void identity() { *this = I(); }
 
-		void transpose();
+		inline void transpose()
+		{
+			swap(this->_10, this->_01);
+			swap(this->_20, this->_02);
+			swap(this->_30, this->_03);
 
-		mat44 transposed() const;
+			swap(this->_21, this->_12);
+			swap(this->_31, this->_13);
 
-		bool can_invert() const;
+			swap(this->_32, this->_23);
+		}
 
-		void inverse();
+		inline mat44 transposed() const
+		{
+			mat44 result(*this);
+			result.transpose();
+			return result;
+		}
 
-		mat44 inversed() const;
+		inline bool can_invert() const
+		{
+			if (is_orthogonal())
+			{
+				return true;
+			}
+			else
+			{
+				float det = determinant();
+				return !fequal(det, 0.0f);
+			}
+		}
 
-		bool is_orthogonal() const;
+		inline void inverse()
+		{
+			if (is_orthogonal())
+			{
+				transpose();
+			}
+			else
+			{
+				float det = determinant();
+				if (!fequal(det, 0.0f))
+				{
+					det = 1.0f / det;
+					mat44 copy(*this);
 
-		float determinant() const;
+					//to-do det_impl is calculated above in determinant().
+					//try to gcd
+					m[0][0] = +gml_impl::determinant(copy._11, copy._12, copy._13, copy._21, copy._22, copy._23, copy._31, copy._32, copy._33) * det;
+					m[1][0] = -gml_impl::determinant(copy._10, copy._12, copy._13, copy._20, copy._22, copy._23, copy._30, copy._32, copy._33) * det;
+					m[2][0] = +gml_impl::determinant(copy._10, copy._11, copy._13, copy._20, copy._21, copy._23, copy._30, copy._31, copy._33) * det;
+					m[3][0] = -gml_impl::determinant(copy._10, copy._11, copy._12, copy._20, copy._21, copy._22, copy._30, copy._31, copy._32) * det;
+
+					m[0][1] = -gml_impl::determinant(copy._01, copy._02, copy._03, copy._21, copy._22, copy._23, copy._31, copy._32, copy._33) * det;
+					m[1][1] = +gml_impl::determinant(copy._00, copy._02, copy._03, copy._20, copy._22, copy._23, copy._30, copy._32, copy._33) * det;
+					m[2][1] = -gml_impl::determinant(copy._00, copy._01, copy._03, copy._20, copy._21, copy._23, copy._30, copy._31, copy._33) * det;
+					m[3][1] = +gml_impl::determinant(copy._00, copy._01, copy._02, copy._20, copy._21, copy._22, copy._30, copy._31, copy._32) * det;
+
+					m[0][2] = +gml_impl::determinant(copy._01, copy._02, copy._03, copy._11, copy._12, copy._13, copy._31, copy._32, copy._33) * det;
+					m[1][2] = -gml_impl::determinant(copy._00, copy._02, copy._03, copy._10, copy._12, copy._13, copy._30, copy._32, copy._33) * det;
+					m[2][2] = +gml_impl::determinant(copy._00, copy._01, copy._03, copy._10, copy._11, copy._13, copy._30, copy._31, copy._33) * det;
+					m[3][2] = -gml_impl::determinant(copy._00, copy._01, copy._02, copy._10, copy._11, copy._12, copy._30, copy._31, copy._32) * det;
+
+					m[0][3] = -gml_impl::determinant(copy._01, copy._02, copy._03, copy._11, copy._12, copy._13, copy._21, copy._22, copy._23) * det;
+					m[1][3] = +gml_impl::determinant(copy._00, copy._02, copy._03, copy._10, copy._12, copy._13, copy._20, copy._22, copy._23) * det;
+					m[2][3] = -gml_impl::determinant(copy._00, copy._01, copy._03, copy._10, copy._11, copy._13, copy._20, copy._21, copy._23) * det;
+					m[3][3] = +gml_impl::determinant(copy._00, copy._01, copy._02, copy._10, copy._11, copy._12, copy._20, copy._21, copy._22) * det;
+				}
+				else
+				{
+					//TODO:
+					// can not invert here,
+					// what should i do when this occur ?
+				}
+			}
+		}
+
+		inline mat44 inversed() const
+		{
+			mat44 result(*this);
+			result.inverse();
+			return result;
+		}
+
+		inline bool is_orthogonal() const
+		{
+			for (int i = 0; i < 4; i++)
+			{
+				if (!fequal(row[i].length_sqr(), 1.0f))
+				{
+					return false;
+				}
+
+				for (int j = i + 1; j < 4; j++)
+				{
+					if (!fequal(dot(row[i], row[j]), 0.0f))
+						return false;
+				}
+			}
+			return false;
+		}
+
+		inline float determinant() const
+		{
+			return gml_impl::determinant(
+				_00, _01, _02, _03,
+				_10, _11, _12, _13,
+				_20, _21, _22, _23,
+				_30, _31, _32, _33);
+		}
 	};
 
 	//matrix44
-	mat44 operator* (float scaler, const mat44& rhs);
+	inline mat44 operator* (float scaler, const mat44& rhs)
+	{
+		return rhs * scaler;
+	}
 
-	vec4 operator* (const vec4& lhs, const mat44& rhs);
+	inline vec4 operator* (const vec4& lhs, const mat44& rhs)
+	{
+		vec4 result;
+		for (int i = 0; i < 4; i++)
+		{
+			result[i] = dot(lhs, rhs.column(i));
+		}
+		return result;
+	}
 
-	vec3 transform_vector(const mat44& lhs, const vec3& rhs);
+	inline vec3 transform_vector(const mat44& lhs, const vec3& rhs)
+	{
+		vec3 result;
+		vec4 rhs4(rhs, 0);
+		for (int i = 0; i < 3; i++)
+		{
+			result[i] = dot(lhs.row[i], rhs4);
+		}
+		return result;
+	}
 
-	vec3 transform_point(const mat44& lhs, const vec3& rhs);
+	inline vec3 transform_point(const mat44& lhs, const vec3& rhs)
+	{
+		vec3 result;
+		vec4 rhs4(rhs, 1);
+		for (int i = 0; i < 3; i++)
+		{
+			result[i] = dot(lhs.row[i], rhs4);
+		}
+		return result;
+	}
 }
-
 
 namespace gml
 {
@@ -780,4 +1414,8 @@ namespace gml
 		: _00(m44._00), _01(m44._01)
 		, _10(m44._10), _11(m44._11) {}
 
+	constexpr mat33::mat33(const mat44& m44)
+		: _00(m44._00), _01(m44._01), _02(m44._02)
+		, _10(m44._10), _11(m44._11), _12(m44._12)
+		, _20(m44._20), _21(m44._21), _22(m44._22) { }
 }

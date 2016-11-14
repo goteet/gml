@@ -31,10 +31,6 @@
     <ClInclude Include="include\gmlrect.h" />
     <ClInclude Include="include\gmlvector.h" />
   </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="source\matrix33.cpp" />
-    <ClCompile Include="source\matrix44.cpp" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{C384FDDC-5910-4E73-915D-7B520A068163}</ProjectGuid>
     <RootNamespace>gml</RootNamespace>

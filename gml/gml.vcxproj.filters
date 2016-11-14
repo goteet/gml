@@ -45,12 +45,4 @@
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="source\matrix44.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="source\matrix33.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-  </ItemGroup>
 </Project>
