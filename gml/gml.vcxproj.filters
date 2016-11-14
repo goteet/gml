@@ -49,13 +49,7 @@
     <ClCompile Include="source\matrix44.cpp">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="source\matrix22.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
     <ClCompile Include="source\matrix33.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="source\matrix32.cpp">
       <Filter>source</Filter>
     </ClCompile>
   </ItemGroup>
