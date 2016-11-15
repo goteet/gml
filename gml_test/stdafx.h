@@ -31,13 +31,13 @@ static const float EPSILON = std::numeric_limits<float>::epsilon();
 #define GML_IEQUAL(expected, actual) \
 	Assert::AreEqual(expected, actual, nullptr, LINE_INFO())
 #define GML_IEQUALM(expected, actual, message) \
-	Assert::AreEqual(expected, actual, #message, LINE_INFO())
+	Assert::AreEqual(expected, actual, L#message, LINE_INFO())
 
 // Float Equal Assert
 #define GML_FEQUAL(expected, actual) \
 	Assert::AreEqual((expected), (actual), EPSILON, nullptr, LINE_INFO())
 #define GML_FEQUALM(expected, actual, message) \
-	Assert::AreEqual((expected), (actual), EPSILON, #message, LINE_INFO())
+	Assert::AreEqual((expected), (actual), EPSILON, L#message, LINE_INFO())
 
 // AB Assert
 #define GML_IS_TRUE(cond) \
@@ -45,6 +45,6 @@ static const float EPSILON = std::numeric_limits<float>::epsilon();
 #define GML_IS_FALSE(cond) \
 	Assert::IsFalse((cond), nullptr, LINE_INFO());
 #define GML_IS_TRUEM(cond, message) \
-	Assert::IsTrue((cond), #message, LINE_INFO())
+	Assert::IsTrue((cond), L#message, LINE_INFO())
 #define GML_IS_FALSEM(cond, message) \
-	Assert::IsFalse((cond), #message, LINE_INFO());
+	Assert::IsFalse((cond), L#message, LINE_INFO());

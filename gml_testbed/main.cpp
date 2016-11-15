@@ -325,8 +325,7 @@ IMPL(AllStructure)
 	OUTPUT << "\tsizeof(float)  = " << sizeof(float) << std::endl;
 	OUTPUT << "\tsizeof(vec2)   = " << sizeof(vec2) << std::endl;
 	OUTPUT << "\tsizeof(vec3)   = " << sizeof(vec3) << std::endl;
-	OUTPUT << "\tsizeof(vec4)   = " << sizeof(vec4) << std::endl;
-	OUTPUT << "\tsizeof(mat22)  = " << sizeof(mat22) << std::endl;
+	OUTPUT << "\tsizeof(vec4)   = " << sizeof(vec4) << std::endl;	
 	OUTPUT << "\tsizeof(mat32)  = " << sizeof(mat32) << std::endl;
 	OUTPUT << "\tsizeof(mat33)  = " << sizeof(mat33) << std::endl;
 	OUTPUT << "\tsizeof(mat44)  = " << sizeof(mat44) << std::endl;
