@@ -55,11 +55,11 @@ namespace gml
 
 		friend constexpr quat operator*(float lhs, const quat& rhs);
 
-		friend inline quat& operator+=(quat& lhs, const quat& rhs);
+		friend quat& operator+=(quat& lhs, const quat& rhs);
 
-		friend inline quat& operator*=(quat& lhs, const quat& rhs);
+		friend quat& operator*=(quat& lhs, const quat& rhs);
 
-		friend inline quat& operator*=(quat& lhs, float rhs);
+		friend quat& operator*=(quat& lhs, float rhs);
 
 		void normalize();
 
@@ -88,38 +88,11 @@ namespace gml
 	vec3 rotate(const quat& rotation, const vec3& point);
 
 	quat slerp(const quat& s, const quat& d, float f);
+
+	euler to_eular(const quat& q);
+
+	quat to_quaternion(const euler& e);
 }
-
-namespace gml
-{
-	inline euler to_eular(const quat& q)
-	{
-		vec3 vsqr2 = q.v * q.v * 2;
-		float xy2 = q.v.x * q.v.y * 2;
-		float yz2 = q.v.y * q.v.z * 2;
-		float zx2 = q.v.z * q.v.x * 2;
-		float wx2 = q.w * q.v.x * 2;
-		float wy2 = q.w * q.v.y * 2;
-		float wz2 = q.w * q.v.z * 2;
-
-		return euler(
-			atan2(yz2 - wx2, 1 - vsqr2.x - vsqr2.y),
-			asin(clamp<float>(-(zx2 + wy2), -1.0f, 1.0f)),
-			atan2(xy2 - wz2, 1 - vsqr2.y - vsqr2.z)
-			);
-	}
-
-	// euler angle to quaternion.
-	inline quat to_quaternion(const euler& e)
-	{
-		vec4 v0(cosf(e.yaw / 2), 0, 0, sinf(e.yaw / 2));
-		vec4 v1(cosf(e.pitch / 2), 0, sinf(e.pitch / 2), 0);
-		vec4 v2(cosf(e.roll / 2), sinf(e.roll / 2), 0, 0);
-		vec4 v = v0 * v1 * v2;
-		return quat(v.w, v.x, v.y, v.z);
-	}
-}
-
 
 namespace gml
 {
@@ -311,5 +284,32 @@ namespace gml
 		}
 
 		return f0 * s + f1 * d;
+	}
+
+	inline euler to_eular(const quat& q)
+	{
+		vec3 vsqr2 = q.v * q.v * 2;
+		float xy2 = q.v.x * q.v.y * 2;
+		float yz2 = q.v.y * q.v.z * 2;
+		float zx2 = q.v.z * q.v.x * 2;
+		float wx2 = q.w * q.v.x * 2;
+		float wy2 = q.w * q.v.y * 2;
+		float wz2 = q.w * q.v.z * 2;
+
+		return euler(
+			atan2(yz2 - wx2, 1 - vsqr2.x - vsqr2.y),
+			asin(clamp<float>(-(zx2 + wy2), -1.0f, 1.0f)),
+			atan2(xy2 - wz2, 1 - vsqr2.y - vsqr2.z)
+			);
+	}
+
+	// euler angle to quaternion.
+	inline quat to_quaternion(const euler& e)
+	{
+		vec4 v0(cosf(e.yaw / 2), 0, 0, sinf(e.yaw / 2));
+		vec4 v1(cosf(e.pitch / 2), 0, sinf(e.pitch / 2), 0);
+		vec4 v2(cosf(e.roll / 2), sinf(e.roll / 2), 0, 0);
+		vec4 v = v0 * v1 * v2;
+		return quat(v.w, v.x, v.y, v.z);
 	}
 }

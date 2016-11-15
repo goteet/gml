@@ -1,6 +1,6 @@
 #pragma once
-#include <gmlrotation.h>
 #include <gmlutility.h>
+#include <gmlrotation.h>
 #include <gmlangle.h>
 
 namespace gml
@@ -59,7 +59,6 @@ namespace gml
 
 		dquat conjugated() const;
 
-
 		void inverse();
 
 		dquat inversed() const;
@@ -68,7 +67,7 @@ namespace gml
 
 		dquat exponented(float t) const;
 
-		constexpr inline float length()			const { return dot(real, real); }
+		constexpr inline float length() const { return dot(real, real); }
 
 	public://unless you know what u r doing.
 		constexpr dquat(const quat &r, const quat& d) : real(r), dual(d) { }
@@ -84,7 +83,7 @@ namespace gml
 
 namespace gml
 {
-	const dquat& dquat::identity()
+	inline const dquat& dquat::identity()
 	{
 		static dquat dq;
 		return dq;

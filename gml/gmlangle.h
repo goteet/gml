@@ -1,5 +1,4 @@
 #pragma once
-
 #include <gmlutility.h>
 #include <cmath>
 
@@ -251,19 +250,19 @@ namespace gml
 		return radian(-value);
 	}
 
-	radian& radian::operator+=(const radian& r)
+	inline radian& radian::operator+=(const radian& r)
 	{
 		value += r.value;
 		return *this;
 	}
 
-	radian& radian::operator-=(const radian& r)
+	inline radian& radian::operator-=(const radian& r)
 	{
 		value -= r.value;
 		return *this;
 	}
 
-	radian& radian::operator*=(float r)
+	inline radian& radian::operator*=(float r)
 	{
 		value *= r;
 		return *this;

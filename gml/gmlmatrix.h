@@ -49,13 +49,13 @@ namespace gml
 
 		friend bool operator== (const mat22& lhs, const mat22& rhs);
 
-		friend bool operator!= (const mat22& lhs, const mat22& rhs) { return !(lhs == rhs); }
+		friend inline bool operator!= (const mat22& lhs, const mat22& rhs) { return !(lhs == rhs); }
 
 		friend mat22 operator* (const mat22& lhs, const mat22& rhs);
 
 		friend mat22 operator* (const mat22& lhs, float rhs);
 
-		friend mat22 operator* (float lhs, const mat22& rhs) { return rhs * lhs; }
+		friend inline mat22 operator* (float lhs, const mat22& rhs) { return rhs * lhs; }
 
 		friend vec2 operator* (const mat22& lhs, const vec2& rhs);
 
@@ -111,7 +111,6 @@ namespace gml
 	public:
 		union
 		{
-			// special for GPU constant buffer layout.
 			float m[ROW][COL] = { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f };
 			struct { float _00, _01, _02, _10, _11, _12; };
 			vec3 row[ROW];
@@ -131,7 +130,7 @@ namespace gml
 
 		friend bool operator== (const mat32& lhs, const mat32& rhs);
 
-		friend bool operator!= (const mat32& lhs, const mat32& rhs) { return !(lhs == rhs); }
+		friend inline bool operator!= (const mat32& lhs, const mat32& rhs) { return !(lhs == rhs); }
 
 		friend mat32 operator* (const mat32& lhs, const mat32& rhs);
 
@@ -201,13 +200,13 @@ namespace gml
 
 		friend bool operator== (const mat33& lhs, const mat33& rhs);
 
-		friend bool operator!= (const mat33& lhs, const mat33& rhs) { return !(lhs == rhs); }
+		friend inline bool operator!= (const mat33& lhs, const mat33& rhs) { return !(lhs == rhs); }
 
 		friend mat33 operator* (const mat33& lhs, const mat33& rhs);
 
 		friend mat33 operator* (const mat33& lhs, float rhs);
 
-		friend mat33 operator* (float lhs, const mat33& rhs) { return rhs * lhs; }
+		friend inline mat33 operator* (float lhs, const mat33& rhs) { return rhs * lhs; }
 
 		friend vec3 operator* (const mat33& lhs, const vec3& rhs);
 
@@ -293,13 +292,13 @@ namespace gml
 
 		friend bool operator== (const mat44& lhs, const mat44& rhs);
 
-		friend bool operator!= (const mat44& lhs, const mat44& rhs) { return !(lhs == rhs); }
+		friend inline bool operator!= (const mat44& lhs, const mat44& rhs) { return !(lhs == rhs); }
 
 		friend mat44 operator* (const mat44& lhs, const mat44& rhs);
 
 		friend mat44 operator* (const mat44& lhs, float rhs);
 
-		friend mat44 operator* (float lhs, const mat44& rhs) { return rhs * lhs; }
+		friend inline mat44 operator* (float lhs, const mat44& rhs) { return rhs * lhs; }
 
 		friend vec4 operator* (const mat44& lhs, const vec4& rhs);
 
@@ -334,50 +333,17 @@ namespace gml
 		constexpr float determinant() const;
 	};
 
-	constexpr vec2 transform_vector(const mat32& lhs, const vec2& rhs)
-	{
-		return vec2(
-			dot(lhs.row[0], vec3(rhs, 0)),
-			dot(lhs.row[1], vec3(rhs, 0)));
-	}
+	vec2 transform_vector(const mat32& lhs, const vec2& rhs);
 
-	inline vec2 transform_vector(const mat33& lhs, const vec2& rhs)
-	{
-		return vec2(
-			dot(lhs.row[0], vec3(rhs, 0)),
-			dot(lhs.row[1], vec3(rhs, 0)));
-	}
+	vec2 transform_vector(const mat33& lhs, const vec2& rhs);
 
+	vec3 transform_vector(const mat44& lhs, const vec3& rhs);
 
-	constexpr vec2 transform_point(const mat32& lhs, const vec2& rhs)
-	{
-		return vec2(
-			dot(lhs.row[0], vec3(rhs, 1)),
-			dot(lhs.row[1], vec3(rhs, 1)));
-	}
+	vec2 transform_point(const mat32& lhs, const vec2& rhs);
 
+	vec2 transform_point(const mat33& lhs, const vec2& rhs);
 
-	inline vec2 transform_point(const mat33& lhs, const vec2& rhs)
-	{
-		return vec2(
-			dot(lhs.row[0], vec3(rhs, 1)),
-			dot(lhs.row[1], vec3(rhs, 1)));
-	}
-	inline vec3 transform_vector(const mat44& lhs, const vec3& rhs)
-	{
-		return vec3(
-			dot(lhs.row[0], vec4(rhs, 0)),
-			dot(lhs.row[1], vec4(rhs, 0)),
-			dot(lhs.row[2], vec4(rhs, 0)));
-	}
-
-	constexpr vec3 transform_point(const mat44& lhs, const vec3& rhs)
-	{
-		return vec3(
-			dot(lhs.row[0], vec4(rhs, 1)),
-			dot(lhs.row[1], vec4(rhs, 1)),
-			dot(lhs.row[2], vec4(rhs, 1)));
-	}
+	vec3 transform_point(const mat44& lhs, const vec3& rhs);
 }
 
 namespace gml
@@ -1247,11 +1213,57 @@ namespace gml
 			_20, _21, _22, _23,
 			_30, _31, _32, _33);
 	}
-}
 
+	inline vec2 transform_vector(const mat32& lhs, const vec2& rhs)
+	{
+		vec3 rhs3(rhs, 0.0f);
+		return vec2(
+			dot(lhs.row[0], rhs3),
+			dot(lhs.row[1], rhs3));
+	}
 
-namespace gml
-{
+	inline vec2 transform_vector(const mat33& lhs, const vec2& rhs)
+	{
+		vec3 rhs3(rhs, 0.0f);
+		return vec2(
+			dot(lhs.row[0], rhs3),
+			dot(lhs.row[1], rhs3));
+	}
+
+	inline vec3 transform_vector(const mat44& lhs, const vec3& rhs)
+	{
+		vec4 rhs4(rhs, 0.0f);
+		return vec3(
+			dot(lhs.row[0], rhs4),
+			dot(lhs.row[1], rhs4),
+			dot(lhs.row[2], rhs4));
+	}
+
+	inline vec2 transform_point(const mat32& lhs, const vec2& rhs)
+	{
+		vec3 rhs3(rhs, 1.0f);
+		return vec2(
+			dot(lhs.row[0], rhs3),
+			dot(lhs.row[1], rhs3));
+	}
+
+	inline vec2 transform_point(const mat33& lhs, const vec2& rhs)
+	{
+		vec3 rhs3(rhs, 1.0f);
+		return vec2(
+			dot(lhs.row[0], rhs3),
+			dot(lhs.row[1], rhs3));
+	}
+
+	inline vec3 transform_point(const mat44& lhs, const vec3& rhs)
+	{
+		vec4 rhs4(rhs, 1.0f);
+		return vec3(
+			dot(lhs.row[0], rhs4),
+			dot(lhs.row[1], rhs4),
+			dot(lhs.row[2], rhs4));
+	}
+
 	inline const mat22& mat22::identity()
 	{
 		static mat22 i(

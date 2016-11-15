@@ -191,7 +191,6 @@ namespace gml
 
 namespace gml_impl
 {
-
 	constexpr unsigned int rgba(
 		unsigned char r,
 		unsigned char g,

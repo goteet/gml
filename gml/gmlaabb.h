@@ -1,7 +1,7 @@
 #pragma once
-
-#include <gmlvector.h>
 #include <gmlutility.h>
+#include <gmlvector.h>
+
 namespace gml
 {
 	class aabb2d
@@ -239,8 +239,6 @@ namespace gml
 			m_extend = m_center - m_min_bound;
 		}
 	}
-
-
 
 	inline void aabb2d::clear()
 	{

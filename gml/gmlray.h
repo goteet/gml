@@ -25,19 +25,18 @@ namespace gml
 
 namespace gml
 {
-	inline void set_origin(const vec3& origin)
+	inline void ray::set_origin(const vec3& origin)
 	{
 		m_origin = origin;
 	}
 
-	inline void set_dir(const vec3& dir)
+	inline void ray::set_dir(const vec3& dir)
 	{
 		m_dir = dir.normalized();
 	}
 
-	constexpr vec3 get_offset(float length) const
+	constexpr vec3 ray::get_offset(float length) const
 	{
 		return m_origin + m_dir * length;
 	}
-
 }
