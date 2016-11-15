@@ -6,7 +6,7 @@ namespace gml
 	{
 	public:
 
-		TEST_METHOD(testColor3Initialization)
+		TEST_METHOD(Color3InitializationTest)
 		{
 			// color3()
 			color3 c1;
@@ -34,7 +34,7 @@ namespace gml
 			GML_FEQUAL(1.0f, c4.b);
 		}
 
-		TEST_METHOD(testColor3Constants)
+		TEST_METHOD(Color3ConstantsTest)
 		{
 			const auto black = color3::black();
 			GML_FEQUAL(0.0f, black.r);
@@ -82,7 +82,7 @@ namespace gml
 			GML_FEQUAL(1.0f, purple.b);
 		}
 
-		TEST_METHOD(testColor3Random)
+		TEST_METHOD(Color3RandomTest)
 		{
 			auto c1 = color3::random();
 			auto c2 = color3::random();
@@ -90,7 +90,7 @@ namespace gml
 			GML_IS_FALSE(c1 == c2);
 		}
 
-		TEST_METHOD(testColor3Compare)
+		TEST_METHOD(Color3CompareTest)
 		{
 			color3 c1(0.1f, 0.2f, 1.0f);
 			color3 c2(0.1f, 0.2f, 1.0f);
@@ -106,7 +106,7 @@ namespace gml
 			GML_IS_TRUE(c1 != c4);
 		}
 
-		TEST_METHOD(testColor3Add)
+		TEST_METHOD(Color3AddTest)
 		{
 			color3 c1(0.1f, 0.1f, 0.1f);
 			color3 c2(0.2f, 0.2f, 1.2f);
@@ -139,7 +139,7 @@ namespace gml
 			GML_FEQUAL(1.3f, d.b);
 		}
 
-		TEST_METHOD(testColor3Multiply)
+		TEST_METHOD(Color3MultiplyTest)
 		{
 			color3 c1(0.1f, 0.1f, 0.1f);
 			color3 c2(0.2f, 0.2f, 1.2f);
@@ -172,7 +172,7 @@ namespace gml
 			GML_FEQUAL(0.12f, d.b);
 		}
 
-		TEST_METHOD(testColor3Index)
+		TEST_METHOD(Color3IndexTest)
 		{
 			// operator[]
 			color3 c;
@@ -187,7 +187,7 @@ namespace gml
 			GML_FEQUAL(c[2], c.b);
 		}
 
-		TEST_METHOD(testColor3ToPointer)
+		TEST_METHOD(Color3ToPointerTest)
 		{
 			// float*
 			color3 c(0.1f, 0.2f, 0.3f);
@@ -197,7 +197,7 @@ namespace gml
 			GML_FEQUAL(0.3f, fv[2]);
 		}
 
-		TEST_METHOD(testColor3Set)
+		TEST_METHOD(Color3SetTest)
 		{
 			color3 c1, c2;
 			color4 cccc(0.1f, 0.2f, 0.3f, 0.4f);
@@ -215,7 +215,7 @@ namespace gml
 			GML_FEQUAL(0.3f, c2.b);
 		}
 
-		TEST_METHOD(testColor3Rgba)
+		TEST_METHOD(Color3RgbaTest)
 		{
 			auto c1 = color3::red();
 			auto c2 = color3::white();
@@ -226,7 +226,7 @@ namespace gml
 			GML_IEQUAL(0xFF000000u, c3.rgba());
 		}
 
-		TEST_METHOD(testColor3Bgra)
+		TEST_METHOD(Color3BgraTest)
 		{
 			auto c1 = color3::red();
 			auto c2 = color3::white();

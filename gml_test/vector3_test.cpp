@@ -6,7 +6,7 @@ namespace gml
 	{
 	public:
 
-		TEST_METHOD(testVec3Initialization)
+		TEST_METHOD(Vec3InitializationTest)
 		{
 			// vec3()
 			vec3 v1;
@@ -33,7 +33,7 @@ namespace gml
 			GML_FEQUAL(5.0f, v4.z);
 		}
 
-		TEST_METHOD(testVec3Constant)
+		TEST_METHOD(Vec3ConstantTest)
 		{
 			// zero
 			const auto zero = vec3::zero();
@@ -84,7 +84,7 @@ namespace gml
 			GML_FEQUAL(-1.0f, backward.z);
 		}
 
-		TEST_METHOD(testVec3Negative)
+		TEST_METHOD(Vec3NegativeTest)
 		{
 			// operator-
 			vec3 v1(3.0f, 4.0f, 5.0f);
@@ -99,7 +99,7 @@ namespace gml
 			GML_FEQUAL(0.0f, v3.z);
 		}
 
-		TEST_METHOD(testVec3Compare)
+		TEST_METHOD(Vec3CompareTest)
 		{
 			vec3 v1(1.0f, 2.0f, 3.0f);
 			vec3 v2(1.0f, 2.0f, 3.0f);
@@ -112,7 +112,7 @@ namespace gml
 			GML_IS_FALSE(v1 == v3);
 		}
 
-		TEST_METHOD(testVec3Add)
+		TEST_METHOD(Vec3AddTest)
 		{
 			vec3 v1(1.0f, 2.0f, 3.0f);
 			vec3 v2(2.0f, 3.0f, 4.0f);
@@ -145,7 +145,7 @@ namespace gml
 			GML_FEQUAL(7.0f, d.z);
 		}
 
-		TEST_METHOD(testVec3Minus)
+		TEST_METHOD(Vec3MinusTest)
 		{
 			vec3 v1(1.0f, 2.0f, 3.0f);
 			vec3 v2(2.0f, 3.0f, 4.0f);
@@ -178,7 +178,7 @@ namespace gml
 			GML_FEQUAL(-1.0f, d.z);
 		}
 
-		TEST_METHOD(testVec3Multiply)
+		TEST_METHOD(Vec3MultiplyTest)
 		{
 			vec3 v1(1.0f, 2.0f, 3.0f);
 			vec3 v2(2.0f, 3.0f, 4.0f);
@@ -211,7 +211,7 @@ namespace gml
 			GML_FEQUAL(12.0f, d.z);
 		}
 
-		TEST_METHOD(testVec3Index)
+		TEST_METHOD(Vec3IndexTest)
 		{
 			// operator[]
 			vec3 v1;
@@ -226,7 +226,7 @@ namespace gml
 			GML_FEQUAL(v1[2], v1.z);
 		}
 
-		TEST_METHOD(testVec3ToPointer)
+		TEST_METHOD(Vec3ToPointerTest)
 		{
 			// float*
 			vec3 v1(1.0f, 2.0f, 3.0f);
@@ -236,7 +236,7 @@ namespace gml
 			GML_FEQUAL(3.0f, fv[2]);
 		}
 
-		TEST_METHOD(testVec3Set)
+		TEST_METHOD(Vec3SetTest)
 		{
 			vec3 v1, v2, v3;
 			vec2 vv(1.0f, 2.0f);
@@ -261,7 +261,7 @@ namespace gml
 			GML_FEQUAL(3.0f, v3.z);
 		}
 
-		TEST_METHOD(testVec3Replace)
+		TEST_METHOD(Vec3ReplaceTest)
 		{
 			vec3 v1(1.0f, 2.0f, 3.0f);
 			vec2 vv(0.0f, 0.0f);
@@ -277,7 +277,7 @@ namespace gml
 
 		// normalize
 		// normalized
-		TEST_METHOD(testVec3Normalize)
+		TEST_METHOD(Vec3NormalizeTest)
 		{
 			vec3 v1(1.0f, 0.0f, 0.0f);
 			auto a = v1.normalized();
@@ -332,7 +332,7 @@ namespace gml
 
 		// inverse
 		// inversed
-		TEST_METHOD(testVec3Inverse)
+		TEST_METHOD(Vec3InverseTest)
 		{
 			vec3 v1(1.0f, 0.0f, 0.0f);
 			auto a = v1.inversed();
@@ -385,7 +385,7 @@ namespace gml
 			GML_FEQUAL(0.1f, e.z);
 		}
 
-		TEST_METHOD(testVec3Length)
+		TEST_METHOD(Vec3LengthTest)
 		{
 			vec3 v1(2.0f, 0.0f, 0.0f);
 			vec3 v2(3.0f, 4.0f, 5.0f);
@@ -399,7 +399,7 @@ namespace gml
 			GML_FEQUAL(50.0f, v2.length_sqr());
 		}
 
-		TEST_METHOD(testVec3Dot)
+		TEST_METHOD(Vec3DotTest)
 		{
 			// dot
 			vec3 v1(1.0f, 2.0f, 3.0f);
@@ -408,7 +408,7 @@ namespace gml
 			GML_FEQUAL(9.0f, dot(v1, v2));
 		}
 
-		TEST_METHOD(testVec3Cross)
+		TEST_METHOD(Vec3CrossTest)
 		{
 			vec3 v1(1.0f, 2.0f, 3.0f);
 			vec3 v2(3.0f, 0.0f, 2.0f);
@@ -421,7 +421,7 @@ namespace gml
 			GML_FEQUAL(-6.0f, crossV.z);
 		}
 
-		TEST_METHOD(testVec3Combine)
+		TEST_METHOD(Vec3CombineTest)
 		{
 			vec3 v1(1.0f, 2.0f, 3.0f);
 			vec3 v2(3.0f, 0.0f, 2.0f);
@@ -439,7 +439,7 @@ namespace gml
 			GML_FEQUAL(3.0f, maxV.z);
 		}
 
-		TEST_METHOD(testVec3Det33)
+		TEST_METHOD(Vec3Det33Test)
 		{
 			vec3 v1(1.0f, 2.0f, 3.0f);
 			vec3 v2(3.0f, 0.0f, 2.0f);
@@ -452,7 +452,7 @@ namespace gml
 			GML_FEQUAL(3.0f, det33_t(v1, v2, v3));
 		}
 
-		TEST_METHOD(testVec3Lerp)
+		TEST_METHOD(Vec3LerpTest)
 		{
 			const auto v1 = vec3::one();
 			const vec3 v2(2.0f, 2.0f, 2.0f);

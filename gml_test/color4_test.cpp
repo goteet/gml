@@ -6,7 +6,7 @@ namespace gml
 	{
 	public:
 
-		TEST_METHOD(testColor4Initialization)
+		TEST_METHOD(Color4InitializationTest)
 		{
 			// color4()
 			color4 c1;
@@ -38,7 +38,7 @@ namespace gml
 			GML_FEQUAL(1.0f, c4.a);
 		}
 
-		TEST_METHOD(testColor4Constants)
+		TEST_METHOD(Color4ConstantsTest)
 		{
 			const auto black = color4::black();
 			GML_FEQUAL(0.0f, black.r);
@@ -95,7 +95,7 @@ namespace gml
 			GML_FEQUAL(1.0f, purple.a);
 		}
 
-		TEST_METHOD(testColor4Random)
+		TEST_METHOD(Color4RandomTest)
 		{
 			auto c1 = color4::random();
 			auto c2 = color4::random();
@@ -103,7 +103,7 @@ namespace gml
 			GML_IS_FALSE(c1 == c2);
 		}
 
-		TEST_METHOD(testColor4Compare)
+		TEST_METHOD(Color4CompareTest)
 		{
 			color4 c1(0.1f, 0.2f, 1.0f, 0.4f);
 			color4 c2(0.1f, 0.2f, 1.0f, 0.4f);
@@ -119,7 +119,7 @@ namespace gml
 			GML_IS_TRUE(c1 != c4);
 		}
 
-		TEST_METHOD(testColor4Add)
+		TEST_METHOD(Color4AddTest)
 		{
 			color4 c1(0.1f, 0.1f, 0.1f, 0.1f);
 			color4 c2(0.2f, 0.2f, 1.2f, 0.2f);
@@ -156,7 +156,7 @@ namespace gml
 			GML_FEQUAL(0.3f, d.a);
 		}
 
-		TEST_METHOD(testColor4Multiply)
+		TEST_METHOD(Color4MultiplyTest)
 		{
 			color4 c1(0.1f, 0.1f, 0.1f, 0.1f);
 			color4 c2(0.2f, 0.2f, 1.2f, 0.2f);
@@ -193,7 +193,7 @@ namespace gml
 			GML_FEQUAL(0.02f, d.a);
 		}
 
-		TEST_METHOD(testColor4Index)
+		TEST_METHOD(Color4IndexTest)
 		{
 			// operator[]
 			color4 c;
@@ -211,7 +211,7 @@ namespace gml
 			GML_FEQUAL(c[3], c.a);
 		}
 
-		TEST_METHOD(testColor4ToPointer)
+		TEST_METHOD(Color4ToPointerTest)
 		{
 			// float*
 			color4 c(0.1f, 0.2f, 0.3f, 0.4f);
@@ -222,7 +222,7 @@ namespace gml
 			GML_FEQUAL(0.4f, fv[3]);
 		}
 
-		TEST_METHOD(testColor4Set)
+		TEST_METHOD(Color4SetTest)
 		{
 			color4 c1, c2;
 
@@ -234,7 +234,7 @@ namespace gml
 			GML_FEQUAL(0.4f, c1.a);
 		}
 
-		TEST_METHOD(testColor4Rgba)
+		TEST_METHOD(Color4RgbaTest)
 		{
 			auto c1 = color4::red();
 			auto c2 = color4::white();
@@ -245,7 +245,7 @@ namespace gml
 			GML_IEQUAL(0xFF000000u, c3.rgba());
 		}
 
-		TEST_METHOD(testColor4Bgra)
+		TEST_METHOD(Color4BgraTest)
 		{
 			auto c1 = color4::red();
 			auto c2 = color4::white();

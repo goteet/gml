@@ -4,7 +4,7 @@ namespace gml
 {
 	TEST_CLASS(UtilityTest)
 	{
-		TEST_METHOD(testUtilityFequal)
+		TEST_METHOD(UtilityFequalTest)
 		{
 			GML_IS_TRUE(fequal(0.0f, -0.0f));
 			GML_IS_TRUE(fequal(1.0f, 0.9999999f));
@@ -13,14 +13,14 @@ namespace gml
 			GML_IS_TRUE(fequal(1.3f, 1.0f + 0.3f));
 		}
 
-		TEST_METHOD(testUtilityLerp)
+		TEST_METHOD(UtilityLerpTest)
 		{
 			GML_FEQUAL(1.5f, lerp(1.0f, 2.0f, 0.5f));
 			GML_FEQUAL(1.0f, lerp(1.0f, 2.0f, 0.0f));
 			GML_FEQUAL(2.0f, lerp(1.0f, 2.0f, 1.0f));
 		}
 
-		TEST_METHOD(testUtilitySwap)
+		TEST_METHOD(UtilitySwapTest)
 		{
 			float a = 1.0f, b = 2.0f;
 			GML_FEQUAL(1.0f, a);
@@ -31,7 +31,7 @@ namespace gml
 			GML_FEQUAL(1.0f, b);
 		}
 
-		TEST_METHOD(testUtilityClamp01)
+		TEST_METHOD(UtilityClamp01Test)
 		{
 			GML_FEQUAL(0.0f, clamp01(-0.1f));
 			GML_FEQUAL(0.0f, clamp01(0.0f));
@@ -40,7 +40,7 @@ namespace gml
 			GML_FEQUAL(1.0f, clamp01(1.1f));
 		}
 
-		TEST_METHOD(testUtilityClamp)
+		TEST_METHOD(UtilityClampTest)
 		{
 			GML_FEQUAL(0.0f, clamp(-0.1f, 0.0f, 10.0f));
 			GML_FEQUAL(0.0f, clamp(-0.1f, 0.0f, 0.0f));

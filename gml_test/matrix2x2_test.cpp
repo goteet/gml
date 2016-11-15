@@ -3,7 +3,7 @@
 TEST_CLASS(Matrix2x2Test)
 {
 public:
-	TEST_METHOD(AABB)
+	TEST_METHOD(Matrix2x2)
 	{
 
 	}

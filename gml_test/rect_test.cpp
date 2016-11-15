@@ -14,7 +14,7 @@ namespace gml
 			mRect.set_size(20, 20);
 		}
 
-		TEST_METHOD(testRectEqual)
+		TEST_METHOD(RectEqualTest)
 		{
 			// operator==
 			rect r1;
@@ -33,58 +33,58 @@ namespace gml
 			GML_IS_FALSE(mRect == r3);
 		}
 
-		TEST_METHOD(testRectLeft)
+		TEST_METHOD(RectLeftTest)
 		{
 			GML_IEQUAL(10, mRect.left());
 		}
 
-		TEST_METHOD(testRectRight)
+		TEST_METHOD(RectRightTest)
 		{
 			GML_IEQUAL(30, mRect.right());
 		}
 
-		TEST_METHOD(testRectTop)
+		TEST_METHOD(RectTopTest)
 		{
 			GML_IEQUAL(10, mRect.top());
 		}
 
-		TEST_METHOD(testRectBottom)
+		TEST_METHOD(RectBottomTest)
 		{
 			GML_IEQUAL(30, mRect.bottom());
 		}
 
-		TEST_METHOD(testRectWidth)
+		TEST_METHOD(RectWidthTest)
 		{
 			GML_IEQUAL(20, mRect.width());
 		}
 
-		TEST_METHOD(testRectHeight)
+		TEST_METHOD(RectHeightTest)
 		{
 			GML_IEQUAL(20, mRect.height());
 		}
 
-		TEST_METHOD(testRectCenter)
+		TEST_METHOD(RectCenterTest)
 		{
 			coord center = mRect.center();
 			GML_IEQUAL(20, center.x);
 			GML_IEQUAL(20, center.y);
 		}
 
-		TEST_METHOD(testRectPosition)
+		TEST_METHOD(RectPositionTest)
 		{
 			coord pos = mRect.position();
 			GML_IEQUAL(10, pos.x);
 			GML_IEQUAL(10, pos.y);
 		}
 
-		TEST_METHOD(testRectSize)
+		TEST_METHOD(RectSizeTest)
 		{
 			coord size = mRect.size();
 			GML_IEQUAL(20, size.x);
 			GML_IEQUAL(20, size.y);
 		}
 
-		TEST_METHOD(testRectContains)
+		TEST_METHOD(RectContainsTest)
 		{
 			GML_IS_TRUE(mRect.contains(11, 11));
 			GML_IS_FALSE(mRect.contains(9, 9));
@@ -97,7 +97,7 @@ namespace gml
 			GML_IS_FALSE(mRect.contains(coord(9, 31)));
 		}
 
-		TEST_METHOD(testRectHitTest)
+		TEST_METHOD(RectHitTestTest)
 		{
 			rect r;
 			r.set_pos(1, 1);
@@ -120,7 +120,7 @@ namespace gml
 			GML_IS_TRUE(mRect.hit_test(r) == it_same);
 		}
 
-		TEST_METHOD(testRectMove)
+		TEST_METHOD(RectMoveTest)
 		{
 			rect r;
 			r.set_pos(10, 10);
@@ -135,7 +135,7 @@ namespace gml
 			GML_IEQUAL(20, r.height());
 		}
 
-		TEST_METHOD(testRectEnlarge)
+		TEST_METHOD(RectEnlargeTest)
 		{
 			rect r;
 			r.set_pos(10, 10);
