@@ -8,37 +8,43 @@
 #include "targetver.h"
 
 // 用于 CppUnitTest 的头文件
-#include "CppUnitTest.h"
-
-// TODO: 在此处引用程序需要的其他头文件
-#include <gmlvector.h>
-#include <gmlmatrix.h>
-#include <gmlrect.h>
-#include <gmlcolor.h>
-#include <gmlutility.h>
-#include <gmlrotation.h>
-#include <gmlconversion.h>
-#include <gmldualquat.h>
-
+#include <CppUnitTest.h>
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
-namespace gml
-{
-	static const float EPSILON = std::numeric_limits<float>::epsilon();
 
-	// Integer Equal Assert
+#include <gmlaabb.h>
+#include <gmlangle.h>
+#include <gmlcolor.h>
+#include <gmlconversion.h>
+#include <gmldualquat.h>
+#include <gmlmatrix.h>
+//#include <gmlray.h>
+#include <gmlrect.h>
+#include <gmlrotation.h>
+#include <gmlutility.h>
+#include <gmlvector.h>
+using namespace gml;
+
+static const float EPSILON = std::numeric_limits<float>::epsilon();
+
+// Integer Equal Assert
 #define GML_IEQUAL(expected, actual) \
 	Assert::AreEqual(expected, actual, nullptr, LINE_INFO())
+#define GML_IEQUALM(expected, actual, message) \
+	Assert::AreEqual(expected, actual, #message, LINE_INFO())
 
-	// Float Equal Assert
+// Float Equal Assert
 #define GML_FEQUAL(expected, actual) \
 	Assert::AreEqual((expected), (actual), EPSILON, nullptr, LINE_INFO())
+#define GML_FEQUALM(expected, actual, message) \
+	Assert::AreEqual((expected), (actual), EPSILON, #message, LINE_INFO())
 
-	// True Assert
+// AB Assert
 #define GML_IS_TRUE(cond) \
 	Assert::IsTrue((cond), nullptr, LINE_INFO())
-
-	// False Assert
 #define GML_IS_FALSE(cond) \
 	Assert::IsFalse((cond), nullptr, LINE_INFO());
-}
+#define GML_IS_TRUEM(cond, message) \
+	Assert::IsTrue((cond), #message, LINE_INFO())
+#define GML_IS_FALSEM(cond, message) \
+	Assert::IsFalse((cond), #message, LINE_INFO());

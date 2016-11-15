@@ -13,6 +13,27 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="源文件\aabb">
+      <UniqueIdentifier>{1a11fcbc-56a9-438d-add3-6385a23ad234}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\angle">
+      <UniqueIdentifier>{24e43e98-eacd-4280-8d18-0309bbe4ca33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\color">
+      <UniqueIdentifier>{85f65d0b-9522-469b-95d5-316f75dee6b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\matrix">
+      <UniqueIdentifier>{62c20628-cc2a-47df-b2aa-7f91a10108b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\rect">
+      <UniqueIdentifier>{0d57b85a-d416-428b-b56c-428ce37f1aae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\rotation">
+      <UniqueIdentifier>{d23ff9bb-62bf-4ad9-bf46-173c6b773aba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\vector">
+      <UniqueIdentifier>{d6c19a53-4653-4de8-b7ec-54034c8aae29}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -26,23 +47,62 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Vector2Test.cpp">
+    <ClCompile Include="aabb_test.cpp">
+      <Filter>源文件\aabb</Filter>
+    </ClCompile>
+    <ClCompile Include="aabb2d_test.cpp">
+      <Filter>源文件\aabb</Filter>
+    </ClCompile>
+    <ClCompile Include="degree_test.cpp">
+      <Filter>源文件\angle</Filter>
+    </ClCompile>
+    <ClCompile Include="radian_test.cpp">
+      <Filter>源文件\angle</Filter>
+    </ClCompile>
+    <ClCompile Include="color3_test.cpp">
+      <Filter>源文件\color</Filter>
+    </ClCompile>
+    <ClCompile Include="color4_test.cpp">
+      <Filter>源文件\color</Filter>
+    </ClCompile>
+    <ClCompile Include="matrix2x2_test.cpp">
+      <Filter>源文件\matrix</Filter>
+    </ClCompile>
+    <ClCompile Include="matrix3x2_test.cpp">
+      <Filter>源文件\matrix</Filter>
+    </ClCompile>
+    <ClCompile Include="matrix3x3_test.cpp">
+      <Filter>源文件\matrix</Filter>
+    </ClCompile>
+    <ClCompile Include="matrix4x4_test.cpp">
+      <Filter>源文件\matrix</Filter>
+    </ClCompile>
+    <ClCompile Include="vector2_test.cpp">
+      <Filter>源文件\vector</Filter>
+    </ClCompile>
+    <ClCompile Include="vector3_test.cpp">
+      <Filter>源文件\vector</Filter>
+    </ClCompile>
+    <ClCompile Include="eular_test.cpp">
+      <Filter>源文件\rotation</Filter>
+    </ClCompile>
+    <ClCompile Include="quaternion_test.cpp">
+      <Filter>源文件\rotation</Filter>
+    </ClCompile>
+    <ClCompile Include="rect_test.cpp">
+      <Filter>源文件\rect</Filter>
+    </ClCompile>
+    <ClCompile Include="coord_test.cpp">
+      <Filter>源文件\rect</Filter>
+    </ClCompile>
+    <ClCompile Include="dual_quaternion_test.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Vector3Test.cpp">
+    <ClCompile Include="utility_test.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="UtilityTest.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="RectTest.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Color3Test.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Color4Test.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="vector4_test.cpp">
+      <Filter>源文件\vector</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
