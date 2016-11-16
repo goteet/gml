@@ -87,6 +87,12 @@ namespace gml
 	{
 		return clamp(value, T(0), T(1));
 	}
+
+	template<class T>
+	constexpr T exp(T n, unsigned int iexp)
+	{
+		return iexp == 0 ? T(1) : (iexp == 1 ? n : exp(n, iexp - 1) * n);
+	}
 }
 
 namespace gml_impl
