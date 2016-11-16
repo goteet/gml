@@ -16,7 +16,7 @@ namespace gml
 
 		constexpr explicit degree(float v) : value(v) { }
 
-		constexpr explicit degree(const radian& r);
+		constexpr degree(const radian& r);
 
 		friend bool operator==(const degree& l, const degree& r);
 
@@ -61,7 +61,7 @@ namespace gml
 
 		constexpr explicit radian(float v) : value(v) { }
 
-		constexpr explicit radian(const degree& d);
+		constexpr radian(const degree& d);
 
 		friend bool operator==(const radian& l, const radian& r);
 
