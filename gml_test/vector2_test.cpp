@@ -46,7 +46,11 @@ public:
 	}
 
 	TEST_METHOD(Vector2AccessTest)
-	{}
+	{
+		vec2 v = { 1, 2 };
+		GML_FEQUAL(v.x, memberByList[0]);
+		GML_FEQUAL(v.y, memberByList[1]);
+	}
 
 	TEST_METHOD(Vector2ConstantsTest)
 	{

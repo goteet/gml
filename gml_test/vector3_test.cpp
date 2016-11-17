@@ -51,6 +51,14 @@ public:
 		GML_FEQUAL(5.0f, v4.z);
 	}
 
+	TEST_METHOD(Vector3AccessTest)
+	{
+		vec3 v = { 1, 2, 3 };
+		GML_FEQUAL(v.x, memberByList[0]);
+		GML_FEQUAL(v.y, memberByList[1]);
+		GML_FEQUAL(v.z, memberByList[2]);
+	}
+
 	TEST_METHOD(Vector3ConstantTest)
 	{
 		// zero
