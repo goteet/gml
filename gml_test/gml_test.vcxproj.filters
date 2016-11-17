@@ -102,7 +102,7 @@
       <Filter>源文件\vector</Filter>
     </ClCompile>
     <ClCompile Include="vector_swizzle.cpp">
-      <Filter>源文件\vector</Filter>
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

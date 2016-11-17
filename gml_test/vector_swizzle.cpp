@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
 
-TEST_CLASS(VectorSwizzleTest)
+TEST_CLASS(SwizzleTest)
 {
 public:
 	TEST_METHOD(Vector2SwizzleTest)
@@ -68,5 +68,15 @@ public:
 		GML_FEQUAL(sw4.y, v4.x);
 		GML_FEQUAL(sw4.z, v4.z);
 		GML_FEQUAL(sw4.w, v4.y);
+	}
+
+	TEST_METHOD(Color3SwizzleTest)
+	{
+		
+	}
+
+	TEST_METHOD(Color4SwizzleTest)
+	{
+
 	}
 };
