@@ -101,5 +101,8 @@
     <ClCompile Include="vector4_test.cpp">
       <Filter>源文件\vector</Filter>
     </ClCompile>
+    <ClCompile Include="vector_swizzle.cpp">
+      <Filter>源文件\vector</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -23,7 +23,6 @@ using namespace gml;
 #define USING(name) {OUTPUT <<Test##name##Title; Test##name##Func();  OUTPUT <<std::endl <<std::endl;}
 #define IMPL(name) void Test##name##Func()
 
-DECL(VectorSwizzle);
 DECL(Matrix22);
 DECL(Matrix33);
 DECL(Matrix44);
@@ -36,7 +35,6 @@ DECL(DualQuaternion);
 
 int main()
 {
-	USING(VectorSwizzle);
 	USING(Matrix22);
 	USING(Matrix33);
 	USING(Matrix44);
@@ -50,44 +48,6 @@ int main()
 #endif
 
 	return 0;
-}
-
-IMPL(VectorSwizzle)
-{
-	vec2 a, v2(2.1f, 2.2f);
-	vec3 b, v3(3.1f, 3.2f, 3.3f);
-	vec4 c, v4(4.1f, 4.2f, 4.3f, 4.4f);
-
-	OUTPUT << "\tvec2 = <" << v2.x << ", " << v2.y << ">\n";
-	OUTPUT << "\tvec3 = <" << v3.x << ", " << v3.y << ", " << v3.z << ">\n";
-	OUTPUT << "\tvec4 = <" << v4.x << ", " << v4.y << ", " << v4.z << ", " << v4.w << ">\n";
-
-	//a = vec3;
-	a = vec2(v3);
-
-	a = swizzle<_Y, _X>(v2);
-	OUTPUT << "\tvec2.yx = <" << a.x << ", " << a.y << ">\n";
-	a = swizzle<_Y, _Z>(v3);
-	OUTPUT << "\tvec3.yz = <" << a.x << ", " << a.y << ">\n";
-	a = swizzle<_W, _W>(v4);
-	OUTPUT << "\tvec4.ww = <" << a.x << ", " << a.y << ">\n\n";
-
-	//b = vec4;
-	b = vec3(v4);
-
-	b = swizzle<_Y, _X, _Y>(v2);
-	OUTPUT << "\tvec2.yxy = <" << b.x << ", " << b.y << ", " << b.z << ">\n";
-	b = swizzle<_Y, _Z, _X>(v3);
-	OUTPUT << "\tvec3.yzx = <" << b.x << ", " << b.y << ", " << b.z << ">\n";
-	b = swizzle<_W, _W, _X>(v4);
-	OUTPUT << "\tvec4.wwx = <" << b.x << ", " << b.y << ", " << b.z << ">\n\n";
-
-	c = swizzle<_Y, _X, _X, _Y>(v2);
-	OUTPUT << "\tvec2.yxxy = <" << c.x << ", " << c.y << ", " << c.z << ", " << c.w << ">\n";
-	c = swizzle<_Y, _Z, _X, _Z>(v3);
-	OUTPUT << "\tvec3.yzxz = <" << c.x << ", " << c.y << ", " << c.z << ", " << c.w << ">\n";
-	c = swizzle<_Z, _Z, _W, _Y>(v4);
-	OUTPUT << "\tvec4.zzwy = <" << c.x << ", " << c.y << ", " << c.z << ", " << c.w << ">\n\n";
 }
 
 IMPL(Matrix22)

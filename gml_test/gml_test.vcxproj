@@ -190,6 +190,7 @@
     <ClCompile Include="vector2_test.cpp" />
     <ClCompile Include="vector3_test.cpp" />
     <ClCompile Include="vector4_test.cpp" />
+    <ClCompile Include="vector_swizzle.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
