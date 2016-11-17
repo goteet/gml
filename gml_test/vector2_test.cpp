@@ -106,9 +106,11 @@ public:
 
 		// operator==
 		GML_IS_TRUE(v1 == v2);
+		GML_IS_FALSE(v1 == v3);
 
 		// operator!=
-		GML_IS_FALSE(v1 == v3);
+		GML_IS_FALSE(v1 != v2);
+		GML_IS_TRUE(v1 != v3);
 	}
 
 	TEST_METHOD(Vector2AddTest)
@@ -205,9 +207,7 @@ public:
 		v1[0] = 1.0f;
 		v1[1] = 2.0f;
 		GML_FEQUAL(1.0f, v1.x);
-		GML_FEQUAL(v1[0], v1.x);
 		GML_FEQUAL(2.0f, v1.y);
-		GML_FEQUAL(v1[1], v1.y);
 	}
 
 	TEST_METHOD(Vector2ToPointerTest)

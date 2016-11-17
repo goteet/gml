@@ -23,8 +23,6 @@ using namespace gml;
 #define USING(name) {OUTPUT <<Test##name##Title; Test##name##Func();  OUTPUT <<std::endl <<std::endl;}
 #define IMPL(name) void Test##name##Func()
 
-DECL(Vector2);
-DECL(Vector3);
 DECL(VectorSwizzle);
 DECL(Matrix22);
 DECL(Matrix33);
@@ -38,8 +36,6 @@ DECL(DualQuaternion);
 
 int main()
 {
-	USING(Vector2);
-	USING(Vector3);
 	USING(VectorSwizzle);
 	USING(Matrix22);
 	USING(Matrix33);
@@ -54,127 +50,6 @@ int main()
 #endif
 
 	return 0;
-}
-
-IMPL(Vector2)
-{
-	OUTPUT << "## constructor:" << std::endl;
-
-	vec2 a;
-	vec2 b(3, 4);
-	vec2 c(vec2::one());
-	vec2 d = vec2::left();
-
-	OUTPUT << "\tvec2 a;              a=<" << a.x << "," << a.y << ">\n";
-	OUTPUT << "\tvec2 b(3,4);         b=<" << b[0] << "," << b[1] << ">\n";
-	OUTPUT << "\tvec2 c(vec2::one);   c=<" << c[0] << "," << c[1] << ">\n";
-	OUTPUT << "\tvec2 d = vec2::left; d=<" << d.x << "," << d.y << ">\n" << std::endl;
-
-	OUTPUT << "## operators override :" << std::endl;
-
-	OUTPUT << "\t-b=<" << (-b)[0] << "," << (-b)[1] << ">\n";
-
-	a = -b;
-	OUTPUT << "\ta=b; a=<" << a[0] << "," << a[1] << ">\n";
-
-	bool isEqual = (-d == vec2::right());
-	OUTPUT << "\t(-d == vec2::right) is " << (isEqual ? "true" : "false") << "\n";
-
-	isEqual = (-vec2::up() != vec2::down());
-	OUTPUT << "\t(-vec2::up != vec2::down) is " << (isEqual ? "true" : "false") << "\n";
-
-	a = vec2::right() + vec2::down();
-	OUTPUT << "\tvec2::right + vec2::down = <" << a[0] << "," << a[1] << ">\n";
-
-	OUTPUT << "## method:" << std::endl;
-
-	OUTPUT << "  c = <" << c.x << "," << c.y << ">\n"
-		<< "  b.length = " << b.length() << "\n"
-		<< "  b.lengthsquare = " << b.length_sqr() << "\n";
-
-	b.normalize();
-	OUTPUT << "  normalized: " << b.length() << "\n\n";
-
-	c = b.normalized() * 3.4f;
-	b *= 3.4f;
-	OUTPUT << "  b == c is " << ((c == b) ? "" : "not ") << "equal \n"
-		<< "  b == vec2::one is " << ((vec2::one() == b) ? "" : "not ") << "equal \n\n";
-
-
-	a = vec2::one() + vec2::left();
-	OUTPUT << "  one + left = <" << a.x << "," << a.y << ">\n";
-	a += vec2::one() * vec2::right();
-	OUTPUT << "  result += one * right = <" << a.x << "," << a.y << ">\n";
-
-	a = b.inversed();
-	OUTPUT << "  b = <" << a.x << "," << a.y << ">\n";
-
-	OUTPUT << "  cross(b,b) = <" << cross(b, c) << ">\n";
-	OUTPUT << "  cross(b,vec2::one) = <"
-		<< cross(b, vec2::one()) << ">\n"
-		<< "  dot(b,c) = " << dot(b, c) << "\n\n";
-
-	a = lerp(b, vec2::one(), 0.5f);
-	OUTPUT << "  lerp(b,vec2::one, 0.5f) = <" << a[0] << "," << a[1] << ">\n";
-	a = lerp(b, vec2::one(), 0.0f);
-	OUTPUT << "  lerp(b,vec2::one, 0.0f) = <" << a[0] << "," << a[1] << ">\n";
-	a = lerp(b, vec2::one(), 1.0f);
-	OUTPUT << "  lerp(b,vec2::one, 1.0f) = <" << a[0] << "," << a[1] << ">\n\n";
-
-
-	a = max_combine(vec2(1, 2), vec2(3, 1));
-	OUTPUT << "  max_combine(<1,2,3>, <3,2,1>) = <" << a[0] << "," << a[1] << ">\n\n";
-
-	a = min_combine(vec2(1, 3), vec2(3, 2));
-	OUTPUT << "  minx_combine(b,vec2::one, 1.0f) = <" << a[0] << "," << a[1] << ">\n\n";
-}
-
-IMPL(Vector3)
-{
-	vec3 a = vec3::one();
-	vec3 b(3, 4, 5);
-	vec3 c;
-
-	OUTPUT << "  c = <" << c.x << "," << c.y << "," << c.z << ">\n"
-		<< "  b.length = " << b.length() << "\n"
-		<< "  b.lengthsquare = " << b.length_sqr() << "\n";
-
-	b.normalize();
-	OUTPUT << "  normalized: " << b.length() << "\n\n";
-
-
-	c = b.normalized() * 3.4f;
-	b *= 3.4f;
-	OUTPUT << "  b == c is " << ((c == b) ? "" : "not ") << "equal \n"
-		<< "  b == vec3::one is " << ((vec3::one() == b) ? "" : "not ") << "equal \n\n";
-
-	a = vec3::one() + vec3::left();
-	OUTPUT << "  one + left = <" << a.x << "," << a.y << "," << a.z << ">\n";
-	a += vec3::one() * vec3::right();
-	OUTPUT << "  result += one * right = <" << a.x << "," << a.y << "," << a.z << ">\n";
-
-	a = b.inversed();
-	OUTPUT << "  b = <" << a.x << "," << a.y << "," << a.z << ">\n";
-
-	a = cross(b, c);
-	OUTPUT << "  cross(b,b) = <" << a.x << "," << a.y << "," << a.z << ">\n";
-	a = cross(b, vec3::one());
-	OUTPUT << "  cross(b,vec3::one) = <" << a[0] << "," << a[1] << "," << a[2] << ">\n"
-		<< "  dot(b,c) = " << dot(b, c) << "\n\n";
-
-	a = lerp(b, vec3::one(), 0.5f);
-	OUTPUT << "  lerp(b,vec3::one, 0.5f) = <" << a[0] << "," << a[1] << "," << a[2] << ">\n";
-	a = lerp(b, vec3::one(), 0.0f);
-	OUTPUT << "  lerp(b,vec3::one, 0.0f) = <" << a[0] << "," << a[1] << "," << a[2] << ">\n";
-	a = lerp(b, vec3::one(), 1.0f);
-	OUTPUT << "  lerp(b,vec3::one, 1.0f) = <" << a[0] << "," << a[1] << "," << a[2] << ">\n\n";
-
-
-	a = max_combine(vec3(1, 2, 3), vec3(3, 2, 1));
-	OUTPUT << "  max_combine(<1,2,3>, <3,2,1>) = <" << a[0] << "," << a[1] << "," << a[2] << ">\n\n";
-
-	a = min_combine(vec3(1, 2, 3), vec3(3, 2, 1));
-	OUTPUT << "  minx_combine(b,vec3::one, 1.0f) = <" << a[0] << "," << a[1] << "," << a[2] << ">\n\n";
 }
 
 IMPL(VectorSwizzle)

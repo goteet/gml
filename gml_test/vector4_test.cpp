@@ -32,4 +32,19 @@ public:
 		GML_FEQUAL(v.z, memberByList[2]);
 		GML_FEQUAL(v.w, memberByList[3]);
 	}
+
+	TEST_METHOD(Vector4CompareTest)
+	{
+		vec4 v1(1.0f, 2.0f, 3.0f, 4.0f);
+		vec4 v2(1.0f, 2.0f, 3.0f, 4.0f);
+		vec4 v3(2.0f, 1.0f, 2.0f, 1.0f);
+
+		// operator==
+		GML_IS_TRUE(v1 == v2);
+		GML_IS_FALSE(v1 == v3);
+
+		// operator!=
+		GML_IS_FALSE(v1 != v2);
+		GML_IS_TRUE(v1 != v3);
+	}
 };
