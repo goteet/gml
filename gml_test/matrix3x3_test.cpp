@@ -79,4 +79,27 @@ public:
 		a._11 += 20.0f;
 		GML_IS_FALSE(a.is_orthogonal());
 	}
+
+	TEST_METHOD(Matrix3x3TransformTest)
+	{
+		vec3 p(1, 1, 1);
+
+		auto pt = mat33::scale(2) * p;
+		GML_IS_TRUE(vec3(2, 2, 2) == pt);
+
+		pt = mat33::flip_x() * pt;
+		GML_IS_TRUE(vec3(-2, 2, 2) == pt);
+
+		pt = mat33::rotate_y(degree(180)) * pt;
+		GML_IS_TRUE(vec3(2, 2, -2) == pt);
+
+		pt = mat33::flip_y() * pt;
+		GML_IS_TRUE(vec3(2, -2, -2) == pt);
+
+		pt = mat33::scale(0.5, 0.5, -0.5) * pt;
+		GML_IS_TRUE(vec3(1, -1, 1) == pt);
+
+		pt = mat33::flip_y() * pt;
+		GML_IS_TRUE(vec3::one() == pt);
+	}
 };

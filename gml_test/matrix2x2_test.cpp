@@ -77,4 +77,25 @@ public:
 		//a = a * b;
 		//a.inverse();
 	}
+
+	TEST_METHOD(Matrix2x2TransformTest)
+	{
+		vec2 p(1, 0);
+
+		auto pt = mat22::scale(2) * p;
+		GML_IS_TRUE(vec2(2, 0) == pt);
+
+		pt = mat22::flip_x() * pt;
+		GML_IS_TRUE(vec2(-2, 0) == pt);
+
+		pt = mat22::rotate(degree(90)) * pt;
+		GML_IS_TRUE(vec2(0, -2) == pt);
+
+		pt = mat22::flip_y() * pt;
+		GML_IS_TRUE(vec2(0, 2) == pt);
+		pt.x = 2;
+
+		pt = mat22::scale(0.5, 0.5) * pt;
+		GML_IS_TRUE(vec2(1, 1) == pt);
+	}
 };
