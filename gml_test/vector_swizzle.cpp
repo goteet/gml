@@ -21,6 +21,10 @@ public:
 		sw4 = swizzle<_Z, _W>(v4);
 		GML_FEQUAL(sw4.x, v4.z);
 		GML_FEQUAL(sw4.y, v4.w);
+
+		sw2 = swizzle<_0, _1>(v4);
+		GML_FEQUAL(0.0f, sw2.x);
+		GML_FEQUAL(1.0f, sw2.y);
 	}
 
 	TEST_METHOD(Vector3SwizzleTest)
@@ -43,6 +47,11 @@ public:
 		GML_FEQUAL(sw4.x, v4.w);
 		GML_FEQUAL(sw4.y, v4.x);
 		GML_FEQUAL(sw4.z, v4.z);
+
+		sw2 = swizzle<_0, _1, _X>(v4);
+		GML_FEQUAL(0.0f, sw2.x);
+		GML_FEQUAL(1.0f, sw2.y);
+		GML_FEQUAL(v4.x, sw2.z);
 	}
 
 	TEST_METHOD(Vector4SwizzleTest)
@@ -68,6 +77,12 @@ public:
 		GML_FEQUAL(sw4.y, v4.x);
 		GML_FEQUAL(sw4.z, v4.z);
 		GML_FEQUAL(sw4.w, v4.y);
+
+		sw2 = swizzle<_W, _0, _1, _X>(v4);
+		GML_FEQUAL(v4.w, sw2.x);
+		GML_FEQUAL(0.0f, sw2.y);
+		GML_FEQUAL(1.0f, sw2.z);
+		GML_FEQUAL(v4.x, sw2.w);
 	}
 
 	TEST_METHOD(Color3SwizzleTest)
@@ -84,6 +99,11 @@ public:
 		GML_FEQUAL(sw4.r, c4.a);
 		GML_FEQUAL(sw4.g, c4.r);
 		GML_FEQUAL(sw4.b, c4.g);
+
+		sw4 = swizzle<_1, _0, _G>(c4);
+		GML_FEQUAL(1.0f, sw4.r);
+		GML_FEQUAL(0.0f, sw4.g);
+		GML_FEQUAL(c4.g, sw4.b);
 	}
 
 	TEST_METHOD(Color4SwizzleTest)
@@ -102,5 +122,11 @@ public:
 		GML_FEQUAL(sw4.g, c4.r);
 		GML_FEQUAL(sw4.b, c4.g);
 		GML_FEQUAL(sw4.a, c4.b);
+
+		sw4 = swizzle<_1, _0, _1, _A>(c4);
+		GML_FEQUAL(1.0f, sw4.r);
+		GML_FEQUAL(0.0f, sw4.g);
+		GML_FEQUAL(1.0f, sw4.b);
+		GML_FEQUAL(c4.a, sw4.a);
 	}
 };

@@ -18,6 +18,9 @@ namespace gml_impl
 		float a10, float a11, float a12, float a13,
 		float a20, float a21, float a22, float a23,
 		float a30, float a31, float a32, float a33);
+
+	template<typename T>
+	constexpr float Component(const T& v, int index);
 }
 
 namespace gml
@@ -30,6 +33,9 @@ namespace gml
 		it_inside,
 		it_same,
 	};
+
+	struct _1 { constexpr static const int SwizzleIndex = -2; };
+	struct _0 { constexpr static const int SwizzleIndex = -1; };
 
 	constexpr double PI_d = 3.14159265358979323846;
 
@@ -103,6 +109,13 @@ namespace gml_impl
 		auto binary = reinterpret_cast<short*>(&d);
 		short exp_bits = (binary[1] & 0x7FC0);
 		return (exp_bits >> 7) - 127;
+	}
+
+	template<typename T>
+	constexpr float Component(const T& v, int index)
+	{
+		return (index == gml::_0::SwizzleIndex) ? 0 :
+			(index == gml::_1::SwizzleIndex ? 1 : v[index]);
 	}
 
 	constexpr float determinant(

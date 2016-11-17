@@ -159,6 +159,7 @@ namespace gml
 
 	constexpr float dot(const color4& lhs, const color4& rhs);
 
+	struct _0; struct _1;
 	struct _R { constexpr static int SwizzleIndex = 0; };
 	struct _G { constexpr static int SwizzleIndex = 1; };
 	struct _B { constexpr static int SwizzleIndex = 2; };
@@ -167,25 +168,39 @@ namespace gml
 	template<typename SwizzleR, typename SwizzleG, typename SwizzleB>
 	constexpr color3 swizzle(const color3& c3)
 	{
-		return color3(c3[SwizzleR::SwizzleIndex], c3[SwizzleG::SwizzleIndex], c3[SwizzleB::SwizzleIndex]);
+		return color3(
+			gml_impl::Component(c3, SwizzleR::SwizzleIndex),
+			gml_impl::Component(c3, SwizzleG::SwizzleIndex),
+			gml_impl::Component(c3, SwizzleB::SwizzleIndex));
 	}
 
 	template<typename SwizzleR, typename SwizzleG, typename SwizzleB>
 	constexpr color3 swizzle(const color4& c4)
 	{
-		return color3(c4[SwizzleR::SwizzleIndex], c4[SwizzleG::SwizzleIndex], c4[SwizzleB::SwizzleIndex]);
+		return color3(
+			gml_impl::Component(c4, SwizzleR::SwizzleIndex),
+			gml_impl::Component(c4, SwizzleG::SwizzleIndex),
+			gml_impl::Component(c4, SwizzleB::SwizzleIndex));
 	}
 
 	template<typename SwizzleR, typename SwizzleG, typename SwizzleB, typename SwizzleA>
 	constexpr color4 swizzle(const color3& c3)
 	{
-		return color4(c3[SwizzleR::SwizzleIndex], c3[SwizzleG::SwizzleIndex], c3[SwizzleB::SwizzleIndex], c3[SwizzleA::SwizzleIndex]);
+		return color4(
+			gml_impl::Component(c3, SwizzleR::SwizzleIndex),
+			gml_impl::Component(c3, SwizzleG::SwizzleIndex),
+			gml_impl::Component(c3, SwizzleB::SwizzleIndex),
+			gml_impl::Component(c3, SwizzleA::SwizzleIndex));
 	}
 
 	template<typename SwizzleR, typename SwizzleG, typename SwizzleB, typename SwizzleA>
 	constexpr color4 swizzle(const color4& c4)
 	{
-		return color4(c4[SwizzleR::SwizzleIndex], c4[SwizzleG::SwizzleIndex], c4[SwizzleB::SwizzleIndex], c4[SwizzleA::SwizzleIndex]);
+		return color4(
+			gml_impl::Component(c4, SwizzleR::SwizzleIndex),
+			gml_impl::Component(c4, SwizzleG::SwizzleIndex),
+			gml_impl::Component(c4, SwizzleB::SwizzleIndex),
+			gml_impl::Component(c4, SwizzleA::SwizzleIndex));
 	}
 }
 
