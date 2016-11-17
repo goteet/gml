@@ -7,7 +7,6 @@ TEST_CLASS(UtilityTest)
 	{
 		GML_IS_TRUE(fequal(0.0f, -0.0f));
 		GML_IS_TRUE(fequal(1.0f, 0.9999999f));
-		// GML_IS_TRUE(fequal(1.0f, 0.999999f));
 		GML_IS_TRUE(fequal(0.0f - 1.0f, -1.0f));
 		GML_IS_TRUE(fequal(1.3f, 1.0f + 0.3f));
 	}
