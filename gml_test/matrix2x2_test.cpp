@@ -37,7 +37,7 @@ public:
 		GML_FEQUAL(v._01, v[1]);
 		GML_FEQUAL(v._10, v[2]);
 		GML_FEQUAL(v._11, v[3]);
-						  
+
 		GML_FEQUAL(v._00, v.row[0].x);
 		GML_FEQUAL(v._01, v.row[0].y);
 		GML_FEQUAL(v._10, v.row[1].x);
@@ -57,5 +57,24 @@ public:
 
 		GML_FEQUALM(0.0f, vtn.x, "mat22::rotation is wrong");
 		GML_FEQUALM(-1.0f, vtn.y, "mat22::rotation is wrong");
+	}
+
+	TEST_METHOD(Matrix2x2Orothogonal)
+	{
+		mat22 a = mat22::rotate(radian(0.5f));
+
+		GML_IS_TRUE(a.is_orthogonal());
+		GML_IS_TRUE(a.can_invert());
+
+		a._11 += 20.0f;
+		GML_IS_FALSE(a.is_orthogonal());
+
+
+		//a._11 = 0.0f;
+		//GML_IS_FALSE(a.can_invert());
+		//radian r(0.5f);
+		//mat22::rotate(r);
+		//a = a * b;
+		//a.inverse();
 	}
 };

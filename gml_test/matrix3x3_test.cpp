@@ -68,4 +68,15 @@ public:
 		GML_FEQUAL(v._21, v.row[2].y);
 		GML_FEQUAL(v._22, v.row[2].z);
 	}
+
+	TEST_METHOD(Matrix3x3Orothogonal)
+	{
+		mat33 a = mat33::rotate_x(radian(0.5f));
+
+		GML_IS_TRUE(a.is_orthogonal());
+		GML_IS_TRUE(a.can_invert());
+
+		a._11 += 20.0f;
+		GML_IS_FALSE(a.is_orthogonal());
+	}
 };
