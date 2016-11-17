@@ -45,7 +45,7 @@ namespace gml
 
 		constexpr const quat& operator+() const { return *this; }
 
-		constexpr quat operator-() const { return *this; }
+		constexpr quat operator-() const;
 
 		friend constexpr quat operator+(const quat& lhs, const quat& rhs);
 
@@ -144,6 +144,11 @@ namespace gml
 		{
 			return true;
 		}
+	}
+
+	constexpr quat quat::operator-() const
+	{
+		return quat(-w, -v);
 	}
 
 	constexpr quat operator+(const quat& lhs, const quat& rhs)

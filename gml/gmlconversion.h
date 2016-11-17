@@ -70,27 +70,27 @@ namespace gml
 		{
 		case 0:
 			rst.w = maxSqr;
-			rst.v.x = (mat._12 - mat._21) * base;
-			rst.v.y = (mat._20 - mat._02) * base;
-			rst.v.z = (mat._01 - mat._10) * base;
+			rst.v.x = (mat._21 - mat._12) * base;
+			rst.v.y = (mat._02 - mat._20) * base;
+			rst.v.z = (mat._10 - mat._01) * base;
 			break;
 		case 1:
 			rst.v.x = maxSqr;
-			rst.w = (mat._12 - mat._21) * base;
-			rst.v.y = (mat._01 + mat._10) * base;
-			rst.v.z = (mat._02 + mat._20) * base;
+			rst.w =   (mat._21 - mat._12) * base;
+			rst.v.y = (mat._10 + mat._01) * base;
+			rst.v.z = (mat._20 + mat._02) * base;
 			break;
 		case 2:
 			rst.v.y = maxSqr;
-			rst.w = (mat._20 - mat._02) * base;
-			rst.v.x = (mat._01 + mat._10) * base;
-			rst.v.z = (mat._12 + mat._21) * base;
+			rst.w =   (mat._02 - mat._20) * base;
+			rst.v.x = (mat._10 + mat._01) * base;
+			rst.v.z = (mat._21 + mat._12) * base;
 			break;
 		case 3:
 			rst.v.z = maxSqr;
-			rst.w = (mat._01 - mat._10) * base;
-			rst.v.x = (mat._02 + mat._20) * base;
-			rst.v.y = (mat._12 + mat._21) * base;
+			rst.w =   (mat._10 - mat._01) * base;
+			rst.v.x = (mat._20 + mat._02) * base;
+			rst.v.y = (mat._21 + mat._12) * base;
 			break;
 		}
 		rst.normalize();

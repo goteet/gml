@@ -35,14 +35,15 @@ namespace gml
 
 	constexpr float PI = static_cast<float>(PI_d);
 
+	constexpr int EPSILON_Base2 = -22;
 	inline bool fequal(float lhs, float rhs)
 	{
 		if (lhs != rhs)
 		{
 			auto exp_diff = gml_impl::get_fexp_base2(lhs - rhs);
-			if (exp_diff > -30)//epsilon
+			if (exp_diff > EPSILON_Base2)//epsilon
 			{
-				exp_diff += 20;
+				exp_diff -= EPSILON_Base2;
 				auto exp_lhs = gml_impl::get_fexp_base2(lhs);
 				auto exp_rhs = gml_impl::get_fexp_base2(rhs);
 				return exp_lhs > exp_diff && exp_rhs > exp_diff;
