@@ -28,10 +28,8 @@ DECL(Vector3);
 DECL(Vector4);
 DECL(VectorSwizzle);
 DECL(Matrix22);
-DECL(Matrix32);
 DECL(Matrix33);
 DECL(Matrix44);
-DECL(Color);
 DECL(AllStructure);
 DECL(Quaternion);
 DECL(DualQuaternion);
@@ -47,10 +45,8 @@ int main()
 	USING(Vector4);
 	USING(VectorSwizzle);
 	USING(Matrix22);
-	USING(Matrix32);
 	USING(Matrix33);
 	USING(Matrix44);
-	USING(Color);
 	USING(AllStructure);
 	USING(Quaternion);
 	USING(DualQuaternion);
@@ -394,11 +390,6 @@ IMPL(AllStructure)
 		<< std::endl << std::endl;
 }
 
-IMPL(Color)
-{
-	color4 b = { color3::white(), 1.0 };
-}
-
 IMPL(Quaternion)
 {
 	gml::quat r1(vec3::right(), (gml::radian)gml::degree(90));
@@ -471,9 +462,4 @@ IMPL(DualQuaternion)
 		<< tret.y << ","
 		<< tret.z << "> \n";
 	tret = transform_point(mTNR, p);
-}
-
-IMPL(Matrix32)
-{
-	mat32 a(0, 1, 2, 3, 4, 5);
 }
