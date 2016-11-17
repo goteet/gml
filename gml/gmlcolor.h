@@ -206,19 +206,19 @@ namespace gml
 
 namespace gml_impl
 {
-	constexpr unsigned int rgba(
-		unsigned char r,
-		unsigned char g,
+	constexpr unsigned int bgra(
 		unsigned char b,
+		unsigned char g,
+		unsigned char r,
 		unsigned char a)
 	{
 		return (b | (g << 8) | (r << 16) | (a << 24));
 	}
 
-	constexpr unsigned int bgra(
-		unsigned char b,
-		unsigned char g,
+	constexpr unsigned int rgba(
 		unsigned char r,
+		unsigned char g,
+		unsigned char b,
 		unsigned char a)
 	{
 		return (r | (g << 8) | (b << 16) | (a << 24));
