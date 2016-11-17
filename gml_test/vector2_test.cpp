@@ -2,72 +2,85 @@
 
 namespace gml
 {
-    TEST_CLASS(Vector2Test)
-    {
-    public:
+	TEST_CLASS(Vector2Test)
+	{
+	public:
 		TEST_METHOD(Vector2GenericTest)
 		{
 			GML_IEQUAL(sizeof(float) * 2, sizeof(vec2));
 		}
 
-        TEST_METHOD(Vec2InitializationTest)
-        {
+		vec2 memberByStaticFunc = vec2::one();
+		vec2 memberByList = { 1, 2 };
+
+		TEST_METHOD(Vector2InitializationTest)
+		{
+			GML_FEQUALM(1.0f, memberByStaticFunc[0], "member init by static function");
+			GML_FEQUALM(1.0f, memberByStaticFunc[1], "member init by static function");
+
+			GML_FEQUALM(1.0f, memberByList.x, "member init by init-list");
+			GML_FEQUALM(2.0f, memberByList.y, "member init by init-list");
+
+			vec2 local = { 1,2 };
+			GML_FEQUALM(1.0f, local.x, "local init by init-list");
+			GML_FEQUALM(2.0f, local.y, "local init by init-list");
+
 			// vec2()
-            vec2 v1;
+			vec2 v1;
 			GML_FEQUAL(0.0f, v1.x);
 			GML_FEQUAL(0.0f, v1.y);
 
 			// vec2(float, float)
-            vec2 v2(3.0f, 4.0f);
+			vec2 v2(3.0f, 4.0f);
 			GML_FEQUAL(3.0f, v2.x);
 			GML_FEQUAL(4.0f, v2.y);
 
 			// vec2(vec2)
-	        auto v3(v2);
+			auto v3(v2);
 			GML_FEQUAL(3.0f, v3.x);
 			GML_FEQUAL(4.0f, v3.y);
-	        
+
 			// vec2 = vec2
 			auto v4 = v2;
 			GML_FEQUAL(3.0f, v4.x);
 			GML_FEQUAL(4.0f, v4.y);
-        }
-        
-        TEST_METHOD(Vec2ConstantsTest)
-        {
+		}
+
+		TEST_METHOD(Vec2ConstantsTest)
+		{
 			// zero
-            const auto zero = vec2::zero();
+			const auto zero = vec2::zero();
 			GML_FEQUAL(0.0f, zero.x);
 			GML_FEQUAL(0.0f, zero.y);
 
 			// one
-            const auto one = vec2::one();
+			const auto one = vec2::one();
 			GML_FEQUAL(1.0f, one.x);
 			GML_FEQUAL(1.0f, one.y);
 
 			// left
-            const auto left = vec2::left();
+			const auto left = vec2::left();
 			GML_FEQUAL(-1.0f, left.x);
 			GML_FEQUAL(0.0f, left.y);
 
 			// right
-            const auto right = vec2::right();
+			const auto right = vec2::right();
 			GML_FEQUAL(1.0f, right.x);
 			GML_FEQUAL(0.0f, right.y);
 
 			// up
-            const auto up = vec2::up();
+			const auto up = vec2::up();
 			GML_FEQUAL(0.0f, up.x);
 			GML_FEQUAL(1.0f, up.y);
 
 			// down
-            const auto down = vec2::down();
+			const auto down = vec2::down();
 			GML_FEQUAL(0.0f, down.x);
 			GML_FEQUAL(-1.0f, down.y);
-        }
+		}
 
 		TEST_METHOD(Vec2NegativeTest)
-        {
+		{
 			// operator-
 			vec2 v1(3.0f, 4.0f);
 			auto v2 = -v1;
@@ -77,8 +90,8 @@ namespace gml
 			auto v3 = -vec2::zero();
 			GML_FEQUAL(0.0f, v3.x);
 			GML_FEQUAL(0.0f, v3.y);
-        }
-       
+		}
+
 		TEST_METHOD(Vec2CompareTest)
 		{
 			vec2 v1(1.0f, 2.0f);
@@ -179,17 +192,17 @@ namespace gml
 			GML_FEQUAL(6.0f, d.y);
 		}
 
-        TEST_METHOD(Vec2IndexTest)
-        {
+		TEST_METHOD(Vec2IndexTest)
+		{
 			// operator[]
-            vec2 v1;
-            v1[0] = 1.0f;
-            v1[1] = 2.0f;
+			vec2 v1;
+			v1[0] = 1.0f;
+			v1[1] = 2.0f;
 			GML_FEQUAL(1.0f, v1.x);
 			GML_FEQUAL(v1[0], v1.x);
 			GML_FEQUAL(2.0f, v1.y);
 			GML_FEQUAL(v1[1], v1.y);
-        }
+		}
 
 		TEST_METHOD(Vec2ToPointerTest)
 		{
@@ -219,7 +232,7 @@ namespace gml
 			// set(vec4)
 			v3.set(vvvv);
 			GML_FEQUAL(1.0f, v3.x);
-		 	GML_FEQUAL(2.0f, v3.y);
+			GML_FEQUAL(2.0f, v3.y);
 		}
 
 		// normalize
@@ -373,5 +386,5 @@ namespace gml
 			GML_FEQUAL(2.0f, lerpV.x);
 			GML_FEQUAL(2.0f, lerpV.y);
 		}
-    };
+	};
 }

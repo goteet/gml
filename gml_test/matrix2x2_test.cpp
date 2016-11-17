@@ -8,15 +8,15 @@ public:
 		GML_IEQUAL(sizeof(float) * 2 * 2, sizeof(mat22));
 	}
 
+	mat22 memberByStaticFunc = mat22::identity();
 	mat22 memberByList = { 1,2,3,4 };
-	mat22 memberByStaticFunc = mat22::scale(5.0f, 10.0f);
 
 	TEST_METHOD(Matrix2x2IntializationTest)
 	{
-		GML_FEQUALM(5.0f, memberByStaticFunc._00, "member init by static function");
-		GML_FEQUAL(10.0f, memberByStaticFunc._11, "member init by static function");
-		GML_FEQUAL(0.0f, memberByStaticFunc._01);
-		GML_FEQUAL(0.0f, memberByStaticFunc._10);
+		GML_FEQUALM(1.0f, memberByStaticFunc._00, "member init by static function");
+		GML_FEQUALM(0.0f, memberByStaticFunc._01, "member init by static function");
+		GML_FEQUALM(0.0f, memberByStaticFunc._10, "member init by static function");
+		GML_FEQUALM(1.0f, memberByStaticFunc._11, "member init by static function");
 
 		GML_FEQUALM(1.0f, memberByList._00, "member init by init-list");
 		GML_FEQUALM(2.0f, memberByList._01, "member init by init-list");

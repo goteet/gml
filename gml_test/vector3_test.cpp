@@ -9,8 +9,25 @@ namespace gml
 		{
 			GML_IEQUAL(sizeof(float) * 3, sizeof(vec3));
 		}
-		TEST_METHOD(Vec3InitializationTest)
+
+		vec3 memberByStaticFunc = vec3::one();
+		vec3 memberByList = { 1, 2, 3 };
+
+		TEST_METHOD(Vector3InitializationTest)
 		{
+			GML_FEQUALM(1.0f, memberByStaticFunc[0], "member init by static function");
+			GML_FEQUALM(1.0f, memberByStaticFunc[1], "member init by static function");
+			GML_FEQUALM(1.0f, memberByStaticFunc[2], "member init by static function");
+
+			GML_FEQUALM(1.0f, memberByList.x, "member init by init-list");
+			GML_FEQUALM(2.0f, memberByList.y, "member init by init-list");
+			GML_FEQUALM(3.0f, memberByList.z, "member init by init-list");
+
+			vec3 local = { 1,2,3 };
+			GML_FEQUALM(1.0f, local.x, "local init by init-list");
+			GML_FEQUALM(2.0f, local.y, "local init by init-list");
+			GML_FEQUALM(3.0f, local.z, "local init by init-list");
+
 			// vec3()
 			vec3 v1;
 			GML_FEQUAL(0.0f, v1.x);
