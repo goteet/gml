@@ -198,6 +198,21 @@ public:
 		GML_FEQUAL(0.1f, fv[0]);
 		GML_FEQUAL(0.2f, fv[1]);
 		GML_FEQUAL(0.3f, fv[2]);
+
+		const color3& cc = c;
+		const float* cfv = (const float*)cc;
+		GML_FEQUAL(0.1f, cfv[0]);
+		GML_FEQUAL(0.2f, cfv[1]);
+		GML_FEQUAL(0.3f, cfv[2]);
+
+		float *nfv = (float *)c;
+		nfv[0] = 1.0f;
+		nfv[1] = 1.0f;
+		nfv[2] = 1.0f;
+		GML_FEQUAL(1.0f, nfv[0]);
+		GML_FEQUAL(1.0f, nfv[1]);
+		GML_FEQUAL(1.0f, nfv[2]);
+		GML_IS_TRUE(color3::white() == c);
 	}
 
 	TEST_METHOD(Color3SetTest)
@@ -216,27 +231,49 @@ public:
 		GML_FEQUAL(0.1f, c2.r);
 		GML_FEQUAL(0.2f, c2.g);
 		GML_FEQUAL(0.3f, c2.b);
+
+		c2.set(2, 0, 2);
+		GML_FEQUAL(2, c2.r);
+		GML_FEQUAL(0, c2.g);
+		GML_FEQUAL(2, c2.b);
+		c2.clamp();
+		GML_FEQUAL(1, c2.r);
+		GML_FEQUAL(0, c2.g);
+		GML_FEQUAL(1, c2.b);
+
+		c2.set(2, -1, 0);
+		GML_FEQUAL(2, c2.r);
+		GML_FEQUAL(-1, c2.g);
+		GML_FEQUAL(0, c2.b);
+		c2.clamp();
+		GML_FEQUAL(1, c2.r);
+		GML_FEQUAL(0, c2.g);
+		GML_FEQUAL(0, c2.b);
 	}
 
-	TEST_METHOD(Color3RgbaTest)
+	TEST_METHOD(Color3BGRAest)
 	{
 		auto c1 = color3::red();
 		auto c2 = color3::white();
 		auto c3 = color3::black();
 
-		GML_IEQUAL(0xFFFF0000u, c1.rgba());
-		GML_IEQUAL(0xFFFFFFFFu, c2.rgba());
-		GML_IEQUAL(0xFF000000u, c3.rgba());
+		GML_IEQUAL(0xFFFF0000u, c1.bgra());
+		GML_IEQUAL(0xFFFFFFFFu, c2.bgra());
+		GML_IEQUAL(0xFF000000u, c3.bgra());
+
+		GML_IS_TRUE(color3::from_bgra(0xFFFF0000u) == c1);
 	}
 
-	TEST_METHOD(Color3BgraTest)
+	TEST_METHOD(Color3RGBATest)
 	{
 		auto c1 = color3::red();
 		auto c2 = color3::white();
 		auto c3 = color3::black();
 
-		GML_IEQUAL(0xFF0000FFu, c1.bgra());
+		GML_IEQUAL(0xFF0000FFu, c1.rgba());
 		GML_IEQUAL(0xFFFFFFFFu, c2.rgba());
 		GML_IEQUAL(0xFF000000u, c3.rgba());
+
+		GML_IS_TRUE(color3::from_rgba(0xFF0000FFu) == c1);
 	}
 };

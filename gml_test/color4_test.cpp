@@ -223,6 +223,24 @@ public:
 		GML_FEQUAL(0.2f, fv[1]);
 		GML_FEQUAL(0.3f, fv[2]);
 		GML_FEQUAL(0.4f, fv[3]);
+
+		const color4& cc = c;
+		const float* cfv = (const float*)cc;
+		GML_FEQUAL(0.1f, cfv[0]);
+		GML_FEQUAL(0.2f, cfv[1]);
+		GML_FEQUAL(0.3f, cfv[2]);
+		GML_FEQUAL(0.4f, cfv[3]);
+
+		float *nfv = (float *)c;
+		nfv[0] = 1.0f;
+		nfv[1] = 1.0f;
+		nfv[2] = 1.0f;
+		nfv[3] = 1.0f;
+		GML_FEQUAL(1.0f, nfv[0]);
+		GML_FEQUAL(1.0f, nfv[1]);
+		GML_FEQUAL(1.0f, nfv[2]);
+		GML_FEQUAL(1.0f, nfv[3]);
+		GML_IS_TRUE(color4::white() == c);
 	}
 
 	TEST_METHOD(Color4SetTest)
@@ -235,27 +253,62 @@ public:
 		GML_FEQUAL(0.2f, c1.g);
 		GML_FEQUAL(0.3f, c1.b);
 		GML_FEQUAL(0.4f, c1.a);
+
+		c2.set(2, 0, 2, 0.5);
+		GML_FEQUAL(2, c2.r);
+		GML_FEQUAL(0, c2.g);
+		GML_FEQUAL(2, c2.b);
+		GML_FEQUAL(0.5f, c2.a);
+
+		c2.clamp();
+		GML_FEQUAL(1, c2.r);
+		GML_FEQUAL(0, c2.g);
+		GML_FEQUAL(1, c2.b);
+		GML_FEQUAL(0.5f, c2.a);
+
+		c2.set(2, -1, 3, -5);
+		GML_FEQUAL(2, c2.r);
+		GML_FEQUAL(-1, c2.g);
+		GML_FEQUAL(3, c2.b);
+		GML_FEQUAL(-5, c2.a);
+		c2.clamp();
+		GML_FEQUAL(1, c2.r);
+		GML_FEQUAL(0, c2.g);
+		GML_FEQUAL(1, c2.b);
+		GML_FEQUAL(0, c2.a);
+
+		c2.a = 0.5f;
+		c2.replace(color3::yellow());
+
+		GML_FEQUAL(1, c2.r);
+		GML_FEQUAL(1, c2.g);
+		GML_FEQUAL(0, c2.b);
+		GML_FEQUAL(0.5f, c2.a);
 	}
 
-	TEST_METHOD(Color4RgbaTest)
+	TEST_METHOD(Color4BGRATest)
 	{
 		auto c1 = color4::red();
 		auto c2 = color4::white();
 		auto c3 = color4::black();
 
-		GML_IEQUAL(0xFFFF0000u, c1.rgba());
-		GML_IEQUAL(0xFFFFFFFFu, c2.rgba());
-		GML_IEQUAL(0xFF000000u, c3.rgba());
+		GML_IEQUAL(0xFFFF0000u, c1.bgra());
+		GML_IEQUAL(0xFFFFFFFFu, c2.bgra());
+		GML_IEQUAL(0xFF000000u, c3.bgra());
+
+		GML_IS_TRUE(color4::from_bgra(0xFFFF0000u) == c1);
 	}
 
-	TEST_METHOD(Color4BgraTest)
+	TEST_METHOD(Color4RGBATest)
 	{
 		auto c1 = color4::red();
 		auto c2 = color4::white();
 		auto c3 = color4::black();
 
-		GML_IEQUAL(0xFF0000FFu, c1.bgra());
+		GML_IEQUAL(0xFF0000FFu, c1.rgba());
 		GML_IEQUAL(0xFFFFFFFFu, c2.rgba());
 		GML_IEQUAL(0xFF000000u, c3.rgba());
+
+		GML_IS_TRUE(color4::from_rgba(0xFF0000FFu) == c1);
 	}
 };
