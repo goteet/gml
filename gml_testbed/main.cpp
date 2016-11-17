@@ -25,7 +25,6 @@ using namespace gml;
 
 DECL(Vector2);
 DECL(Vector3);
-DECL(Vector4);
 DECL(VectorSwizzle);
 DECL(Matrix22);
 DECL(Matrix33);
@@ -42,7 +41,6 @@ int main()
 {
 	USING(Vector2);
 	USING(Vector3);
-	USING(Vector4);
 	USING(VectorSwizzle);
 	USING(Matrix22);
 	USING(Matrix33);
@@ -179,11 +177,6 @@ IMPL(Vector3)
 
 	a = min_combine(vec3(1, 2, 3), vec3(3, 2, 1));
 	OUTPUT << "  minx_combine(b,vec3::one, 1.0f) = <" << a[0] << "," << a[1] << "," << a[2] << ">\n\n";
-}
-
-IMPL(Vector4)
-{
-
 }
 
 IMPL(VectorSwizzle)
