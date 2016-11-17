@@ -279,6 +279,7 @@ namespace gml
 
 	constexpr float det44_t(const vec4& row1, const vec4& row2, const vec4& row3, const vec4& row4);
 
+	struct _0; struct _1;
 	struct _X { constexpr static const int SwizzleIndex = 0; };
 	struct _Y { constexpr static const int SwizzleIndex = 1; };
 	struct _Z { constexpr static const int SwizzleIndex = 2; };
@@ -287,55 +288,82 @@ namespace gml
 	template<typename SwizzleX, typename SwizzleY>
 	constexpr inline vec2 swizzle(const vec2& v2)
 	{
-		return vec2(v2[SwizzleX::SwizzleIndex], v2[SwizzleY::SwizzleIndex]);
+		return vec2(
+			gml_impl::Component(v2, SwizzleX::SwizzleIndex),
+			gml_impl::Component(v2, SwizzleY::SwizzleIndex));
 	}
 
 	template<typename SwizzleX, typename SwizzleY>
 	constexpr inline vec2 swizzle(const vec3& v3)
 	{
-		return vec2(v3[SwizzleX::SwizzleIndex], v3[SwizzleY::SwizzleIndex]);
+		return vec2(
+			gml_impl::Component(v3, SwizzleX::SwizzleIndex),
+			gml_impl::Component(v3, SwizzleY::SwizzleIndex));
 	}
 
 	template<typename SwizzleX, typename SwizzleY>
 	constexpr inline vec2 swizzle(const vec4& v4)
 	{
-		return vec2(v4[SwizzleX::SwizzleIndex], v4[SwizzleY::SwizzleIndex]);
+		return vec2(
+			gml_impl::Component(v4, SwizzleX::SwizzleIndex),
+			gml_impl::Component(v4, SwizzleY::SwizzleIndex));
 	}
 
 	template<typename SwizzleX, typename SwizzleY, typename SwizzleZ>
 	constexpr inline vec3 swizzle(const vec2& v2)
 	{
-		return vec3(v2[SwizzleX::SwizzleIndex], v2[SwizzleY::SwizzleIndex], v2[SwizzleZ::SwizzleIndex]);
+		return vec3(
+			gml_impl::Component(v2, SwizzleX::SwizzleIndex),
+			gml_impl::Component(v2, SwizzleY::SwizzleIndex),
+			gml_impl::Component(v2, SwizzleZ::SwizzleIndex));
 	}
 
 	template<typename SwizzleX, typename SwizzleY, typename SwizzleZ>
 	constexpr inline vec3 swizzle(const vec3& v3)
 	{
-		return vec3(v3[SwizzleX::SwizzleIndex], v3[SwizzleY::SwizzleIndex], v3[SwizzleZ::SwizzleIndex]);
+		return vec3(
+			gml_impl::Component(v3, SwizzleX::SwizzleIndex),
+			gml_impl::Component(v3, SwizzleY::SwizzleIndex),
+			gml_impl::Component(v3, SwizzleZ::SwizzleIndex));
 	}
 
 	template<typename SwizzleX, typename SwizzleY, typename SwizzleZ>
 	constexpr inline vec3 swizzle(const vec4& v4)
 	{
-		return vec3(v4[SwizzleX::SwizzleIndex], v4[SwizzleY::SwizzleIndex], v4[SwizzleZ::SwizzleIndex]);
+		return vec3(
+			gml_impl::Component(v4, SwizzleX::SwizzleIndex),
+			gml_impl::Component(v4, SwizzleY::SwizzleIndex),
+			gml_impl::Component(v4, SwizzleZ::SwizzleIndex));
 	}
 
 	template<typename SwizzleX, typename SwizzleY, typename SwizzleZ, typename SwizzleW>
 	constexpr inline vec4 swizzle(const vec2& v2)
 	{
-		return vec4(v2[SwizzleX::SwizzleIndex], v2[SwizzleY::SwizzleIndex], v2[SwizzleZ::SwizzleIndex], v2[SwizzleW::SwizzleIndex]);
+		return vec4(
+			gml_impl::Component(v2, SwizzleX::SwizzleIndex),
+			gml_impl::Component(v2, SwizzleY::SwizzleIndex),
+			gml_impl::Component(v2, SwizzleZ::SwizzleIndex),
+			gml_impl::Component(v2, SwizzleW::SwizzleIndex));
 	}
 
 	template<typename SwizzleX, typename SwizzleY, typename SwizzleZ, typename SwizzleW>
 	constexpr inline vec4 swizzle(const vec3& v3)
 	{
-		return vec4(v3[SwizzleX::SwizzleIndex], v3[SwizzleY::SwizzleIndex], v3[SwizzleZ::SwizzleIndex], v3[SwizzleW::SwizzleIndex]);
+		return vec4(
+			gml_impl::Component(v3, SwizzleX::SwizzleIndex),
+			gml_impl::Component(v3, SwizzleY::SwizzleIndex),
+			gml_impl::Component(v3, SwizzleZ::SwizzleIndex),
+			gml_impl::Component(v3, SwizzleW::SwizzleIndex));
 	}
 
 	template<typename SwizzleX, typename SwizzleY, typename SwizzleZ, typename SwizzleW>
 	inline vec4 swizzle(const vec4& v4)
 	{
-		return vec4(v4[SwizzleX::SwizzleIndex], v4[SwizzleY::SwizzleIndex], v4[SwizzleZ::SwizzleIndex], v4[SwizzleW::SwizzleIndex]);
+		return vec4(
+			gml_impl::Component(v4, SwizzleX::SwizzleIndex),
+			gml_impl::Component(v4, SwizzleY::SwizzleIndex),
+			gml_impl::Component(v4, SwizzleZ::SwizzleIndex),
+			gml_impl::Component(v4, SwizzleW::SwizzleIndex));
 	}
 }
 
