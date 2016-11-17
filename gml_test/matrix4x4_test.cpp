@@ -65,4 +65,42 @@ public:
 		GML_FEQUALM(15.0f, local._32, "local init by init-list");
 		GML_FEQUALM(16.0f, local._33, "local init by init-list");
 	}
+
+	TEST_METHOD(Matrix4x4AccessTest)
+	{
+		mat44 v = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
+		GML_FEQUAL(v._00, memberByList[0]);
+		GML_FEQUAL(v._01, memberByList[1]);
+		GML_FEQUAL(v._02, memberByList[2]);
+		GML_FEQUAL(v._03, memberByList[3]);
+		GML_FEQUAL(v._10, memberByList[4]);
+		GML_FEQUAL(v._11, memberByList[5]);
+		GML_FEQUAL(v._12, memberByList[6]);
+		GML_FEQUAL(v._13, memberByList[7]);
+		GML_FEQUAL(v._20, memberByList[8]);
+		GML_FEQUAL(v._21, memberByList[9]);
+		GML_FEQUAL(v._22, memberByList[10]);
+		GML_FEQUAL(v._23, memberByList[11]);
+		GML_FEQUAL(v._30, memberByList[12]);
+		GML_FEQUAL(v._31, memberByList[13]);
+		GML_FEQUAL(v._32, memberByList[14]);
+		GML_FEQUAL(v._33, memberByList[15]);
+
+		GML_FEQUAL(v._00, v.row[0].x);
+		GML_FEQUAL(v._01, v.row[0].y);
+		GML_FEQUAL(v._02, v.row[0].z);
+		GML_FEQUAL(v._03, v.row[0].w);
+		GML_FEQUAL(v._10, v.row[1].x);
+		GML_FEQUAL(v._11, v.row[1].y);
+		GML_FEQUAL(v._12, v.row[1].z);
+		GML_FEQUAL(v._13, v.row[1].w);
+		GML_FEQUAL(v._20, v.row[2].x);
+		GML_FEQUAL(v._21, v.row[2].y);
+		GML_FEQUAL(v._22, v.row[2].z);
+		GML_FEQUAL(v._23, v.row[2].w);
+		GML_FEQUAL(v._30, v.row[3].x);
+		GML_FEQUAL(v._31, v.row[3].y);
+		GML_FEQUAL(v._32, v.row[3].z);
+		GML_FEQUAL(v._33, v.row[3].w);
+	}
 };

@@ -30,6 +30,20 @@ public:
 		GML_FEQUALM(8.0f, local._11, "local init by init-list");
 	}
 
+	TEST_METHOD(Matrix2x2AccessTest)
+	{
+		mat22 v = { 1, 2, 3, 4 };
+		GML_FEQUAL(v._00, v[0]);
+		GML_FEQUAL(v._01, v[1]);
+		GML_FEQUAL(v._10, v[2]);
+		GML_FEQUAL(v._11, v[3]);
+						  
+		GML_FEQUAL(v._00, v.row[0].x);
+		GML_FEQUAL(v._01, v.row[0].y);
+		GML_FEQUAL(v._10, v.row[1].x);
+		GML_FEQUAL(v._11, v.row[1].y);
+	}
+
 	TEST_METHOD(Matrix2x2OpeartionsTest)
 	{
 		auto rotMatrixP = mat22::rotate((radian)degree(90));

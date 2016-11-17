@@ -35,4 +35,22 @@ public:
 		GML_FEQUALM(5.0f, local._11, "local init by init-list");
 		GML_FEQUALM(6.0f, local._12, "local init by init-list");
 	}
+
+	TEST_METHOD(Matrix3x2AccessTest)
+	{
+		mat32 v = { 1, 2, 3, 4, 5, 6 };
+		GML_FEQUAL(v._00, v[0]);
+		GML_FEQUAL(v._01, v[1]);
+		GML_FEQUAL(v._02, v[2]);
+		GML_FEQUAL(v._10, v[3]);
+		GML_FEQUAL(v._11, v[4]);
+		GML_FEQUAL(v._12, v[5]);
+
+		GML_FEQUAL(v._00, v.row[0].x);
+		GML_FEQUAL(v._01, v.row[0].y);
+		GML_FEQUAL(v._02, v.row[0].z);
+		GML_FEQUAL(v._10, v.row[1].x);
+		GML_FEQUAL(v._11, v.row[1].y);
+		GML_FEQUAL(v._12, v.row[1].z);
+	}
 };
