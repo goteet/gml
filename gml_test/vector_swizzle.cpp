@@ -72,11 +72,35 @@ public:
 
 	TEST_METHOD(Color3SwizzleTest)
 	{
-		
+		color3 c3(0.0, 0.5f, 1.0f), sw3, sw4;
+		color4 c4(c3, 0.3f);
+
+		sw3 = swizzle<_B, _G, _R>(c3);
+		GML_FEQUAL(sw3.r, c3.b);
+		GML_FEQUAL(sw3.g, c3.g);
+		GML_FEQUAL(sw3.b, c3.r);
+
+		sw4 = swizzle<_A, _R, _G>(c4);
+		GML_FEQUAL(sw4.r, c4.a);
+		GML_FEQUAL(sw4.g, c4.r);
+		GML_FEQUAL(sw4.b, c4.g);
 	}
 
 	TEST_METHOD(Color4SwizzleTest)
 	{
+		color3 c3(0.0, 0.5f, 1.0f);
+		color4 c4(c3, 0.3f), sw3, sw4;
 
+		sw3 = swizzle<_B, _G, _R, _G>(c3);
+		GML_FEQUAL(sw3.r, c3.b);
+		GML_FEQUAL(sw3.g, c3.g);
+		GML_FEQUAL(sw3.b, c3.r);
+		GML_FEQUAL(sw3.a, c3.g);
+
+		sw4 = swizzle<_A, _R, _G, _B>(c4);
+		GML_FEQUAL(sw4.r, c4.a);
+		GML_FEQUAL(sw4.g, c4.r);
+		GML_FEQUAL(sw4.b, c4.g);
+		GML_FEQUAL(sw4.a, c4.b);
 	}
 };
