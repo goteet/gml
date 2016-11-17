@@ -1,10 +1,4 @@
-#include <gmlvector.h>
 #include <gmlmatrix.h>
-#include <gmlcolor.h>
-#include <gmlutility.h>
-#include <gmlrotation.h>
-#include <gmlconversion.h>
-#include <gmldualquat.h>
 
 //#define WRITE_TO_FILE
 #ifndef WRITE_TO_FILE
@@ -26,9 +20,6 @@ using namespace gml;
 DECL(Matrix22);
 DECL(Matrix33);
 DECL(Matrix44);
-DECL(Quaternion);
-
-
 
 #include <iomanip>
 
@@ -37,7 +28,6 @@ int main()
 	USING(Matrix22);
 	USING(Matrix33);
 	USING(Matrix44);
-	USING(Quaternion);
 
 #ifndef WRITE_TO_FILE
 	getchar();
@@ -137,38 +127,4 @@ IMPL(Matrix44)
 
 	mat44 t = mat44::translate(1, 2, 3);
 	vec3 p = transform_point(t, vec3::zero());
-}
-
-
-IMPL(Quaternion)
-{
-	gml::quat r1(vec3::right(), (gml::radian)gml::degree(90));
-	gml::quat r2(vec3::left(), (gml::radian)gml::degree(90));
-	gml::vec3 position(0, 0, 1);
-
-	OUTPUT << "## slerp\n";
-	for (int i = 0; i < 51; i++)
-	{
-		float k = i / 50.0f;
-		gml::quat r = slerp(r1, r2, k);
-		position = gml::rotate(r, vec3(0, 0, 1));
-		OUTPUT << "k = " << k << " \t\t"
-			<< "<" << position.x << ","
-			<< position.y << ","
-			<< position.z << "> \n";
-	}
-
-	OUTPUT << "\n## q1*q2 \n";
-	r1 = quat(vec3::forward(), (gml::radian)gml::degree(90));
-	r2 = quat(vec3::up(), (gml::radian)gml::degree(90));
-
-	auto r = r1 * r2;
-	position = gml::rotate(r, vec3(0, 0, 1));
-	OUTPUT << "<" << position.x << ","
-		<< position.y << ","
-		<< position.z << "> \n";
-
-	auto rmat = gml::to_mat44(r2);
-	auto r2_ = gml::to_quat(rmat);
-	position = transform_vector(rmat, vec3(0, 0, 1));
 }
