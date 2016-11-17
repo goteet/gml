@@ -5,7 +5,10 @@ namespace gml
 	TEST_CLASS(Vector3Test)
 	{
 	public:
-
+		TEST_METHOD(Vector3GenericTest)
+		{
+			GML_IEQUAL(sizeof(float) * 3, sizeof(vec3));
+		}
 		TEST_METHOD(Vec3InitializationTest)
 		{
 			// vec3()

@@ -322,15 +322,6 @@ IMPL(Matrix44)
 IMPL(AllStructure)
 {
 	OUTPUT << "## structure size validation \n";
-	OUTPUT << "\tsizeof(float)  = " << sizeof(float) << std::endl;
-	OUTPUT << "\tsizeof(vec2)   = " << sizeof(vec2) << std::endl;
-	OUTPUT << "\tsizeof(vec3)   = " << sizeof(vec3) << std::endl;
-	OUTPUT << "\tsizeof(vec4)   = " << sizeof(vec4) << std::endl;	
-	OUTPUT << "\tsizeof(mat32)  = " << sizeof(mat32) << std::endl;
-	OUTPUT << "\tsizeof(mat33)  = " << sizeof(mat33) << std::endl;
-	OUTPUT << "\tsizeof(mat44)  = " << sizeof(mat44) << std::endl;
-	OUTPUT << "\tsizeof(color_rgb)  = " << sizeof(color3) << std::endl;
-	OUTPUT << "\tsizeof(color_rgba) = " << sizeof(color4) << std::endl << std::endl;
 
 	OUTPUT << "## list initializer & union data validation" << std::endl;
 

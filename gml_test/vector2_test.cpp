@@ -5,6 +5,10 @@ namespace gml
     TEST_CLASS(Vector2Test)
     {
     public:
+		TEST_METHOD(Vector2GenericTest)
+		{
+			GML_IEQUAL(sizeof(float) * 2, sizeof(vec2));
+		}
 
         TEST_METHOD(Vec2InitializationTest)
         {

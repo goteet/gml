@@ -5,7 +5,7 @@ TEST_CLASS(Matrix2x2Test)
 public:
 	TEST_METHOD(Matrix2x2GenericTest)
 	{
-		GML_IEQUALM(sizeof(float) * 4, sizeof(mat22), "the struct of matrix2x2 is not the same as expected.");
+		GML_IEQUAL(sizeof(float) * 2 * 2, sizeof(mat22));
 	}
 
 	mat22 memberByList = { 1,2,3,4 };
@@ -14,7 +14,7 @@ public:
 	TEST_METHOD(Matrix2x2IntializationTest)
 	{
 		GML_FEQUALM(5.0f, memberByStaticFunc._00, "member init by static function");
-		GML_FEQUALM(10.0f, memberByStaticFunc._11, "member init by static function");
+		GML_FEQUAL(10.0f, memberByStaticFunc._11, "member init by static function");
 		GML_FEQUAL(0.0f, memberByStaticFunc._01);
 		GML_FEQUAL(0.0f, memberByStaticFunc._10);
 

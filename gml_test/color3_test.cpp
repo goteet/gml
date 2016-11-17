@@ -5,6 +5,10 @@ namespace gml
 	TEST_CLASS(Color3Test)
 	{
 	public:
+		TEST_METHOD(Color3GenericTest)
+		{
+			GML_IEQUAL(sizeof(float) * 3, sizeof(color3));
+		}
 
 		TEST_METHOD(Color3InitializationTest)
 		{
