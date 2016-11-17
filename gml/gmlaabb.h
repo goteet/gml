@@ -37,6 +37,10 @@ namespace gml
 
 		void expand(const aabb2d& other);
 
+		void move(const vec2& offset);
+
+		void move_to(const vec2& point);
+
 		void clear();
 
 	private:
@@ -79,6 +83,10 @@ namespace gml
 		void expand(const vec3& point);
 
 		void expand(const aabb& other);
+
+		void move(const vec3& point);
+
+		void move_to(const vec3& point);
 
 		void clear();
 
@@ -134,7 +142,9 @@ namespace gml
 		m_max_bound = max_combine(min_bound, max_bound);
 		m_center = (m_min_bound + m_max_bound) * 0.5f;
 		m_extend = m_center - m_min_bound;
-		m_is_empty = false;
+
+		m_is_empty = (fequal(m_min_bound.x, m_max_bound.x) ||
+			fequal(m_min_bound.y, m_max_bound.y));
 	}
 
 	inline it_mode aabb2d::is_intersect(const aabb2d& other) const
@@ -249,6 +259,21 @@ namespace gml
 		m_is_empty = true;
 	}
 
+	inline void aabb2d::move(const vec2& offset)
+	{
+		m_min_bound += offset;
+		m_max_bound += offset;
+		m_center += offset;
+	}
+
+	inline void aabb2d::move_to(const vec2& point)
+	{
+		auto offset = point - m_center;
+		m_min_bound += offset;
+		m_max_bound += offset;
+		m_center = point;
+	}
+
 	constexpr aabb::aabb() : m_is_empty(true)
 		, m_min_bound(0, 0, 0)
 		, m_max_bound(0, 0, 0)
@@ -292,7 +317,9 @@ namespace gml
 		m_max_bound = max_combine(min_bound, max_bound);
 		m_center = (m_min_bound + m_max_bound) * 0.5f;
 		m_extend = m_center - m_min_bound;
-		m_is_empty = false;
+		m_is_empty = (fequal(m_min_bound.x, m_max_bound.x) ||
+			fequal(m_min_bound.y, m_max_bound.y) ||
+			fequal(m_min_bound.z, m_max_bound.z));
 	}
 
 	inline it_mode aabb::is_intersect(const aabb& other) const
@@ -402,6 +429,21 @@ namespace gml
 			m_center = (m_min_bound + m_max_bound) * 0.5f;
 			m_extend = m_center - m_min_bound;
 		}
+	}
+
+	inline void aabb::move(const vec3& offset)
+	{
+		m_min_bound += offset;
+		m_max_bound += offset;
+		m_center += offset;
+	}
+
+	inline void aabb::move_to(const vec3& point)
+	{
+		auto offset = point - m_center;
+		m_min_bound += offset;
+		m_max_bound += offset;
+		m_center = point;
 	}
 
 	inline void aabb::clear()
