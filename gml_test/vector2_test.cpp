@@ -7,6 +7,9 @@ public:
 	TEST_METHOD(Vector2GenericTest)
 	{
 		GML_IEQUAL(sizeof(float) * 2, sizeof(vec2));
+		vec2 v2(vec2::up());
+		vec2 v3(vec4::one());
+		vec2 v4(vec3::left());
 	}
 
 	vec2 memberByStaticFunc = vec2::one();

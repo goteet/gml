@@ -26,14 +26,14 @@ namespace gml
 		inline dquat(const vec3& axis, const radian& r) : real(axis, r), dual(0, 0, 0, 0) { }
 
 		//only translation
-		constexpr dquat(const vec3& translation) : real(1, 0, 0, 0), dual(0, translation * 0.5f) { }
+		inline dquat(const vec3& translation) : real(1, 0, 0, 0), dual(0, translation * 0.5f) { }
 
 		//only translation
 		constexpr dquat(float x, float y, float z) : real(1, 0, 0, 0), dual(0, x*0.5f, y*0.5f, z*0.5f) { }
 
 		constexpr quat get_rotation() const { return real; }
 
-		constexpr vec3 get_translation() const { return (2.0f * dual * real.conjugated()).v; }
+		inline vec3 get_translation() const { return (2.0f * dual * real.conjugated()).v; }
 
 		radian get_rotate_radian() const;
 
@@ -69,13 +69,13 @@ namespace gml
 
 		inline float length() const { return sqrtf(length_sqr()); }
 
-		constexpr float length_sqr() const { return dot(real, real); }
+		inline float length_sqr() const { return dot(real, real); }
 
 	public://unless you know what u r doing.
 		constexpr dquat(const quat &r, const quat& d) : real(r), dual(d) { }
 	};
 
-	constexpr float dot(const dquat& lhs, const dquat& rhs);
+	inline float dot(const dquat& lhs, const dquat& rhs);
 
 	dquat sc_lerp(const dquat& from, const dquat& to, float t);
 
@@ -256,7 +256,7 @@ namespace gml
 		return result;
 	}
 
-	constexpr float dot(const dquat& lhs, const dquat& rhs)
+	inline float dot(const dquat& lhs, const dquat& rhs)
 	{
 		return dot(lhs.real, rhs.real);
 	}

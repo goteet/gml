@@ -47,15 +47,15 @@ namespace gml
 
 		constexpr const quat& operator+() const { return *this; }
 
-		constexpr quat operator-() const;
+		inline quat operator-() const;
 
-		friend constexpr quat operator+(const quat& lhs, const quat& rhs);
+		friend inline quat operator+(const quat& lhs, const quat& rhs);
 
-		friend constexpr quat operator*(const quat& lhs, const quat& rhs);
+		friend inline quat operator*(const quat& lhs, const quat& rhs);
 
-		friend constexpr quat operator*(const quat& lhs, float rhs);
+		friend inline quat operator*(const quat& lhs, float rhs);
 
-		friend constexpr quat operator*(float lhs, const quat& rhs);
+		friend inline quat operator*(float lhs, const quat& rhs);
 
 		friend quat& operator+=(quat& lhs, const quat& rhs);
 
@@ -69,7 +69,7 @@ namespace gml
 
 		void conjugate();
 
-		constexpr quat conjugated() const;
+		inline quat conjugated() const;
 
 		void inverse();
 
@@ -79,7 +79,7 @@ namespace gml
 
 		float length() const;
 
-		constexpr float length_sqr() const;
+		inline float length_sqr() const;
 
 	public: //do not use unless you know what happen.
 		constexpr quat(float rw, const vec3& rv) : w(rw), v(rv) {	}
@@ -87,7 +87,7 @@ namespace gml
 		constexpr quat(float rw, float rx, float ry, float rz) : w(rw), v(rx, ry, rz) { }
 	};
 
-	constexpr float dot(const quat& lhs, const quat& rhs);
+	inline float dot(const quat& lhs, const quat& rhs);
 
 	vec3 rotate(const quat& rotation, const vec3& point);
 
@@ -160,22 +160,22 @@ namespace gml
 		}
 	}
 
-	constexpr quat quat::operator-() const
+	inline quat quat::operator-() const
 	{
 		return quat(-w, -v);
 	}
 
-	constexpr quat operator+(const quat& lhs, const quat& rhs)
+	inline quat operator+(const quat& lhs, const quat& rhs)
 	{
 		return quat(lhs.w + rhs.w, lhs.v + rhs.v);
 	}
 
-	constexpr quat operator-(const quat& lhs, const quat& rhs)
+	inline quat operator-(const quat& lhs, const quat& rhs)
 	{
 		return quat(lhs.w - rhs.w, lhs.v - rhs.v);
 	}
 
-	constexpr quat operator*(const quat& lhs, const quat& rhs)
+	inline quat operator*(const quat& lhs, const quat& rhs)
 	{
 		return quat(
 			lhs.w * rhs.w - dot(lhs.v, rhs.v),
@@ -183,12 +183,12 @@ namespace gml
 			);
 	}
 
-	constexpr quat operator*(const quat& lhs, float rhs)
+	inline quat operator*(const quat& lhs, float rhs)
 	{
 		return quat(lhs.w * rhs, lhs.v * rhs);
 	}
 
-	constexpr quat operator*(float lhs, const quat& rhs)
+	inline quat operator*(float lhs, const quat& rhs)
 	{
 		return rhs * lhs;
 	}
@@ -243,7 +243,7 @@ namespace gml
 		/*w = -w;*/
 	}
 
-	constexpr quat quat::conjugated() const
+	inline quat quat::conjugated() const
 	{
 		return quat(w, -v);
 	}
@@ -275,12 +275,12 @@ namespace gml
 		return sqrtf(length_sqr());
 	}
 
-	constexpr float quat::length_sqr() const
+	inline float quat::length_sqr() const
 	{
 		return w*w + v.length_sqr();
 	}
 
-	constexpr float dot(const quat& lhs, const quat& rhs)
+	inline float dot(const quat& lhs, const quat& rhs)
 	{
 		return lhs.w*rhs.w + dot(lhs.v, rhs.v);
 	}

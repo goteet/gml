@@ -4,284 +4,272 @@
 #include <cassert>
 #include <cmath>
 
+namespace gml_impl
+{
+	template<int D> struct vec_s;
+}
+
 namespace gml
 {
-	class vec2;
-	class vec3;
-	class vec4;
 
-	class vec2
+	template<int D> class vec_t : public gml_impl::vec_s<D>
 	{
 	public:
-		constexpr static const int DIMENSION = 2;
-		static const vec2& zero();
-		static const vec2& one();
-		static const vec2& left();
-		static const vec2& right();
-		static const vec2& up();
-		static const vec2& down();
+		constexpr static int DIMENSION = D;
 
-	public:
-		float x = 0.0f;
-		float y = 0.0f;
+		constexpr vec_t() = default;
 
-	public:
-		constexpr vec2() = default;
+		constexpr vec_t(const vec_t& other) = default;
 
-		constexpr vec2(float _x, float _y) : x(_x), y(_y) { }
+		template<int DD = D, typename = typename std::enable_if<DD == 2>::type>
+		constexpr vec_t(float _x, float _y) : vec_s(_x, _y) { }
 
-		constexpr explicit vec2(const vec3& v3);
+		template<int DD = D, typename = typename std::enable_if<DD == 3>::type>
+		constexpr vec_t(float _x, float _y, float _z) : vec_s(_x, _y, _z) { }
 
-		constexpr explicit vec2(const vec4& v4);
+		template<int DD = D, typename = typename std::enable_if<DD == 4>::type>
+		constexpr vec_t(float _x, float _y, float _z, float _w) : vec_s(_x, _y, _z, _w) { }
 
-		friend bool operator==(const vec2& lhs, const vec2& rhs);
+		template<int DD = D, typename = typename std::enable_if<(DD > 3)>::type >
+		constexpr explicit vec_t(const vec_t<D - 2>& other, float _z, float _w) : vec_s<4>(other.x, other.y, _z, _w) {  }
 
-		friend inline bool operator!=(const vec2& lhs, const vec2& rhs) { return !(lhs == rhs); }
+		template<int DD = D, typename = typename std::enable_if<(DD > 2)>::type >
+		constexpr explicit vec_t(const vec_t<D - 1>& other, float _tail) : vec_s(other, _tail) {  }
 
-		constexpr const vec2& operator+() const { return *this; }
+		template<int DD>
+		constexpr explicit vec_t(const vec_t<DD>& other) : vec_s(other) { }
 
-		constexpr vec2 operator-() const;
+		friend bool operator==(const vec_t<D>& lhs, const vec_t<D>& rhs);
 
-		friend constexpr vec2 operator+(const vec2& lhs, const vec2& rhs);
+		friend inline bool operator!=(const vec_t<D>& lhs, const vec_t<D>& rhs) { return !(lhs == rhs); }
 
-		friend constexpr vec2 operator+(const vec2& lhs, float rhs);
+		constexpr const vec_t<D>& operator+() const { return *this; }
 
-		friend constexpr vec2 operator+(float lhs, const vec2& rhs);
+		vec_t<D> operator-() const;
 
-		friend constexpr vec2 operator-(const vec2& lhs, const vec2& rhs);
+		friend vec_t<D> operator+(const vec_t<D>& lhs, const vec_t<D>& rhs);
 
-		friend constexpr vec2 operator-(const vec2& lhs, float rhs);
+		friend vec_t<D> operator+(const vec_t<D>& lhs, float rhs);
 
-		friend constexpr vec2 operator-(float lhs, const vec2& rhs);
+		friend vec_t<D> operator+(float lhs, const vec_t<D>& rhs);
 
-		friend constexpr vec2 operator*(const vec2& lhs, const vec2& rhs);
+		friend vec_t<D> operator-(const vec_t<D>& lhs, const vec_t<D>& rhs);
 
-		friend constexpr vec2 operator*(const vec2& lhs, float rhs);
+		friend vec_t<D> operator-(const vec_t<D>& lhs, float rhs);
 
-		friend constexpr vec2 operator*(float lhs, const vec2& rhs);
+		friend vec_t<D> operator-(float lhs, const vec_t<D>& rhs);
 
-		friend vec2& operator+=(vec2& lhs, const vec2& rhs);
+		friend vec_t<D> operator*(const vec_t<D>& lhs, const vec_t<D>& rhs);
 
-		friend vec2& operator+=(vec2& lhs, float rhs);
+		friend vec_t<D> operator*(const vec_t<D>& lhs, float rhs);
 
-		friend vec2& operator-=(vec2& lhs, const vec2& rhs);
+		friend vec_t<D> operator*(float lhs, const vec_t<D>& rhs);
 
-		friend vec2& operator-=(vec2& lhs, float rhs);
+		friend vec_t<D>& operator+=(vec_t<D>& lhs, const vec_t<D>& rhs);
 
-		friend vec2& operator*=(vec2& lhs, const vec2& rhs);
+		friend vec_t<D>& operator+=(vec_t<D>& lhs, float rhs);
 
-		friend vec2& operator*=(vec2& lhs, float rhs);
+		friend vec_t<D>& operator-=(vec_t<D>& lhs, const vec_t<D>& rhs);
 
-		float& operator[](int index);//hack
+		friend vec_t<D>& operator-=(vec_t<D>& lhs, float rhs);
+
+		friend vec_t<D>& operator*=(vec_t<D>& lhs, const vec_t<D>& rhs);
+
+		friend vec_t<D>& operator*=(vec_t<D>& lhs, float rhs);
+
+		float& operator[](int index);
 
 		const float& operator[](int index) const;
 
-		explicit operator float*();
+		operator float*();
 
 		constexpr explicit operator const float*() const { return &(x); }
 
-		void set(float _x, float _y);
+		void vec_t<D>::normalize();
 
-		void set(const vec3& v3);
+		vec_t<D> vec_t<D>::normalized() const;
 
-		void set(const vec4& v4);
+		void vec_t<D>::inverse();
 
-		void normalize();
+		vec_t<D> vec_t<D>::inversed() const;
 
-		vec2 normalized() const;
+		float vec_t<D>::length() const;
 
-		void inverse();
+		float vec_t<D>::length_sqr() const;
 
-		vec2 inversed() const;
+		void replace(const vec_t<2>& v2);
 
-		float length() const;
+		void replace(const vec_t<3>& v3);
 
-		constexpr float length_sqr() const;
+	public:
+		friend inline bool operator==(const vec_t<D>& lhs, const vec_t<D>& rhs)
+		{
+			for (int i = 0; i < D; i++)
+			{
+				if (!gml::fequal(lhs[i], rhs[i]))
+					return false;
+			}
+			return true;
+		}
+
+		friend inline vec_t<D> operator+(const vec_t<D>& lhs, const vec_t<D>& rhs)
+		{
+			vec_t<D> r;
+			for (int i = 0; i < D; i++)
+			{
+				r[i] = lhs[i] + rhs[i];
+			}
+			return r;
+		}
+
+		friend inline vec_t<D> operator+(const vec_t<D>& lhs, float rhs)
+		{
+			vec_t<D> r;
+			for (int i = 0; i < D; i++)
+			{
+				r[i] = lhs[i] + rhs;
+			}
+			return r;
+		}
+
+		friend inline vec_t<D> operator+(float lhs, const vec_t<D>& rhs)
+		{
+			vec_t<D> r;
+			for (int i = 0; i < D; i++)
+			{
+				r[i] = lhs + rhs[i];
+			}
+			return r;
+		}
+
+		friend inline vec_t<D> operator-(const vec_t<D>& lhs, const vec_t<D>& rhs)
+		{
+			vec_t<D> r;
+			for (int i = 0; i < D; i++)
+			{
+				r[i] = lhs[i] - rhs[i];
+			}
+			return r;
+		}
+
+		friend inline vec_t<D> operator-(const vec_t<D>& lhs, float rhs)
+		{
+			vec_t<D> r;
+			for (int i = 0; i < D; i++)
+			{
+				r[i] = lhs[i] - rhs;
+			}
+			return r;
+		}
+
+		friend inline vec_t<D> operator-(float lhs, const vec_t<D>& rhs)
+		{
+			vec_t<D> r;
+			for (int i = 0; i < D; i++)
+			{
+				r[i] = lhs - rhs[i];
+			}
+			return r;
+		}
+
+		friend inline vec_t<D> operator*(const vec_t<D>& lhs, const vec_t<D>& rhs)
+		{
+			vec_t<D> r;
+			for (int i = 0; i < D; i++)
+			{
+				r[i] = lhs[i] * rhs[i];
+			}
+			return r;
+		}
+
+		friend inline vec_t<D> operator*(const vec_t<D>& lhs, float rhs)
+		{
+			vec_t<D> r;
+			for (int i = 0; i < D; i++)
+			{
+				r[i] = lhs[i] * rhs;
+			}
+			return r;
+		}
+
+		friend inline vec_t<D> operator*(float lhs, const vec_t<D>& rhs)
+		{
+			vec_t<D> r;
+			for (int i = 0; i < D; i++)
+			{
+				r[i] = lhs * rhs[i];
+			}
+			return r;
+		}
+
+		friend inline vec_t<D>& operator+=(vec_t<D>& lhs, const vec_t<D>& rhs)
+		{
+			for (int i = 0; i < D; i++)
+			{
+				lhs[i] += rhs[i];
+			}
+			return lhs;
+		}
+
+		friend inline vec_t<D>& operator+=(vec_t<D>& lhs, float rhs)
+		{
+			for (int i = 0; i < D; i++)
+			{
+				lhs[i] += rhs;
+			}
+			return lhs;
+		}
+
+		friend inline vec_t<D>& operator-=(vec_t<D>& lhs, const vec_t<D>& rhs)
+		{
+			for (int i = 0; i < D; i++)
+			{
+				lhs[i] -= rhs[i];
+			}
+			return lhs;
+		}
+
+		friend inline vec_t<D>& operator-=(vec_t<D>& lhs, float rhs)
+		{
+			for (int i = 0; i < D; i++)
+			{
+				lhs[i] -= rhs;
+			}
+			return lhs;
+		}
+
+		friend inline vec_t<D>& operator*=(vec_t<D>& lhs, const vec_t<D>& rhs)
+		{
+			for (int i = 0; i < D; i++)
+			{
+				lhs[i] *= rhs[i];
+			}
+			return lhs;
+		}
+
+		friend inline vec_t<D>& operator*=(vec_t<D>& lhs, float rhs)
+		{
+			for (int i = 0; i < D; i++)
+			{
+				lhs[i] *= rhs;
+			}
+			return lhs;
+		}
 	};
 
-	class vec3
-	{
-	public:
-		constexpr static const int DIMENSION = 3;
-		static const vec3& zero();
-		static const vec3& one();
-		static const vec3& left();
-		static const vec3& right();
-		static const vec3& up();
-		static const vec3& down();
-		static const vec3& forward();
-		static const vec3& backward();
+	typedef vec_t<2> vec2;
+	typedef vec_t<3> vec3;
+	typedef vec_t<4> vec4;
 
-	public:
-		float x = 0.0f;
-		float y = 0.0f;
-		float z = 0.0f;
+	template<int D> float dot(const vec_t<D>& lhs, const vec_t<D>& rhs);
 
-	public:
-		constexpr vec3() = default;
+	constexpr float cross(const vec_t<2>& lhs, const vec_t<2>& rhs);
 
-		constexpr vec3(float _x, float _y, float _z) : x(_x), y(_y), z(_z) { }
+	constexpr vec_t<3> cross(const vec_t<3>& lhs, const vec_t<3>& rhs);
 
-		constexpr vec3(const vec2& v2, float _z) : x(v2.x), y(v2.y), z(_z) { }
+	template<int D> vec_t<D> min_combine(const vec_t<D>& lhs, const vec_t<D>& rhs);
 
-		constexpr explicit vec3(const vec4& v4);
-
-		friend bool operator==(const vec3& lhs, const vec3& rhs);
-
-		friend inline bool operator!=(const vec3& lhs, const vec3& rhs) { return !(lhs == rhs); }
-
-		constexpr const vec3& operator+() const { return *this; }
-
-		constexpr vec3 operator-() const;
-
-		friend constexpr vec3 operator+(const vec3& lhs, const vec3& rhs);
-
-		friend constexpr vec3 operator+(const vec3& lhs, float rhs);
-
-		friend constexpr vec3 operator+(float lhs, const vec3& rhs);
-
-		friend constexpr vec3 operator-(const vec3& lhs, const vec3& rhs);
-
-		friend constexpr vec3 operator-(const vec3& lhs, float rhs);
-
-		friend constexpr vec3 operator-(float lhs, const vec3& rhs);
-
-		friend constexpr vec3 operator*(const vec3& lhs, const vec3& rhs);
-
-		friend constexpr vec3 operator*(const vec3& lhs, float rhs);
-
-		friend constexpr vec3 operator*(float lhs, const vec3& rhs);
-
-		friend vec3& operator+=(vec3& lhs, const vec3& rhs);
-
-		friend vec3& operator+=(vec3& lhs, float rhs);
-
-		friend vec3& operator-=(vec3& lhs, const vec3& rhs);
-
-		friend vec3& operator-=(vec3& lhs, float rhs);
-
-		friend vec3& operator*=(vec3& lhs, const vec3& rhs);
-
-		friend vec3& operator*=(vec3& lhs, float rhs);
-
-		float& operator[](int index);//hack
-
-		const float& operator[](int index) const;
-
-		explicit operator float*();
-
-		constexpr explicit operator const float*() const { return &(x); }
-
-		void set(float _x, float _y, float _z);
-
-		void set(const vec2& v2, float _z);
-
-		void set(const vec4& v4);
-
-		void replace(const vec2& v2);
-
-		void normalize();
-
-		vec3 normalized() const;
-
-		void inverse();
-
-		vec3 inversed() const;
-
-		float length() const;
-
-		constexpr float length_sqr() const;
-	};
-
-	class vec4
-	{
-	public:
-		constexpr static const int DIMENSION = 4;
-	public:
-		float x = 0.0f;
-		float y = 0.0f;
-		float z = 0.0f;
-		float w = 0.0f;
-
-	public:
-		constexpr vec4() = default;
-
-		constexpr vec4(float _x, float _y, float _z, float _w) : x(_x), y(_y), z(_z), w(_w) { }
-
-		constexpr vec4(const vec2& v2, float _z, float _w) : x(v2.x), y(v2.y), z(_z), w(_w) { }
-
-		constexpr vec4(const vec3& v3, float _w) : x(v3.x), y(v3.y), z(v3.z), w(_w) { }
-
-		friend bool operator==(const vec4& lhs, const vec4& rhs);
-
-		friend inline bool operator!=(const vec4& lhs, const vec4& rhs) { return !(lhs == rhs); }
-
-		constexpr const vec4& operator+() const { return *this; }
-
-		constexpr vec4 operator-() const;
-
-		friend constexpr vec4 operator*(const vec4& lhs, const vec4& rhs);
-
-		friend constexpr vec4 operator*(const vec4& lhs, float rhs);
-
-		friend constexpr vec4 operator*(float lhs, const vec4& rhs);
-
-		friend vec4 operator*=(vec4& lhs, const vec4& rhs);
-
-		friend vec4 operator*=(vec4& lhs, float rhs);
-
-		float& operator[](int index);//hack
-
-		const float& operator[](int index) const;
-
-		explicit operator float*();
-
-		constexpr explicit operator const float*() const { return &(x); }
-
-		void set(float _x, float _y, float _z, float _w);
-
-		void set(const vec2& v2, float _z, float _w);
-
-		void set(const vec3& v3, float _w);
-
-		void replace(const vec2& v2);
-
-		void replace(const vec3& v2);
-
-		float length() const;
-
-		constexpr float length_sqr() const;
-	};
-
-	constexpr float dot(const vec2& lhs, const vec2& rhs);
-
-	constexpr float dot(const vec3& lhs, const vec3& rhs);
-
-	constexpr float dot(const vec4& lhs, const vec4& rhs);
-
-	constexpr float cross(const vec2& lhs, const vec2& rhs);
-
-	constexpr vec3 cross(const vec3& lhs, const vec3& rhs);
-
-	constexpr vec2 min_combine(const vec2& lhs, const vec2& rhs);
-
-	constexpr vec3 min_combine(const vec3& lhs, const vec3& rhs);
-
-	constexpr vec2 max_combine(const vec2& lhs, const vec2& rhs);
-
-	constexpr vec3 max_combine(const vec3& lhs, const vec3& rhs);
-
-	constexpr float det22(const vec2& row1, const vec2& row2);
-
-	constexpr float det33(const vec3& row1, const vec3& row2, const vec3& row3);
-
-	constexpr float det44(const vec4& row1, const vec4& row2, const vec4& row3, const vec4& row4);
-
-	constexpr float det22_t(const vec2& row1, const vec2& row2);
-
-	constexpr float det33_t(const vec3& row1, const vec3& row2, const vec3& row3);
-
-	constexpr float det44_t(const vec4& row1, const vec4& row2, const vec4& row3, const vec4& row4);
+	template<int D> vec_t<D> max_combine(const vec_t<D>& lhs, const vec_t<D>& rhs);
 
 	struct _0; struct _1;
 	struct _X { constexpr static const int SwizzleIndex = 0; };
@@ -290,791 +278,60 @@ namespace gml
 	struct _W { constexpr static const int SwizzleIndex = 3; };
 
 	template<typename SwizzleX, typename SwizzleY>
-	constexpr vec2 swizzle(const vec2& v2);
-
-	template<typename SwizzleX, typename SwizzleY>
-	constexpr vec2 swizzle(const vec3& v3);
-
-	template<typename SwizzleX, typename SwizzleY>
-	constexpr vec2 swizzle(const vec4& v4);
-
-	template<typename SwizzleX, typename SwizzleY, typename SwizzleZ>
-	constexpr vec3 swizzle(const vec2& v2);
-
-	template<typename SwizzleX, typename SwizzleY, typename SwizzleZ>
-	constexpr vec3 swizzle(const vec3& v3);
-
-	template<typename SwizzleX, typename SwizzleY, typename SwizzleZ>
-	constexpr vec3 swizzle(const vec4& v4);
-
-	template<typename SwizzleX, typename SwizzleY, typename SwizzleZ, typename SwizzleW>
-	constexpr vec4 swizzle(const vec2& v2);
-
-	template<typename SwizzleX, typename SwizzleY, typename SwizzleZ, typename SwizzleW>
-	constexpr vec4 swizzle(const vec3& v3);
-
-	template<typename SwizzleX, typename SwizzleY, typename SwizzleZ, typename SwizzleW>
-	constexpr vec4 swizzle(const vec4& v4);
-}
-
-namespace gml
-{
-	inline const vec2& vec2::zero()
+	constexpr inline vec_t<2> swizzle(const vec_t<2>& v2)
 	{
-		static vec2 v(0.0f, 0.0f);
-		return v;
-	}
-	inline const vec2& vec2::one()
-	{
-		static vec2 v(1.0f, 1.0f);
-		return v;
-	}
-	inline const vec2& vec2::left()
-	{
-		static vec2 v(-1.0f, 0.0f);
-		return v;
-	}
-	inline const vec2& vec2::right()
-	{
-		static vec2 v(1.0f, 0.0f);
-		return v;
-	}
-	inline const vec2& vec2::up()
-	{
-		static vec2 v(0.0f, 1.0f);
-		return v;
-	}
-	inline const vec2& vec2::down()
-	{
-		static vec2 v(0.0f, -1.0f);
-		return v;
-	}
-
-	constexpr vec2::vec2(const vec3& v3) : x(v3.x), y(v3.y) { }
-
-	constexpr vec2::vec2(const vec4& v4) : x(v4.x), y(v4.y) { }
-
-	inline bool operator==(const vec2& lhs, const vec2& rhs)
-	{
-		if (&lhs != &rhs)
-		{
-			return fequal(lhs.x, rhs.x) && fequal(lhs.y, rhs.y);
-		}
-		else
-		{
-			return true;
-		}
-	}
-
-	constexpr vec2 vec2::operator-() const
-	{
-		return vec2(-x, -y);
-	}
-
-	constexpr vec2 operator+(const vec2& lhs, const vec2& rhs)
-	{
-		return vec2(lhs.x + rhs.x, lhs.y + rhs.y);
-	}
-
-	constexpr vec2 operator+(const vec2& lhs, float rhs)
-	{
-		return vec2(lhs.x + rhs, lhs.y + rhs);
-	}
-
-	constexpr vec2 operator+(float lhs, const vec2& rhs)
-	{
-		return rhs + lhs;
-	}
-
-	constexpr vec2 operator-(const vec2& lhs, const vec2& rhs)
-	{
-		return vec2(lhs.x - rhs.x, lhs.y - rhs.y);
-	}
-
-	constexpr vec2 operator-(const vec2& lhs, float rhs)
-	{
-		return vec2(lhs.x - rhs, lhs.y - rhs);
-	}
-
-	constexpr vec2 operator-(float lhs, const vec2& rhs)
-	{
-		return vec2(lhs - rhs.x, lhs - rhs.y);
-	}
-
-	constexpr vec2 operator*(const vec2& lhs, const vec2& rhs)
-	{
-		return vec2(lhs.x * rhs.x, lhs.y * rhs.y);
-	}
-
-	constexpr vec2 operator*(const vec2& lhs, float rhs)
-	{
-		return vec2(lhs.x * rhs, lhs.y * rhs);
-	}
-
-	constexpr vec2 operator*(float lhs, const vec2& rhs)
-	{
-		return rhs * lhs;
-	}
-
-	inline vec2& operator+=(vec2& lhs, const vec2& rhs)
-	{
-		lhs.x += rhs.x;
-		lhs.y += rhs.y;
-		return lhs;
-	}
-
-	inline vec2& operator+=(vec2& lhs, float rhs)
-	{
-		lhs.x += rhs;
-		lhs.y += rhs;
-		return lhs;
-	}
-
-	inline vec2& operator-=(vec2& lhs, const vec2& rhs)
-	{
-		lhs.x -= rhs.x;
-		lhs.y -= rhs.y;
-		return lhs;
-	}
-	inline vec2& operator-=(vec2& lhs, float rhs)
-	{
-		lhs.x -= rhs;
-		lhs.y -= rhs;
-		return lhs;
-	}
-
-	inline vec2& operator*=(vec2& lhs, const vec2& rhs)
-	{
-		lhs.x *= rhs.x;
-		lhs.y *= rhs.y;
-		return lhs;
-	}
-
-	inline vec2& operator*=(vec2& lhs, float rhs)
-	{
-		lhs.x *= rhs;
-		lhs.y *= rhs;
-		return lhs;
-	}
-
-	inline float& vec2::operator[](int index)
-	{
-		return const_cast<float&>(const_cast<const vec2*>(this)->operator[](index));
-	}
-
-	inline const float& vec2::operator[](int index) const
-	{
-		assert(index >= 0 || index < DIMENSION);
-		return *(&x + index);
-	}
-
-	inline vec2::operator float*()
-	{
-		return const_cast<float*>(const_cast<const vec2*>(this)->operator const float*());
-	}
-
-	inline void vec2::set(float _x, float _y)
-	{
-		x = _x;
-		y = _y;
-	}
-
-	inline void vec2::set(const vec3& v3)
-	{
-		set(v3.x, v3.y);
-	}
-
-	inline void vec2::set(const vec4& v4)
-	{
-		set(v4.x, v4.y);
-	}
-
-	inline void vec2::normalize()
-	{
-		float length2 = length_sqr();
-		if (!fequal(length2, 0.0f))
-		{
-			if (!fequal(1.0f, length2))
-			{
-				auto invLength = 1.0f / sqrtf(length2);
-				x *= invLength;
-				y *= invLength;
-			}
-		}
-		else
-		{
-			*this = zero();
-		}
-	}
-
-	inline vec2 vec2::normalized() const
-	{
-		vec2 copy(*this);
-		copy.normalize();
-		return copy;
-	}
-
-	inline void vec2::inverse()
-	{
-		float length2 = length_sqr();
-		if (!fequal(length2, 0.0f))
-		{
-			x /= length2;
-			y /= length2;
-		}
-		else
-		{
-			*this = zero();
-		}
-	}
-
-	inline vec2 vec2::inversed() const
-	{
-		vec2 copy(*this);
-		copy.inverse();
-		return copy;
-	}
-
-	inline float vec2::length() const
-	{
-		return sqrtf(length_sqr());
-	}
-
-	constexpr float vec2::length_sqr() const
-	{
-		return x*x + y*y;
-	}
-
-	inline const vec3& vec3::zero()
-	{
-		static vec3 v(0.0f, 0.0f, 0.0f);
-		return v;
-	}
-	inline const vec3& vec3::one()
-	{
-		static vec3 v(1.0f, 1.0f, 1.0f);
-		return v;
-	}
-	inline const vec3& vec3::left()
-	{
-		static vec3 v(-1.0f, 0.0f, 0.0f);
-		return v;
-	}
-	inline const vec3& vec3::right()
-	{
-		static vec3 v(1.0f, 0.0f, 0.0f);
-		return v;
-	}
-	inline const vec3& vec3::up()
-	{
-		static vec3 v(0.0f, 1.0f, 0.0f);
-		return v;
-	}
-	inline const vec3& vec3::down()
-	{
-		static vec3 v(0.0f, -1.0f, 0.0f);
-		return v;
-	}
-	inline const vec3& vec3::forward()
-	{
-		static vec3 v(0.0f, 0.0f, 1.0f);
-		return v;
-	}
-	inline const vec3& vec3::backward()
-	{
-		static vec3 v(0.0f, 0.0f, -1.0f);
-		return v;
-	}
-
-	constexpr vec3::vec3(const vec4& v4) : x(v4.x), y(v4.y), z(v4.z) { }
-
-	inline bool operator==(const vec3& lhs, const vec3& rhs)
-	{
-		if (&lhs != &rhs)
-		{
-			return fequal(lhs.x, rhs.x) &&
-				fequal(lhs.y, rhs.y) &&
-				fequal(lhs.z, rhs.z);
-		}
-		else
-		{
-			return true;
-		}
-	}
-
-	constexpr vec3 vec3::operator-() const
-	{
-		return vec3(-x, -y, -z);
-	}
-
-	constexpr vec3 operator+(const vec3& lhs, const vec3& rhs)
-	{
-		return vec3(lhs.x + rhs.x, lhs.y + rhs.y, lhs.z + rhs.z);
-	}
-
-	constexpr vec3 operator+(const vec3& lhs, float rhs)
-	{
-		return vec3(lhs.x + rhs, lhs.y + rhs, lhs.z + rhs);
-	}
-
-	constexpr vec3 operator+(float lhs, const vec3& rhs)
-	{
-		return rhs + lhs;
-	}
-
-	constexpr vec3 operator-(const vec3& lhs, const vec3& rhs)
-	{
-		return vec3(lhs.x - rhs.x, lhs.y - rhs.y, lhs.z - rhs.z);
-	}
-
-	constexpr vec3 operator-(const vec3& lhs, float rhs)
-	{
-		return vec3(lhs.x - rhs, lhs.y - rhs, lhs.z - rhs);
-	}
-
-	constexpr vec3 operator-(float lhs, const vec3& rhs)
-	{
-		return vec3(lhs - rhs.x, lhs - rhs.y, lhs - rhs.z);
-	}
-
-	constexpr vec3 operator*(const vec3& lhs, const vec3& rhs)
-	{
-		return vec3(lhs.x * rhs.x, lhs.y * rhs.y, lhs.z * rhs.z);
-	}
-
-	constexpr vec3 operator*(const vec3& lhs, float rhs)
-	{
-		return vec3(lhs.x * rhs, lhs.y * rhs, lhs.z * rhs);
-	}
-
-	constexpr vec3 operator*(float lhs, const vec3& rhs)
-	{
-		return rhs * lhs;
-	}
-
-	inline vec3& operator+=(vec3& lhs, const vec3& rhs)
-	{
-		lhs.x += rhs.x;
-		lhs.y += rhs.y;
-		lhs.z += rhs.z;
-		return lhs;
-	}
-
-	inline vec3& operator+=(vec3& lhs, float rhs)
-	{
-		lhs.x += rhs;
-		lhs.y += rhs;
-		lhs.z += rhs;
-		return lhs;
-	}
-
-	inline vec3& operator-=(vec3& lhs, const vec3& rhs)
-	{
-		lhs.x -= rhs.x;
-		lhs.y -= rhs.y;
-		lhs.z -= rhs.z;
-		return lhs;
-	}
-
-	inline vec3& operator-=(vec3& lhs, float rhs)
-	{
-		lhs.x -= rhs;
-		lhs.y -= rhs;
-		lhs.z -= rhs;
-		return lhs;
-	}
-
-	inline vec3& operator*=(vec3& lhs, const vec3& rhs)
-	{
-		lhs.x *= rhs.x;
-		lhs.y *= rhs.y;
-		lhs.z *= rhs.z;
-		return lhs;
-	}
-
-	inline vec3& operator*=(vec3& lhs, float rhs)
-	{
-		lhs.x *= rhs;
-		lhs.y *= rhs;
-		lhs.z *= rhs;
-		return lhs;
-	}
-
-	inline float& vec3::operator[](int index)
-	{
-		return const_cast<float&>(const_cast<const vec3*>(this)->operator[](index));
-	}
-
-	inline const float& vec3::operator[](int index) const
-	{
-		assert(index >= 0 || index < DIMENSION);
-		return *(&x + index);
-	}
-
-	inline vec3::operator float*()
-	{
-		return const_cast<float*>(const_cast<const vec3*>(this)->operator const float*());
-	}
-
-	inline void vec3::set(float _x, float _y, float _z)
-	{
-		x = _x;
-		y = _y;
-		z = _z;
-	}
-
-	inline void vec3::set(const vec2& v2, float _z)
-	{
-		set(v2.x, v2.y, _z);
-	}
-
-	inline void vec3::set(const vec4& v4)
-	{
-		set(v4.x, v4.y, v4.z);
-	}
-
-	inline void vec3::replace(const vec2& v2)
-	{
-		x = v2.x;
-		y = v2.y;
-	}
-
-	inline void vec3::normalize()
-	{
-		float length2 = length_sqr();
-		if (!fequal(length2, 0.0f))
-		{
-			if (!fequal(1.0f, length2))
-			{
-				float invLength = 1.0f / sqrtf(length2);
-				x *= invLength;
-				y *= invLength;
-				z *= invLength;
-			}
-		}
-		else
-		{
-			*this = zero();
-		}
-	}
-
-	inline vec3 vec3::normalized() const
-	{
-		vec3 copy(*this);
-		copy.normalize();
-		return copy;
-	}
-
-	inline void vec3::inverse()
-	{
-		float length2 = length_sqr();
-		if (!fequal(length2, 0.0f))
-		{
-			x /= length2;
-			y /= length2;
-			z /= length2;
-		}
-		else
-		{
-			*this = zero();
-		}
-	}
-
-	inline vec3 vec3::inversed() const
-	{
-		vec3 copy(*this);
-		copy.inverse();
-		return copy;
-	}
-
-	inline float vec3::length() const
-	{
-		return sqrtf(length_sqr());
-	}
-
-	constexpr float vec3::length_sqr() const
-	{
-		return x*x + y*y + z*z;
-	}
-
-	constexpr vec4 vec4::operator-() const
-	{
-		return vec4(-x, -y, -z, -w);
-	}
-
-	inline bool operator==(const vec4& lhs, const vec4& rhs)
-	{
-		if (&lhs != &rhs)
-		{
-			return fequal(lhs.x, rhs.x) &&
-				fequal(lhs.y, rhs.y) &&
-				fequal(lhs.z, rhs.z) &&
-				fequal(lhs.w, rhs.w);
-		}
-		else
-		{
-			return true;
-		}
-	}
-
-	constexpr vec4 operator*(const vec4& lhs, const vec4& rhs)
-	{
-		return vec4(lhs.x * rhs.x, lhs.y * rhs.y, lhs.z * rhs.z, lhs.w * rhs.w);
-	}
-
-	constexpr vec4 operator*(const vec4& lhs, float rhs)
-	{
-		return vec4(lhs.x * rhs, lhs.y * rhs, lhs.z * rhs, lhs.w * rhs);
-	}
-
-	constexpr vec4 operator*(float lhs, const vec4& rhs)
-	{
-		return rhs * lhs;
-	}
-
-	inline vec4 operator*=(vec4& lhs, const vec4& rhs)
-	{
-		lhs.x *= rhs.x;
-		lhs.y *= rhs.y;
-		lhs.z *= rhs.z;
-		lhs.w *= rhs.w;
-		return lhs;
-	}
-
-	inline vec4 operator*=(vec4& lhs, float rhs)
-	{
-		lhs.x *= rhs;
-		lhs.y *= rhs;
-		lhs.z *= rhs;
-		lhs.w *= rhs;
-		return lhs;
-	}
-
-	inline float& vec4::operator[](int index)
-	{
-		return const_cast<float&>(const_cast<const vec4*>(this)->operator[](index));
-	}
-
-	inline const float& vec4::operator[](int index) const
-	{
-		assert(index >= 0 || index < DIMENSION);
-		return *(&x + index);
-	}
-
-	inline vec4::operator float*()
-	{
-		return const_cast<float*>(const_cast<const vec4*>(this)->operator const float*());
-	}
-
-	inline void vec4::set(float _x, float _y, float _z, float _w)
-	{
-		x = _x;
-		y = _y;
-		z = _z;
-		w = _w;
-	}
-
-	inline void vec4::set(const vec2& v2, float _z, float _w)
-	{
-		set(v2.x, v2.y, _z, _w);
-	}
-
-	inline void vec4::set(const vec3& v3, float _w)
-	{
-		set(v3.x, v3.y, v3.z, _w);
-	}
-
-	inline void vec4::replace(const vec2& v2)
-	{
-		x = v2.x;
-		y = v2.y;
-	}
-
-	inline void vec4::replace(const vec3& v3)
-	{
-		x = v3.x;
-		y = v3.y;
-		z = v3.z;
-	}
-
-	inline float vec4::length() const
-	{
-		return sqrtf(length_sqr());
-	}
-
-	constexpr float vec4::length_sqr() const
-	{
-		return x*x + y*y + z*z + w*w;
-	}
-
-
-	constexpr float dot(const vec2& lhs, const vec2& rhs)
-	{
-		return lhs.x * rhs.x + lhs.y * rhs.y;
-	}
-
-	constexpr float cross(const vec2& lhs, const vec2& rhs)
-	{
-		return lhs.x * rhs.y - lhs.y * rhs.x;
-	}
-
-	constexpr vec2 min_combine(const vec2& lhs, const vec2& rhs)
-	{
-		return vec2(
-			lhs.x < rhs.x ? lhs.x : rhs.x,
-			lhs.y < rhs.y ? lhs.y : rhs.y);
-	}
-
-	constexpr vec2 max_combine(const vec2& lhs, const vec2& rhs)
-	{
-		return vec2(
-			lhs.x > rhs.x ? lhs.x : rhs.x,
-			lhs.y > rhs.y ? lhs.y : rhs.y);
-	}
-
-	constexpr float det22(const vec2& row1, const vec2& row2)
-	{
-		return gml_impl::determinant(
-			row1.x, row1.y,
-			row2.x, row2.y);
-	}
-
-	constexpr float det22_t(const vec2& row1, const vec2& row2)
-	{
-		return gml_impl::determinant(
-			row1.x, row2.x,
-			row1.y, row2.y);
-	}
-
-	constexpr float dot(const vec3& lhs, const vec3& rhs)
-	{
-		return lhs.x * rhs.x + lhs.y * rhs.y + lhs.z * rhs.z;
-	}
-
-	constexpr float dot(const vec4& lhs, const vec4& rhs)
-	{
-		return lhs.x * rhs.x + lhs.y * rhs.y + lhs.z * rhs.z + lhs.w * rhs.w;
-	}
-
-	constexpr vec3 cross(const vec3& lhs, const vec3& rhs)
-	{
-		return vec3(
-			lhs.y * rhs.z - lhs.z * rhs.y,
-			lhs.z * rhs.x - lhs.x * rhs.z,
-			lhs.x * rhs.y - lhs.y * rhs.x
-			);
-	}
-
-	constexpr vec3 min_combine(const vec3& lhs, const vec3& rhs)
-	{
-		return vec3(
-			lhs.x < rhs.x ? lhs.x : rhs.x,
-			lhs.y < rhs.y ? lhs.y : rhs.y,
-			lhs.z < rhs.z ? lhs.z : rhs.z
-			);
-	}
-
-	constexpr vec3 max_combine(const vec3& lhs, const vec3& rhs)
-	{
-		return vec3(
-			lhs.x > rhs.x ? lhs.x : rhs.x,
-			lhs.y > rhs.y ? lhs.y : rhs.y,
-			lhs.z > rhs.z ? lhs.z : rhs.z
-			);
-	}
-
-	constexpr float det33(const vec3& row1, const vec3& row2, const vec3& row3)
-	{
-		return gml_impl::determinant(
-			row1.x, row1.y, row1.z,
-			row2.x, row2.y, row2.z,
-			row3.x, row3.y, row3.z);
-	}
-
-	constexpr float det44(const vec4& row1, const vec4& row2, const vec4& row3, const vec4& row4)
-	{
-		return gml_impl::determinant(
-			row1.x, row1.y, row1.z, row1.w,
-			row2.x, row2.y, row2.z, row2.w,
-			row3.x, row3.y, row3.z, row3.w,
-			row4.x, row4.y, row4.z, row4.w
-			);
-	}
-
-	constexpr float det33_t(const vec3& row1, const vec3& row2, const vec3& row3)
-	{
-		return gml_impl::determinant(
-			row1.x, row2.x, row3.x,
-			row1.y, row2.y, row3.y,
-			row1.z, row2.z, row3.z);
-	}
-
-	constexpr float det44_t(const vec4& row1, const vec4& row2, const vec4& row3, const vec4& row4)
-	{
-		return gml_impl::determinant(
-			row1.x, row2.y, row3.z, row4.w,
-			row1.x, row2.y, row3.z, row4.w,
-			row1.x, row2.y, row3.z, row4.w,
-			row1.x, row2.y, row3.z, row4.w
-			);
-	}
-
-
-	template<typename SwizzleX, typename SwizzleY>
-	constexpr vec2 swizzle(const vec2& v2)
-	{
-		return vec2(
+		return vec_t<2>(
 			gml_impl::Component(v2, SwizzleX::SwizzleIndex),
 			gml_impl::Component(v2, SwizzleY::SwizzleIndex));
 	}
 
 	template<typename SwizzleX, typename SwizzleY>
-	constexpr vec2 swizzle(const vec3& v3)
+	constexpr inline vec_t<2> swizzle(const vec_t<3>& v3)
 	{
-		return vec2(
+		return vec_t<2>(
 			gml_impl::Component(v3, SwizzleX::SwizzleIndex),
 			gml_impl::Component(v3, SwizzleY::SwizzleIndex));
 	}
 
 	template<typename SwizzleX, typename SwizzleY>
-	constexpr vec2 swizzle(const vec4& v4)
+	constexpr inline vec_t<2> swizzle(const vec_t<4>& v4)
 	{
-		return vec2(
+		return vec_t<2>(
 			gml_impl::Component(v4, SwizzleX::SwizzleIndex),
 			gml_impl::Component(v4, SwizzleY::SwizzleIndex));
 	}
 
 	template<typename SwizzleX, typename SwizzleY, typename SwizzleZ>
-	constexpr vec3 swizzle(const vec2& v2)
+	constexpr inline vec_t<3> swizzle(const vec_t<2>& v2)
 	{
-		return vec3(
+		return vec_t<3>(
 			gml_impl::Component(v2, SwizzleX::SwizzleIndex),
 			gml_impl::Component(v2, SwizzleY::SwizzleIndex),
 			gml_impl::Component(v2, SwizzleZ::SwizzleIndex));
 	}
 
 	template<typename SwizzleX, typename SwizzleY, typename SwizzleZ>
-	constexpr vec3 swizzle(const vec3& v3)
+	constexpr inline vec_t<3> swizzle(const vec_t<3>& v3)
 	{
-		return vec3(
+		return vec_t<3>(
 			gml_impl::Component(v3, SwizzleX::SwizzleIndex),
 			gml_impl::Component(v3, SwizzleY::SwizzleIndex),
 			gml_impl::Component(v3, SwizzleZ::SwizzleIndex));
 	}
 
 	template<typename SwizzleX, typename SwizzleY, typename SwizzleZ>
-	constexpr vec3 swizzle(const vec4& v4)
+	constexpr inline vec_t<3> swizzle(const vec_t<4>& v4)
 	{
-		return vec3(
+		return vec_t<3>(
 			gml_impl::Component(v4, SwizzleX::SwizzleIndex),
 			gml_impl::Component(v4, SwizzleY::SwizzleIndex),
 			gml_impl::Component(v4, SwizzleZ::SwizzleIndex));
 	}
 
 	template<typename SwizzleX, typename SwizzleY, typename SwizzleZ, typename SwizzleW>
-	constexpr vec4 swizzle(const vec2& v2)
+	constexpr inline vec_t<4> swizzle(const vec_t<2>& v2)
 	{
-		return vec4(
+		return vec_t<4>(
 			gml_impl::Component(v2, SwizzleX::SwizzleIndex),
 			gml_impl::Component(v2, SwizzleY::SwizzleIndex),
 			gml_impl::Component(v2, SwizzleZ::SwizzleIndex),
@@ -1082,9 +339,9 @@ namespace gml
 	}
 
 	template<typename SwizzleX, typename SwizzleY, typename SwizzleZ, typename SwizzleW>
-	constexpr vec4 swizzle(const vec3& v3)
+	constexpr inline vec_t<4> swizzle(const vec_t<3>& v3)
 	{
-		return vec4(
+		return vec_t<4>(
 			gml_impl::Component(v3, SwizzleX::SwizzleIndex),
 			gml_impl::Component(v3, SwizzleY::SwizzleIndex),
 			gml_impl::Component(v3, SwizzleZ::SwizzleIndex),
@@ -1092,13 +349,388 @@ namespace gml
 	}
 
 	template<typename SwizzleX, typename SwizzleY, typename SwizzleZ, typename SwizzleW>
-	constexpr vec4 swizzle(const vec4& v4)
+	inline vec_t<4> swizzle(const vec_t<4>& v4)
 	{
-		return vec4(
+		return vec_t<4>(
 			gml_impl::Component(v4, SwizzleX::SwizzleIndex),
 			gml_impl::Component(v4, SwizzleY::SwizzleIndex),
 			gml_impl::Component(v4, SwizzleZ::SwizzleIndex),
 			gml_impl::Component(v4, SwizzleW::SwizzleIndex));
+	}
+}
+
+namespace gml_impl
+{
+	using gml::vec_t;
+
+	template<> struct vec_s<2>
+	{
+		static const vec_t<2>& zero();
+		static const vec_t<2>& one();
+		static const vec_t<2>& left();
+		static const vec_t<2>& right();
+		static const vec_t<2>& up();
+		static const vec_t<2>& down();
+
+		float x = 0.0f;
+		float y = 0.0f;
+
+		constexpr vec_s() = default;
+		constexpr vec_s(float _x, float _y) : x(_x), y(_y) { }
+		constexpr explicit vec_s(const vec_s<3>& other);
+		constexpr explicit vec_s(const vec_s<4>& other);
+
+		inline void set(float _x, float _y)
+		{
+			x = _x; y = _y;
+		}
+
+		void set(const vec_t<2>& other);
+		void set(const vec_t<3>& other);
+		void set(const vec_t<4>& other);
+	};
+
+	template<> struct vec_s<3>
+	{
+		static const vec_t<3>& zero();
+		static const vec_t<3>& one();
+		static const vec_t<3>& left();
+		static const vec_t<3>& right();
+		static const vec_t<3>& up();
+		static const vec_t<3>& down();
+		static const vec_t<3>& forward();
+		static const vec_t<3>& backward();
+
+		float x = 0.0f;
+		float y = 0.0f;
+		float z = 0.0f;
+
+		constexpr vec_s() = default;
+		constexpr vec_s(float _x, float _y, float _z) : x(_x), y(_y), z(_z) { }
+		constexpr explicit vec_s(const vec_s<2>& other, float _z) : x(other.x), y(other.y), z(_z) { }
+		constexpr explicit vec_s(const vec_s<4>& other);
+
+		inline void set(float _x, float _y, float _z)
+		{
+			x = _x; y = _y; z = _z;
+		}
+
+		inline void set(const vec_s<2>& other, float _z)
+		{
+			set(other.x, other.y, _z);
+		}
+
+		inline void set(const vec_s<3>& other)
+		{
+			set(other.x, other.y, other.z);
+		}
+
+		void set(const vec_t<3>& other);
+		void set(const vec_t<4>& other);
+	};
+
+	template<> struct vec_s<4>
+	{
+		static const vec_t<4>& zero();
+		static const vec_t<4>& one();
+
+		float x = 0.0f;
+		float y = 0.0f;
+		float z = 0.0f;
+		float w = 0.0f;
+
+		constexpr vec_s() = default;
+		constexpr vec_s(float _x, float _y, float _z, float _w) : x(_x), y(_y), z(_z), w(_w) { }
+		constexpr explicit vec_s(const vec_s<2>& other, float _z, float _w) : x(other.x), y(other.y), z(_z), w(_w) { }
+		constexpr explicit vec_s(const vec_s<3>& other, float _w) : x(other.x), y(other.y), z(other.z), w(_w) { }
+
+		inline void set(float _x, float _y, float _z, float _w)
+		{
+			x = _x; y = _y; z = _z; w = _w;
+		}
+
+		void set(const vec_t<4>& other);
+	};
+
+	inline void vec_s<2>::set(const vec_t<2>& other)
+	{
+		set(other.x, other.y);
+	}
+
+	constexpr vec_s<2>::vec_s(const vec_s<3>& other) : x(other.x), y(other.y) { }
+
+	constexpr vec_s<2>::vec_s(const vec_s<4>& other) : x(other.x), y(other.y) { }
+
+	inline void vec_s<2>::set(const vec_t<3>& other)
+	{
+		set(other.x, other.y);
+	}
+
+	inline void vec_s<2>::set(const vec_t<4>& other)
+	{
+		set(other.x, other.y);
+	}
+
+	constexpr vec_s<3>::vec_s(const vec_s<4>& other) : x(other.x), y(other.y), z(other.z) { }
+
+	inline void vec_s<3>::set(const vec_t<3>& other)
+	{
+		set(other.x, other.y, other.z);
+	}
+
+	inline void vec_s<3>::set(const vec_t<4>& other)
+	{
+		set(other.x, other.y, other.z);
+	}
+
+	inline void vec_s<4>::set(const vec_t<4>& other)
+	{
+		set(other.x, other.y, other.z, other.w);
+	}
+
+	inline const vec_t<2>& vec_s<2>::zero()
+	{
+		static vec_t<2> v(0.0f, 0.0f);
+		return v;
+	}
+	inline const vec_t<2>& vec_s<2>::one()
+	{
+		static vec_t<2> v(1.0f, 1.0f);
+		return v;
+	}
+	inline const vec_t<2>& vec_s<2>::left()
+	{
+		static vec_t<2> v(-1.0f, 0.0f);
+		return v;
+	}
+	inline const vec_t<2>& vec_s<2>::right()
+	{
+		static vec_t<2> v(1.0f, 0.0f);
+		return v;
+	}
+	inline const vec_t<2>& vec_s<2>::up()
+	{
+		static vec_t<2> v(0.0f, 1.0f);
+		return v;
+	}
+	inline const vec_t<2>& vec_s<2>::down()
+	{
+		static vec_t<2> v(0.0f, -1.0f);
+		return v;
+	}
+
+	inline const vec_t<3>& vec_s<3>::zero()
+	{
+		static vec_t<3> v(0.0f, 0.0f, 0.0f);
+		return v;
+	}
+	inline const vec_t<3>& vec_s<3>::one()
+	{
+		static vec_t<3> v(1.0f, 1.0f, 1.0f);
+		return v;
+	}
+	inline const vec_t<3>& vec_s<3>::left()
+	{
+		static vec_t<3> v(-1.0f, 0.0f, 0.0f);
+		return v;
+	}
+	inline const vec_t<3>& vec_s<3>::right()
+	{
+		static vec_t<3> v(1.0f, 0.0f, 0.0f);
+		return v;
+	}
+	inline const vec_t<3>& vec_s<3>::up()
+	{
+		static vec_t<3> v(0.0f, 1.0f, 0.0f);
+		return v;
+	}
+	inline const vec_t<3>& vec_s<3>::down()
+	{
+		static vec_t<3> v(0.0f, -1.0f, 0.0f);
+		return v;
+	}
+	inline const vec_t<3>& vec_s<3>::forward()
+	{
+		static vec_t<3> v(0.0f, 0.0f, 1.0f);
+		return v;
+	}
+	inline const vec_t<3>& vec_s<3>::backward()
+	{
+		static vec_t<3> v(0.0f, 0.0f, -1.0f);
+		return v;
+	}
+
+	inline const vec_t<4>& vec_s<4>::zero()
+	{
+		static vec_t<4> v(0.0f, 0.0f, 0.0f, 0.0f);
+		return v;
+	}
+	inline const vec_t<4>& vec_s<4>::one()
+	{
+		static vec_t<4> v(1.0f, 1.0f, 1.0f, 1.0f);
+		return v;
+	}
+}
+
+namespace gml
+{
+	template<int D>
+	inline vec_t<D> vec_t<D>::operator-() const
+	{
+		vec_t<D> r;
+		for (int i = 0; i < D; i++)
+		{
+			r[i] = -(*this)[i];
+		}
+		return r;
+	}
+
+	template<int D>
+	inline float& vec_t<D>::operator[](int index) //hack
+	{
+		return const_cast<float&>(const_cast<const vec_t<D>*>(this)->operator[](index));
+	}
+
+	template<int D>
+	inline const float& vec_t<D>::operator[](int index) const
+	{
+		assert(index >= 0 || index < DIMENSION);
+		return *(&x + index);
+	}
+
+	template<int D>
+	inline vec_t<D>::operator float*()
+	{
+		return const_cast<float*>(const_cast<const vec_t<D>*>(this)->operator const float*());
+	}
+
+	template<int D>
+	inline void vec_t<D>::normalize()
+	{
+		float length2 = length_sqr();
+		if (!fequal(length2, 0.0f))
+		{
+			if (!fequal(length2, 1.0f))
+			{
+				auto invLength = 1.0f / sqrtf(length2);
+				(*this) *= invLength;
+			}
+		}
+		else
+		{
+			*this = zero();
+		}
+	}
+
+	template<int D>
+	inline vec_t<D> vec_t<D>::normalized() const
+	{
+		vec_t<D> copy(*this);
+		copy.normalize();
+		return copy;
+	}
+
+	template<int D>
+	inline void vec_t<D>::inverse()
+	{
+		float length2 = length_sqr();
+		if (!fequal(length2, 0.0f))
+		{
+			(*this) *= 1.0f / length2;
+		}
+		else
+		{
+			*this = zero();
+		}
+	}
+
+	template<int D>
+	inline vec_t<D> vec_t<D>::inversed() const
+	{
+		vec_t<D> copy(*this);
+		copy.inverse();
+		return copy;
+	}
+
+	template<int D>
+	inline float vec_t<D>::length() const
+	{
+		return sqrtf(length_sqr());
+	}
+
+	template<int D>
+	inline float vec_t<D>::length_sqr() const
+	{
+		float r = 0.0f;
+		for (int i = 0; i < D; i++)
+		{
+			r += (*this)[i] * (*this)[i];
+		}
+		return r;
+	}
+
+	template<int D>
+	inline void vec_t<D>::replace(const vec_t<2>& v2)
+	{
+		static_assert(D == 2 || D == 3 || D == 4, "");
+		x = v2.x;
+		y = v2.y;
+	}
+
+	template<int D>
+	inline void vec_t<D>::replace(const vec_t<3>& v3)
+	{
+		static_assert(D == 3 || D == 4, "");
+		x = v3.x;
+		y = v3.y;
+		z = v3.z;
+	}
+
+	constexpr float cross(const vec_t<2>& lhs, const vec_t<2>& rhs)
+	{
+		return lhs.x * rhs.y - lhs.y * rhs.x;
+	}
+
+	constexpr vec_t<3> cross(const vec_t<3>& lhs, const vec_t<3>& rhs)
+	{
+		return vec_t<3>(
+			lhs.y * rhs.z - lhs.z * rhs.y,
+			lhs.z * rhs.x - lhs.x * rhs.z,
+			lhs.x * rhs.y - lhs.y * rhs.x
+			);
+	}
+
+	template<int D>
+	float dot(const vec_t<D>& lhs, const vec_t<D>& rhs)
+	{
+		float r = 0.0f;
+		for (int i = 0; i < D; i++)
+		{
+			r += lhs[i] * rhs[i];
+		}
+		return r;
+	}
+
+	template<int D>
+	inline vec_t<D> min_combine(const vec_t<D>& lhs, const vec_t<D>& rhs)
+	{
+		vec_t<D> r;
+		for (int i = 0; i < D; i++)
+		{
+			r[i] = (lhs[i] < rhs[i]) ? lhs[i] : rhs[i];
+		}
+		return r;
+	}
+
+	template<int D>
+	inline vec_t<D> max_combine(const vec_t<D>& lhs, const vec_t<D>& rhs)
+	{
+		vec_t<D> r;
+		for (int i = 0; i < D; i++)
+		{
+			r[i] = (lhs[i] > rhs[i]) ? lhs[i] : rhs[i];
+		}
+		return r;
 	}
 }
 

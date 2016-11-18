@@ -360,6 +360,18 @@ namespace gml
 	vec2 transform_point(const mat33& lhs, const vec2& rhs);
 
 	vec3 transform_point(const mat44& lhs, const vec3& rhs);
+
+	constexpr float det22(const vec2& row1, const vec2& row2);
+
+	constexpr float det33(const vec3& row1, const vec3& row2, const vec3& row3);
+
+	constexpr float det44(const vec4& row1, const vec4& row2, const vec4& row3, const vec4& row4);
+
+	constexpr float det22_t(const vec2& row1, const vec2& row2);
+
+	constexpr float det33_t(const vec3& row1, const vec3& row2, const vec3& row3);
+
+	constexpr float det44_t(const vec4& row1, const vec4& row2, const vec4& row3, const vec4& row4);
 }
 
 namespace gml
@@ -1775,5 +1787,55 @@ namespace gml
 			0, -2.0f / height, 0, 1,
 			0, 0, zRangeInv, -znear *zRangeInv,
 			0, 0, 0, 1);
+	}
+
+	constexpr float det22(const vec2& row1, const vec2& row2)
+	{
+		return gml_impl::determinant(
+			row1.x, row1.y,
+			row2.x, row2.y);
+	}
+
+	constexpr float det33(const vec3& row1, const vec3& row2, const vec3& row3)
+	{
+		return gml_impl::determinant(
+			row1.x, row1.y, row1.z,
+			row2.x, row2.y, row2.z,
+			row3.x, row3.y, row3.z);
+	}
+
+	constexpr float det44(const vec4& row1, const vec4& row2, const vec4& row3, const vec4& row4)
+	{
+		return gml_impl::determinant(
+			row1.x, row1.y, row1.z, row1.w,
+			row2.x, row2.y, row2.z, row2.w,
+			row3.x, row3.y, row3.z, row3.w,
+			row4.x, row4.y, row4.z, row4.w
+			);
+	}
+
+	constexpr float det22_t(const vec2& row1, const vec2& row2)
+	{
+		return gml_impl::determinant(
+			row1.x, row2.x,
+			row1.y, row2.y);
+	}
+
+	constexpr float det33_t(const vec3& row1, const vec3& row2, const vec3& row3)
+	{
+		return gml_impl::determinant(
+			row1.x, row2.x, row3.x,
+			row1.y, row2.y, row3.y,
+			row1.z, row2.z, row3.z);
+	}
+
+	constexpr float det44_t(const vec4& row1, const vec4& row2, const vec4& row3, const vec4& row4)
+	{
+		return gml_impl::determinant(
+			row1.x, row2.y, row3.z, row4.w,
+			row1.x, row2.y, row3.z, row4.w,
+			row1.x, row2.y, row3.z, row4.w,
+			row1.x, row2.y, row3.z, row4.w
+			);
 	}
 }

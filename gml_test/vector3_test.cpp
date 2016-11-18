@@ -6,6 +6,8 @@ public:
 	TEST_METHOD(Vector3GenericTest)
 	{
 		GML_IEQUAL(sizeof(float) * 3, sizeof(vec3));
+		vec3 v3(vec4::one());
+		vec3 v4(vec3::left());
 	}
 
 	vec3 memberByStaticFunc = vec3::one();
