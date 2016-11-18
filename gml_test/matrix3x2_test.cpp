@@ -53,4 +53,25 @@ public:
 		GML_FEQUAL(v._11, v.row[1].y);
 		GML_FEQUAL(v._12, v.row[1].z);
 	}
+
+	TEST_METHOD(Matrix3x2TransformTest)
+	{
+		vec2 p(1, 0);
+
+		auto pt = transform_point(mat32::scale(2), p);
+		GML_IS_TRUE(vec2(2, 0) == pt);
+
+		pt = transform_point(mat32::flip_x(), pt);
+		GML_IS_TRUE(vec2(-2, 0) == pt);
+
+		pt = transform_point(mat32::rotate(degree(90)), pt);
+		GML_IS_TRUE(vec2(0, -2) == pt);
+
+		pt = transform_point(mat32::flip_y(), pt);
+		GML_IS_TRUE(vec2(0, 2) == pt);
+		pt.x = 2;
+
+		pt = transform_point(mat32::scale(0.5, 0.5), pt);
+		GML_IS_TRUE(vec2(1, 1) == pt);
+	}
 };
