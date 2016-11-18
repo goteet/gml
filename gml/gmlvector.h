@@ -13,6 +13,7 @@ namespace gml
 	class vec2
 	{
 	public:
+		constexpr static const int DIMENSION = 2;
 		static const vec2& zero();
 		static const vec2& one();
 		static const vec2& left();
@@ -101,6 +102,7 @@ namespace gml
 	class vec3
 	{
 	public:
+		constexpr static const int DIMENSION = 3;
 		static const vec3& zero();
 		static const vec3& one();
 		static const vec3& left();
@@ -193,6 +195,8 @@ namespace gml
 
 	class vec4
 	{
+	public:
+		constexpr static const int DIMENSION = 4;
 	public:
 		float x = 0.0f;
 		float y = 0.0f;
@@ -515,7 +519,7 @@ namespace gml
 
 	inline const float& vec2::operator[](int index) const
 	{
-		assert(index >= 0 || index < 2);
+		assert(index >= 0 || index < DIMENSION);
 		return *(&x + index);
 	}
 
@@ -758,7 +762,7 @@ namespace gml
 
 	inline const float& vec3::operator[](int index) const
 	{
-		assert(index >= 0 || index < 3);
+		assert(index >= 0 || index < DIMENSION);
 		return *(&x + index);
 	}
 
@@ -908,7 +912,7 @@ namespace gml
 
 	inline const float& vec4::operator[](int index) const
 	{
-		assert(index >= 0 || index < 4);
+		assert(index >= 0 || index < DIMENSION);
 		return *(&x + index);
 	}
 
