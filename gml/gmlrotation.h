@@ -8,16 +8,18 @@ namespace gml
 	class euler
 	{
 	public:
-		float roll = 0.0f;
-		float pitch = 0.0f;
-		float yaw = 0.0f;
+		radian roll = radian(0.0f);
+		radian pitch = radian(0.0f);
+		radian yaw = radian(0.0f);
 
 	public:
 		constexpr euler() = default;
 
-		constexpr euler(float _roll, float _pitch, float _yaw) : roll(_roll), pitch(_pitch), yaw(_yaw) { }
+		constexpr euler(const radian& _roll, const radian& _pitch, const radian& _yaw);
 
-		constexpr euler(const vec3& v) : roll(v.x), pitch(v.y), yaw(v.z) { }
+		constexpr euler(const vec3& radian) : roll(radian.x), pitch(radian.y), yaw(radian.z) { }
+
+		constexpr vec3 to_radian3() const;
 
 		friend bool operator== (const euler& lhs, const euler& rhs);
 
@@ -96,13 +98,24 @@ namespace gml
 
 namespace gml
 {
+
+	constexpr euler::euler(const radian& _roll, const radian& _pitch, const radian& _yaw)
+		: roll(_roll)
+		, pitch(_pitch)
+		, yaw(_yaw) { }
+
+	constexpr vec3 euler::to_radian3() const
+	{
+		return vec3(roll.value, pitch.value, yaw.value);
+	}
+
 	inline bool operator== (const euler& lhs, const euler& rhs)
 	{
 		if (&lhs != &rhs)
 		{
-			return fequal(lhs.roll, rhs.roll) &&
-				fequal(lhs.pitch, rhs.pitch) &&
-				fequal(lhs.yaw, rhs.yaw);
+			return lhs.roll == rhs.roll
+				&& lhs.pitch == rhs.pitch
+				&& lhs.yaw == rhs.yaw;
 		}
 		else
 		{
@@ -302,18 +315,18 @@ namespace gml
 		float wz2 = q.w * q.v.z * 2;
 
 		return euler(
-			atan2(yz2 - wx2, 1 - vsqr2.x - vsqr2.y),
-			asin(clamp<float>(-(zx2 + wy2), -1.0f, 1.0f)),
-			atan2(xy2 - wz2, 1 - vsqr2.y - vsqr2.z)
+			radian(atan2(yz2 - wx2, 1 - vsqr2.x - vsqr2.y)),
+			radian(asin(clamp<float>(-(zx2 + wy2), -1.0f, 1.0f))),
+			radian(atan2(xy2 - wz2, 1 - vsqr2.y - vsqr2.z))
 			);
 	}
 
 	// euler angle to quaternion.
 	inline quat to_quaternion(const euler& e)
 	{
-		vec4 v0(cosf(e.yaw / 2), 0, 0, sinf(e.yaw / 2));
-		vec4 v1(cosf(e.pitch / 2), 0, sinf(e.pitch / 2), 0);
-		vec4 v2(cosf(e.roll / 2), sinf(e.roll / 2), 0, 0);
+		vec4 v0(cosf(e.yaw.value * 0.5f), 0, 0, sinf(e.yaw.value * 0.5f));
+		vec4 v1(cosf(e.pitch.value* 0.5f), 0, sinf(e.pitch.value * 0.5f), 0);
+		vec4 v2(cosf(e.roll.value * 0.5f), sinf(e.roll.value * 0.5f), 0, 0);
 		vec4 v = v0 * v1 * v2;
 		return quat(v.w, v.x, v.y, v.z);
 	}
