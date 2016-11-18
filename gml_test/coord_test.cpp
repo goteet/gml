@@ -23,15 +23,15 @@ public:
 	TEST_METHOD(CoordinateBehaviorTest)
 	{
 		coord a;
-		GML_FEQUAL(0, a.x);
-		GML_FEQUAL(0, a.y);
+		GML_IEQUAL(0, a.x);
+		GML_IEQUAL(0, a.y);
 
 		a.set(1, 2);
-		GML_FEQUAL(1, a.x);
-		GML_FEQUAL(2, a.y);
+		GML_IEQUAL(1, a.x);
+		GML_IEQUAL(2, a.y);
 
 		a.move(-1, -2);
-		GML_FEQUAL(0, a.x);
-		GML_FEQUAL(0, a.y);
+		GML_IEQUAL(0, a.x);
+		GML_IEQUAL(0, a.y);
 	}
 };
