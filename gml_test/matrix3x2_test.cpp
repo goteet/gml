@@ -6,6 +6,15 @@ public:
 	TEST_METHOD(Matrix3x2GenericTest)
 	{
 		GML_IEQUAL(sizeof(float) * 3 * 2, sizeof(mat32));
+
+		mat32 m32;
+		for (int i = 0; i < 2; i++)
+		{
+			for (int j = 0; j < 3; j++)
+			{
+				GML_FEQUAL(0.0f, m32.m[i][j]);
+			}
+		}
 	}
 
 	mat32 memberByStaticFunc = mat32::identity();
@@ -34,6 +43,14 @@ public:
 		GML_FEQUALM(4.0f, local._10, "local init by init-list");
 		GML_FEQUALM(5.0f, local._11, "local init by init-list");
 		GML_FEQUALM(6.0f, local._12, "local init by init-list");
+
+		mat32 m3(mat22(1, 2, 3, 4));
+		GML_FEQUAL(1.0f, m3._00);
+		GML_FEQUAL(2.0f, m3._01);
+		GML_FEQUAL(0.0f, m3._02);
+		GML_FEQUAL(3.0f, m3._10);
+		GML_FEQUAL(4.0f, m3._11);
+		GML_FEQUAL(0.0f, m3._12);
 	}
 
 	TEST_METHOD(Matrix3x2AccessTest)

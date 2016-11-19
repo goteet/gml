@@ -6,6 +6,15 @@ public:
 	TEST_METHOD(Matrix3x3GenericTest)
 	{
 		GML_IEQUAL(sizeof(float) * 3 * 3, sizeof(mat33));
+
+		mat33 m33;
+		for (int i = 0; i < 3; i++)
+		{
+			for (int j = 0; j < 3; j++)
+			{
+				GML_FEQUAL(0.0f, m33.m[i][j]);
+			}
+		}
 	}
 
 	mat33 memberByStaticFunc = mat33::identity();
@@ -43,6 +52,29 @@ public:
 		GML_FEQUALM(7.0f, local._20, "local init by init-list");
 		GML_FEQUALM(8.0f, local._21, "local init by init-list");
 		GML_FEQUALM(9.0f, local._22, "local init by init-list");
+
+		mat33 m322(mat22(1, 2, 3, 4));
+		GML_FEQUAL(1.0f, m322._00);
+		GML_FEQUAL(2.0f, m322._01);
+		GML_FEQUAL(0.0f, m322._02);
+		GML_FEQUAL(3.0f, m322._10);
+		GML_FEQUAL(4.0f, m322._11);
+		GML_FEQUAL(0.0f, m322._12);
+		GML_FEQUAL(0.0f, m322._20);
+		GML_FEQUAL(0.0f, m322._21);
+		GML_FEQUAL(1.0f, m322._22);
+
+		mat33 m332(mat32(1, 2, 3, 4, 5, 6));
+		GML_FEQUAL(1.0f, m332._00);
+		GML_FEQUAL(2.0f, m332._01);
+		GML_FEQUAL(3.0f, m332._02);
+		GML_FEQUAL(4.0f, m332._10);
+		GML_FEQUAL(5.0f, m332._11);
+		GML_FEQUAL(6.0f, m332._12);
+		GML_FEQUAL(0.0f, m332._20);
+		GML_FEQUAL(0.0f, m332._21);
+		GML_FEQUAL(1.0f, m332._22);
+
 	}
 
 	TEST_METHOD(Matrix3x3AccessTest)

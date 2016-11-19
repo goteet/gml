@@ -6,6 +6,15 @@ public:
 	TEST_METHOD(Matrix2x2GenericTest)
 	{
 		GML_IEQUAL(sizeof(float) * 2 * 2, sizeof(mat22));
+
+		mat22 m22;
+		for (int i = 0; i < 2; i++)
+		{
+			for (int j = 0; j < 2; j++)
+			{
+				GML_FEQUAL(0.0f, m22.m[i][j]);
+			}
+		}
 	}
 
 	mat22 memberByStaticFunc = mat22::identity();

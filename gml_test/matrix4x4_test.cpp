@@ -6,6 +6,15 @@ public:
 	TEST_METHOD(Matrix4x4GenericTest)
 	{
 		GML_IEQUAL(sizeof(float) * 4 * 4, sizeof(mat44));
+
+		mat44 m44;
+		for (int i = 0; i < 4; i++)
+		{
+			for (int j = 0; j < 4; j++)
+			{
+				GML_FEQUAL(0.0f, m44.m[i][j]);
+			}
+		}
 	}
 
 	mat44 memberByStaticFunc = mat44::identity();
@@ -64,6 +73,60 @@ public:
 		GML_FEQUALM(14.0f, local._31, "local init by init-list");
 		GML_FEQUALM(15.0f, local._32, "local init by init-list");
 		GML_FEQUALM(16.0f, local._33, "local init by init-list");
+
+		mat44 m422(mat22(1, 2, 3, 4));
+		GML_FEQUAL(1.0f, m422._00);
+		GML_FEQUAL(2.0f, m422._01);
+		GML_FEQUAL(0.0f, m422._02);
+		GML_FEQUAL(0.0f, m422._03);
+		GML_FEQUAL(3.0f, m422._10);
+		GML_FEQUAL(4.0f, m422._11);
+		GML_FEQUAL(0.0f, m422._12);
+		GML_FEQUAL(0.0f, m422._13);
+		GML_FEQUAL(0.0f, m422._20);
+		GML_FEQUAL(0.0f, m422._21);
+		GML_FEQUAL(1.0f, m422._22);
+		GML_FEQUAL(0.0f, m422._23);
+		GML_FEQUAL(0.0f, m422._30);
+		GML_FEQUAL(0.0f, m422._31);
+		GML_FEQUAL(0.0f, m422._32);
+		GML_FEQUAL(1.0f, m422._33);
+
+		mat44 m432(mat32(1, 2, 3, 4, 5, 6));
+		GML_FEQUAL(1.0f, m432._00);
+		GML_FEQUAL(2.0f, m432._01);
+		GML_FEQUAL(0.0f, m432._02);
+		GML_FEQUAL(3.0f, m432._03);
+		GML_FEQUAL(4.0f, m432._10);
+		GML_FEQUAL(5.0f, m432._11);
+		GML_FEQUAL(0.0f, m432._12);
+		GML_FEQUAL(6.0f, m432._13);
+		GML_FEQUAL(0.0f, m432._20);
+		GML_FEQUAL(0.0f, m432._21);
+		GML_FEQUAL(1.0f, m432._22);
+		GML_FEQUAL(0.0f, m432._23);
+		GML_FEQUAL(0.0f, m432._30);
+		GML_FEQUAL(0.0f, m432._31);
+		GML_FEQUAL(0.0f, m432._32);
+		GML_FEQUAL(1.0f, m432._33);
+
+		mat44 m433(mat33(1, 2, 3, 4, 5, 6, 7, 8, 9));
+		GML_FEQUAL(1.0f, m433._00);
+		GML_FEQUAL(2.0f, m433._01);
+		GML_FEQUAL(3.0f, m433._02);
+		GML_FEQUAL(0.0f, m433._03);
+		GML_FEQUAL(4.0f, m433._10);
+		GML_FEQUAL(5.0f, m433._11);
+		GML_FEQUAL(6.0f, m433._12);
+		GML_FEQUAL(0.0f, m433._13);
+		GML_FEQUAL(7.0f, m433._20);
+		GML_FEQUAL(8.0f, m433._21);
+		GML_FEQUAL(9.0f, m433._22);
+		GML_FEQUAL(0.0f, m433._23);
+		GML_FEQUAL(0.0f, m433._30);
+		GML_FEQUAL(0.0f, m433._31);
+		GML_FEQUAL(0.0f, m433._32);
+		GML_FEQUAL(1.0f, m433._33);
 	}
 
 	TEST_METHOD(Matrix4x4AccessTest)

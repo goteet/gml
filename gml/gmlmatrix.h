@@ -568,8 +568,6 @@ namespace gml
 			_10, _11);
 	}
 
-
-
 	constexpr mat32::mat32(float _m00, float _m01, float _m02, float _m10, float _m11, float _m12)
 		: _00(_m00), _01(_m01), _02(_m02)
 		, _10(_m10), _11(_m11), _12(_m12) { }
@@ -583,8 +581,8 @@ namespace gml
 		, _10(m._10), _11(m._11), _12(m._12) { }
 
 	constexpr mat32::mat32(const mat22& m)
-		: _00(m._00), _01(m._01)
-		, _10(m._10), _11(m._11) { }
+		: _00(m._00), _01(m._01), _02(0.0f)
+		, _10(m._10), _11(m._11), _12(0.0f) { }
 
 	inline mat32& mat32::operator=(const mat32& rhs)
 	{
@@ -728,7 +726,6 @@ namespace gml
 		, _10(m44._10), _11(m44._11), _12(m44._12)
 		, _20(m44._20), _21(m44._21), _22(m44._22) { }
 
-
 	inline mat33& mat33::operator=(const mat33& rhs)
 	{
 		if (&rhs != this)
@@ -801,7 +798,6 @@ namespace gml
 		return result;
 	}
 
-
 	inline mat33& operator*= (mat33& lhs, float rhs)
 	{
 		for (int i = 0; i < mat33::ROW; i++)
@@ -858,7 +854,6 @@ namespace gml
 			_02, _12, _22
 			);
 	}
-
 
 	inline bool mat33::can_invert() const
 	{
@@ -974,8 +969,8 @@ namespace gml
 		, _30(0.0f), _31(0.0f), _32(0.0f), _33(1.0f) { }
 
 	constexpr mat44::mat44(const mat32& m32)
-		: _00(m32._00), _01(m32._01), _03(m32._02)
-		, _10(m32._10), _11(m32._11), _13(m32._12)
+		: _00(m32._00), _01(m32._01), _02(0.0f), _03(m32._02)
+		, _10(m32._10), _11(m32._11), _12(0.0f), _13(m32._12)
 		, _20(0.0f), _21(0.0f), _22(1.0f), _23(0.0f)
 		, _30(0.0f), _31(0.0f), _32(0.0f), _33(1.0f) { }
 
@@ -1057,7 +1052,6 @@ namespace gml
 		return result;
 	}
 
-
 	inline mat44& operator*= (mat44& lhs, float rhs)
 	{
 		for (int i = 0; i < mat44::ROW; i++)
@@ -1098,7 +1092,6 @@ namespace gml
 			m[i][index] = v[i];
 		}
 	}
-
 
 	inline void mat44::transpose()
 	{
