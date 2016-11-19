@@ -3,6 +3,14 @@
 TEST_CLASS(EulerTest)
 {
 public:
+	TEST_METHOD(EulerInitializationTest)
+	{
+		euler a;
+		GML_IS_TRUE(radian(0.0f) == a.yaw);
+		GML_IS_TRUE(radian(0.0f) == a.roll);
+		GML_IS_TRUE(radian(0.0f) == a.pitch);
+	}
+
 	TEST_METHOD(EulerComparisionTest)
 	{
 		euler a;
