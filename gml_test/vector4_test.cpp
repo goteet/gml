@@ -22,6 +22,12 @@ public:
 		GML_FEQUALM(2.0f, local[1], "local init by init-list");
 		GML_FEQUALM(3.0f, local[2], "local init by init-list");
 		GML_FEQUALM(4.0f, local[3], "local init by init-list");
+
+		vec4 v4;
+		GML_FEQUAL(0.0f, v4.x);
+		GML_FEQUAL(0.0f, v4.y);
+		GML_FEQUAL(0.0f, v4.z);
+		GML_FEQUAL(0.0f, v4.w);
 	}
 
 	TEST_METHOD(Vector4AccessTest)
