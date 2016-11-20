@@ -98,7 +98,6 @@ namespace gml
 
 namespace gml
 {
-
 	constexpr euler::euler(const radian& _roll, const radian& _pitch, const radian& _yaw)
 		: roll(_roll)
 		, pitch(_pitch)

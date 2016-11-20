@@ -46,4 +46,21 @@ TEST_CLASS(UtilityTest)
 		GML_FEQUAL(10.0f, clamp(10.0f, 0.0f, 10.0f));
 		GML_FEQUAL(10.0f, clamp(100.0f, 0.0f, 10.0f));
 	}
+
+	TEST_METHOD(UtilityExpTest)
+	{
+		int rsti1 = gml::exp(5, 5);
+		float rstf1 = gml::exp(5.0f, 5);
+		float rstf2 = 1.0f;
+		int rsti2 = 1;
+		for (int i = 0; i < 5; i++)
+		{
+			rstf2 *= 5.0f;
+			rsti2 *= 5;
+		}
+
+		GML_FEQUAL(rsti2, rsti1);
+		GML_FEQUAL(rstf2, rstf1);
+
+	}
 };

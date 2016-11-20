@@ -32,52 +32,23 @@ public:
 		GML_IS_FALSE(mRect == r3);
 	}
 
-	TEST_METHOD(RectLeftTest)
+	TEST_METHOD(RectAccessTest)
 	{
 		GML_IEQUAL(10, mRect.left());
-	}
-
-	TEST_METHOD(RectRightTest)
-	{
 		GML_IEQUAL(30, mRect.right());
-	}
-
-	TEST_METHOD(RectTopTest)
-	{
 		GML_IEQUAL(10, mRect.top());
-	}
-
-	TEST_METHOD(RectBottomTest)
-	{
 		GML_IEQUAL(30, mRect.bottom());
-	}
-
-	TEST_METHOD(RectWidthTest)
-	{
 		GML_IEQUAL(20, mRect.width());
-	}
-
-	TEST_METHOD(RectHeightTest)
-	{
 		GML_IEQUAL(20, mRect.height());
-	}
 
-	TEST_METHOD(RectCenterTest)
-	{
 		coord center = mRect.center();
 		GML_IEQUAL(20, center.x);
 		GML_IEQUAL(20, center.y);
-	}
 
-	TEST_METHOD(RectPositionTest)
-	{
 		coord pos = mRect.position();
 		GML_IEQUAL(10, pos.x);
 		GML_IEQUAL(10, pos.y);
-	}
 
-	TEST_METHOD(RectSizeTest)
-	{
 		coord size = mRect.size();
 		GML_IEQUAL(20, size.x);
 		GML_IEQUAL(20, size.y);

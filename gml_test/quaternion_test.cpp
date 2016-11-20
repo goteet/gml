@@ -3,6 +3,13 @@
 TEST_CLASS(QuaternionTest)
 {
 public:
+	TEST_METHOD(QuaternionIntializationTest)
+	{
+		quat q;
+		vec3 left = rotate(q, vec3::left());
+		GML_IS_TRUE(left == vec3::left());
+	}
+
 	TEST_METHOD(QuaternionMultipleTest)
 	{
 		quat q1 = quat(vec3::forward(), (gml::radian)gml::degree(90));

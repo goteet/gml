@@ -57,4 +57,11 @@ public:
 		GML_FEQUAL(tret.y, tretm.y);
 		GML_FEQUAL(tret.z, tretm.z);
 	}
+
+	TEST_METHOD(DualQuaternionIntializationTest)
+	{
+		dquat dq;
+		vec3 left = transform(dq, vec3::left());
+		GML_IS_TRUE(left == vec3::left());
+	}
 };
