@@ -1,5 +1,41 @@
 #pragma once
 
+namespace gml
+{
+	enum it_mode
+	{
+		it_none,
+		it_hit,
+		it_contain,
+		it_inside,
+		it_same,
+	};
+
+	struct _1 { constexpr static const int SwizzleIndex = -2; };
+	struct _0 { constexpr static const int SwizzleIndex = -1; };
+
+	constexpr double PI_d = 3.14159265358979323846;
+
+	constexpr float PI = static_cast<float>(PI_d);
+
+	bool fequal(float lhs, float rhs);
+
+	template<typename T>
+	constexpr T lerp(T left, T right, float fac);
+
+	template<typename T>
+	void swap(T& lhs, T& rhs);
+
+	template<typename T>
+	T clamp(T value, T minValue, T maxValue);
+
+	template<typename T>
+	T clamp01(T value);
+
+	template<class T>
+	constexpr T exp(T n, unsigned int iexp);
+}
+
 namespace gml_impl
 {
 	int get_fexp_base2(float d);
@@ -21,35 +57,21 @@ namespace gml_impl
 
 	template<typename T>
 	constexpr float Component(const T& v, int index);
+
+	constexpr int EPSILON_Base2 = -22;
 }
 
 namespace gml
 {
-	enum it_mode
-	{
-		it_none,
-		it_hit,
-		it_contain,
-		it_inside,
-		it_same,
-	};
-
-	struct _1 { constexpr static const int SwizzleIndex = -2; };
-	struct _0 { constexpr static const int SwizzleIndex = -1; };
-
-	constexpr double PI_d = 3.14159265358979323846;
-
-	constexpr float PI = static_cast<float>(PI_d);
-
-	constexpr int EPSILON_Base2 = -22;
+	
 	inline bool fequal(float lhs, float rhs)
 	{
 		if (lhs != rhs)
 		{
 			auto exp_diff = gml_impl::get_fexp_base2(lhs - rhs);
-			if (exp_diff > EPSILON_Base2)//epsilon
+			if (exp_diff > gml_impl::EPSILON_Base2)//epsilon
 			{
-				exp_diff -= EPSILON_Base2;
+				exp_diff -= gml_impl::EPSILON_Base2;
 				auto exp_lhs = gml_impl::get_fexp_base2(lhs);
 				auto exp_rhs = gml_impl::get_fexp_base2(rhs);
 				return exp_lhs > exp_diff && exp_rhs > exp_diff;
@@ -66,7 +88,7 @@ namespace gml
 	}
 
 	template<typename T>
-	constexpr inline T lerp(T left, T right, float fac)
+	constexpr T lerp(T left, T right, float fac)
 	{
 		return left * (1.0f - fac) + right * fac;
 	}

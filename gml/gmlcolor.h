@@ -166,42 +166,16 @@ namespace gml
 	struct _A { constexpr static int SwizzleIndex = 3; };
 
 	template<typename SwizzleR, typename SwizzleG, typename SwizzleB>
-	constexpr color3 swizzle(const color3& c3)
-	{
-		return color3(
-			gml_impl::Component(c3, SwizzleR::SwizzleIndex),
-			gml_impl::Component(c3, SwizzleG::SwizzleIndex),
-			gml_impl::Component(c3, SwizzleB::SwizzleIndex));
-	}
+	constexpr color3 swizzle(const color3& c3);
 
 	template<typename SwizzleR, typename SwizzleG, typename SwizzleB>
-	constexpr color3 swizzle(const color4& c4)
-	{
-		return color3(
-			gml_impl::Component(c4, SwizzleR::SwizzleIndex),
-			gml_impl::Component(c4, SwizzleG::SwizzleIndex),
-			gml_impl::Component(c4, SwizzleB::SwizzleIndex));
-	}
+	constexpr color3 swizzle(const color4& c4);
 
 	template<typename SwizzleR, typename SwizzleG, typename SwizzleB, typename SwizzleA>
-	constexpr color4 swizzle(const color3& c3)
-	{
-		return color4(
-			gml_impl::Component(c3, SwizzleR::SwizzleIndex),
-			gml_impl::Component(c3, SwizzleG::SwizzleIndex),
-			gml_impl::Component(c3, SwizzleB::SwizzleIndex),
-			gml_impl::Component(c3, SwizzleA::SwizzleIndex));
-	}
+	constexpr color4 swizzle(const color3& c3);
 
 	template<typename SwizzleR, typename SwizzleG, typename SwizzleB, typename SwizzleA>
-	constexpr color4 swizzle(const color4& c4)
-	{
-		return color4(
-			gml_impl::Component(c4, SwizzleR::SwizzleIndex),
-			gml_impl::Component(c4, SwizzleG::SwizzleIndex),
-			gml_impl::Component(c4, SwizzleB::SwizzleIndex),
-			gml_impl::Component(c4, SwizzleA::SwizzleIndex));
-	}
+	constexpr color4 swizzle(const color4& c4);
 }
 
 namespace gml_impl
@@ -658,5 +632,43 @@ namespace gml
 	constexpr float dot(const color4& lhs, const color4& rhs)
 	{
 		return lhs.r * rhs.r + lhs.g * rhs.g + lhs.b * rhs.b + lhs.a * rhs.a;
+	}
+
+	template<typename SwizzleR, typename SwizzleG, typename SwizzleB>
+	constexpr color3 swizzle(const color3& c3)
+	{
+		return color3(
+			gml_impl::Component(c3, SwizzleR::SwizzleIndex),
+			gml_impl::Component(c3, SwizzleG::SwizzleIndex),
+			gml_impl::Component(c3, SwizzleB::SwizzleIndex));
+	}
+
+	template<typename SwizzleR, typename SwizzleG, typename SwizzleB>
+	constexpr color3 swizzle(const color4& c4)
+	{
+		return color3(
+			gml_impl::Component(c4, SwizzleR::SwizzleIndex),
+			gml_impl::Component(c4, SwizzleG::SwizzleIndex),
+			gml_impl::Component(c4, SwizzleB::SwizzleIndex));
+	}
+
+	template<typename SwizzleR, typename SwizzleG, typename SwizzleB, typename SwizzleA>
+	constexpr color4 swizzle(const color3& c3)
+	{
+		return color4(
+			gml_impl::Component(c3, SwizzleR::SwizzleIndex),
+			gml_impl::Component(c3, SwizzleG::SwizzleIndex),
+			gml_impl::Component(c3, SwizzleB::SwizzleIndex),
+			gml_impl::Component(c3, SwizzleA::SwizzleIndex));
+	}
+
+	template<typename SwizzleR, typename SwizzleG, typename SwizzleB, typename SwizzleA>
+	constexpr color4 swizzle(const color4& c4)
+	{
+		return color4(
+			gml_impl::Component(c4, SwizzleR::SwizzleIndex),
+			gml_impl::Component(c4, SwizzleG::SwizzleIndex),
+			gml_impl::Component(c4, SwizzleB::SwizzleIndex),
+			gml_impl::Component(c4, SwizzleA::SwizzleIndex));
 	}
 }

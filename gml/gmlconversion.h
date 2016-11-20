@@ -6,7 +6,22 @@
 
 namespace gml
 {
-	inline mat33 to_mat33(const quat& q)
+	mat33 to_mat33_from(const quat& q);
+
+	mat44 to_mat44_from(const quat& q);
+
+	quat to_quat_from(const mat44& mat);
+
+	mat44 to_mat44_from(const dquat& q);
+
+	aabb transform(const mat44& mat, const aabb& inaabb);
+
+	aabb2d transform(const mat32& mat, const aabb2d& inaabb2d);
+}
+
+namespace gml
+{
+	inline mat33 to_mat33_from(const quat& q)
 	{
 		mat33 rst;
 		vec3 vsqr2 = q.v * q.v * 2;
@@ -33,12 +48,12 @@ namespace gml
 		return rst;
 	}
 
-	inline mat44 to_mat44(const quat& q)
+	inline mat44 to_mat44_from(const quat& q)
 	{
-		return (mat44)to_mat33(q);
+		return (mat44)to_mat33_from(q);
 	}
 
-	inline quat to_quat(const mat44& mat)
+	inline quat to_quat_from(const mat44& mat)
 	{
 		float wsqr = mat._00 + mat._11 + mat._22;
 		float xsqr = mat._00 - mat._11 - mat._22;
@@ -97,7 +112,7 @@ namespace gml
 		return rst;
 	}
 
-	inline mat44 to_mat44(const dquat& q)
+	inline mat44 to_mat44_from(const dquat& q)
 	{
 		mat44 rst;
 		auto normalDQ = q.normalized();

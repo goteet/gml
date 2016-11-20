@@ -91,9 +91,9 @@ namespace gml
 
 	quat slerp(const quat& s, const quat& d, float f);
 
-	euler to_eular(const quat& q);
+	euler to_eular_from(const quat& q);
 
-	quat to_quaternion(const euler& e);
+	quat to_quat_from(const euler& e);
 }
 
 namespace gml
@@ -304,7 +304,7 @@ namespace gml
 		return f0 * s + f1 * d;
 	}
 
-	inline euler to_eular(const quat& q)
+	inline euler to_eular_from(const quat& q)
 	{
 		vec3 vsqr2 = q.v * q.v * 2;
 		float xy2 = q.v.x * q.v.y * 2;
@@ -322,7 +322,7 @@ namespace gml
 	}
 
 	// euler angle to quaternion.
-	inline quat to_quaternion(const euler& e)
+	inline quat to_quat_from(const euler& e)
 	{
 		vec4 v0(cosf(e.yaw.value * 0.5f), 0, 0, sinf(e.yaw.value * 0.5f));
 		vec4 v1(cosf(e.pitch.value* 0.5f), 0, sinf(e.pitch.value * 0.5f), 0);

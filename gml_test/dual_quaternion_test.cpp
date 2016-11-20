@@ -7,14 +7,14 @@ public:
 	{
 		gml::dquat DualQualT(1, 0, 0);
 		gml::dquat DualQuatR(vec3(0, 1, 0), (gml::radian)degree(90));
-		gml::mat44 MatrixT = to_mat44(DualQualT);
-		gml::mat44 MatrixR = to_mat44(DualQuatR);
+		gml::mat44 MatrixT = to_mat44_from(DualQualT);
+		gml::mat44 MatrixR = to_mat44_from(DualQuatR);
 
 		auto T_R = DualQualT * DualQuatR;
 		auto R_T = DualQuatR * DualQualT;
 
-		gml::mat44 MatrixR_T = to_mat44(R_T);
-		gml::mat44 MatrixT_R = to_mat44(T_R);
+		gml::mat44 MatrixR_T = to_mat44_from(R_T);
+		gml::mat44 MatrixT_R = to_mat44_from(T_R);
 		gml::vec3 p(0, 0, 0);
 
 		gml::vec3 tp = transform_point(MatrixT, p);

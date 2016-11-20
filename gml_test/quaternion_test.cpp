@@ -33,13 +33,13 @@ public:
 		quat q2 = quat(vec3::up(), (gml::radian)gml::degree(90));
 		auto r = q1 * q2;
 
-		auto matrixR = gml::to_mat44(r);
+		auto matrixR = gml::to_mat44_from(r);
 
 		auto rq = gml::rotate(r, vec3(0, 0, 1));
 		auto rm = gml::transform_point(matrixR, vec3(0, 0, 1));
 		GML_IS_TRUE(rm == rq);
 
-		auto rinv = gml::to_quat(matrixR);
+		auto rinv = gml::to_quat_from(matrixR);
 		GML_IS_TRUE(r == rinv);
 
 		rq = gml::rotate(rinv, vec3(0, 0, 1));

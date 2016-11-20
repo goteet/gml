@@ -12,18 +12,7 @@ namespace gml
 
 		aabb_t(const T& min_bound, const T& max_bound);
 
-		inline friend bool operator==(const aabb_t<T>& lhs, const aabb_t<T>& rhs)
-		{
-			if (&lhs == &rhs)
-				return true;
-			if (lhs.is_invalid() && rhs.is_invalid())
-				return true;
-			if (lhs.is_invalid() || rhs.is_invalid())
-				return false;
-
-			return lhs.m_min_bound == rhs.m_min_bound
-				&& lhs.m_max_bound == rhs.m_max_bound;
-		}
+		friend bool operator==(const aabb_t<T>& lhs, const aabb_t<T>& rhs);
 
 		friend inline bool operator!=(const aabb_t<T>& lhs, const aabb_t<T>& rhs) { return !(lhs == rhs); }
 
@@ -69,6 +58,20 @@ namespace gml
 		T m_max_bound;
 		T m_center;
 		T m_extend;
+
+	public:
+		inline friend bool operator==(const aabb_t<T>& lhs, const aabb_t<T>& rhs)
+		{
+			if (&lhs == &rhs)
+				return true;
+			if (lhs.is_invalid() && rhs.is_invalid())
+				return true;
+			if (lhs.is_invalid() || rhs.is_invalid())
+				return false;
+
+			return lhs.m_min_bound == rhs.m_min_bound
+				&& lhs.m_max_bound == rhs.m_max_bound;
+		}
 	};
 
 	typedef aabb_t<vec2> aabb2d;
