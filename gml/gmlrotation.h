@@ -75,6 +75,8 @@ namespace gml
 
 		quat inversed() const;
 
+		void invert_w();
+
 		float length() const;
 
 		constexpr float length_sqr() const;
@@ -168,6 +170,11 @@ namespace gml
 		return quat(lhs.w + rhs.w, lhs.v + rhs.v);
 	}
 
+	constexpr quat operator-(const quat& lhs, const quat& rhs)
+	{
+		return quat(lhs.w - rhs.w, lhs.v - rhs.v);
+	}
+
 	constexpr quat operator*(const quat& lhs, const quat& rhs)
 	{
 		return quat(
@@ -190,6 +197,13 @@ namespace gml
 	{
 		lhs.w += rhs.w;
 		lhs.v += rhs.v;
+		return lhs;
+	}
+
+	inline quat& operator-=(quat& lhs, const quat& rhs)
+	{
+		lhs.w -= rhs.w;
+		lhs.v -= rhs.v;
 		return lhs;
 	}
 
@@ -245,6 +259,15 @@ namespace gml
 		quat rst(*this);
 		rst.inverse();
 		return rst;
+	}
+
+	inline void quat::invert_w()
+	{
+		if (w < 0)
+		{
+			w = -w;
+			v = -v;
+		}
 	}
 
 	inline float quat::length() const

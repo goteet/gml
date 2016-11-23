@@ -67,7 +67,9 @@ namespace gml
 
 		dquat exponented(float t) const;
 
-		constexpr inline float length() const { return dot(real, real); }
+		inline float length() const { return sqrtf(length_sqr()); }
+
+		constexpr float length_sqr() const { return dot(real, real); }
 
 	public://unless you know what u r doing.
 		constexpr dquat(const quat &r, const quat& d) : real(r), dual(d) { }
@@ -91,38 +93,46 @@ namespace gml
 
 	inline dquat::dquat(const quat& rotation, const vec3 translation)
 		: real(rotation)
-		, dual(0, translation)
+		, dual(0, translation * 0.5f)
 	{
 		real.normalize();
-		dual = 0.5 * dual * real;
+		dual = dual * real;
+
+
 	}
 
 	//rotate and translate
 	inline dquat::dquat(const vec3& axis, const radian& r, const vec3& translation)
 		: real(axis, r)
-		, dual(0, translation)
+		, dual(0, translation * 0.5f)
 	{
-		dual = 0.5f * dual * real;
+		dual = dual * real;
+
 	}
 
 	inline radian dquat::get_rotate_radian() const
 	{
-		float w = gml::clamp(real.w, -1.0f, 1.0f);
+		float w = frac(real.w);
 		return radian(2 * acos(w));
 	}
 
 	inline dquat operator+ (const dquat& lhs, const dquat& rhs)
 	{
-		return dquat(
-			(lhs.real + rhs.real).normalized(),
-			lhs.dual + rhs.dual);
+		if (dot(lhs.real, rhs.real) >= 0)
+		{
+			return dquat(lhs.real + rhs.real, lhs.dual + rhs.dual);
+		}
+		else
+		{
+			return dquat(lhs.real - rhs.real, lhs.dual - rhs.dual);
+		}
+
 	}
 
 	inline dquat operator* (const dquat& lhs, const dquat& rhs)
 	{
 		quat newR = lhs.real*rhs.real;
 		quat newD = lhs.real*rhs.dual + lhs.dual*rhs.real; //noticing the order.
-		newR.normalize();
 		return dquat(newR, newD);
 	}
 
@@ -130,14 +140,21 @@ namespace gml
 	{
 		quat newR = lhs.real*scaler;
 		quat newD = lhs.dual*scaler;
-		newR.normalize();
 		return dquat(newR, newD);
 	}
 
 	inline dquat& operator+=(dquat& lhs, const dquat& rhs)
 	{
-		lhs.real += rhs.real;
-		lhs.dual += rhs.dual;
+		if (dot(lhs.real, rhs.real) >= 0)
+		{
+			lhs.real += rhs.real;
+			lhs.dual += rhs.dual;
+		}
+		else
+		{
+			lhs.real -= rhs.real;
+			lhs.dual -= rhs.dual;
+		}
 		return lhs;
 	}
 
@@ -145,10 +162,9 @@ namespace gml
 	{
 		quat newR = lhs.real*rhs.real;
 		quat newD = lhs.real*rhs.dual + lhs.dual*rhs.real; //noticing the order.
-		newR.normalize();
-
 		lhs.real = newR;
 		lhs.dual = newD;
+
 		return lhs;
 	}
 
@@ -156,18 +172,17 @@ namespace gml
 	{
 		lhs.real *= rhs;
 		lhs.dual *= rhs;
-		lhs.real.normalize();
 		return lhs;
 	}
 
 	inline void dquat::normalize()
 	{
-		float l = length();
+		float l = length_sqr();
 		if (!fequal(l, 0.0f))
 		{
 			if (!fequal(l, 1.0f))
 			{
-				auto invL = 1.0f / l;
+				auto invL = 1.0f / sqrtf(l);
 				this->real *= invL;
 				this->dual *= invL;
 			}
@@ -212,7 +227,7 @@ namespace gml
 
 	inline void dquat::exponent(float t)
 	{
-		float invr = 1.0f / sqrtf(length());
+		float invr = 1.0f / sqrtf(length_sqr());
 		// change the pitch. //
 		// Screw parameters
 		radian r = get_rotate_radian();

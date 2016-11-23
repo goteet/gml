@@ -34,6 +34,8 @@ namespace gml
 
 	template<class T>
 	constexpr T exp(T n, unsigned int iexp);
+
+	constexpr float frac(float);
 }
 
 namespace gml_impl
@@ -63,7 +65,7 @@ namespace gml_impl
 
 namespace gml
 {
-	
+
 	inline bool fequal(float lhs, float rhs)
 	{
 		if (lhs != rhs)
@@ -121,6 +123,11 @@ namespace gml
 	constexpr T exp(T n, unsigned int iexp)
 	{
 		return iexp == 0 ? T(1) : (iexp == 1 ? n : exp(n, iexp - 1) * n);
+	}
+
+	constexpr float frac(float f)
+	{
+		return f - (int)f;
 	}
 }
 
