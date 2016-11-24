@@ -59,8 +59,8 @@ TEST_CLASS(UtilityTest)
 			rsti2 *= 5;
 		}
 
-		GML_FEQUAL(rsti2, rsti1);
-		GML_FEQUAL(rstf2, rstf1);
+		GML_IEQUAL(rsti2, rsti1);
+		GML_IEQUAL(rstf2, rstf1);
 
 	}
 };

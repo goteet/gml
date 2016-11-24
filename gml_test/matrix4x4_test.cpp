@@ -203,4 +203,22 @@ public:
 		pt = transform_point(mat44::translate(-1, -1, -1), pt);
 		GML_IS_TRUE(vec3::zero() == pt);
 	}
+
+	TEST_METHOD(Matrix4x4LocalTransformTest)
+	{
+		const vec3 T = vec3(1, 2, 3);
+		mat44 mT = mat44::translate(T.x, T.y, T.z);
+		mat44 mRx = mat44::rotate_x(degree(30));
+		mat44 mRxT = mRx * mT;
+
+		vec3 t = mRxT.get_local_translation();
+		GML_IS_TRUE(t == T);
+
+		mat44 mRy = mat44::rotate_y(degree(30));
+		mat44 mRz = mat44::rotate_z(degree(30));
+
+		mat44 mRT = mRy * mRz * mRxT;
+		t = mRT.get_local_translation();
+		GML_IS_TRUE(t == T);
+	}
 };

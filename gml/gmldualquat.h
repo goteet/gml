@@ -235,7 +235,7 @@ namespace gml
 		vec3 direction = real.v * invr;
 		vec3 moment = (dual.v + direction * pitch * real.w) * invr;	//(dual.v - direction * pitch * real.w * 0.5f) * invr
 
-																	// Exponential power 
+		// Exponential power 
 		r *= t * 0.5f;
 		pitch *= t;
 

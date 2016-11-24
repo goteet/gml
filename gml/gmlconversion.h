@@ -10,9 +10,15 @@ namespace gml
 
 	mat44 to_mat44_from(const quat& q);
 
+	mat44 to_mat44_from(const dquat& q);
+
+	quat to_quat_from(const mat33& mat);
+
 	quat to_quat_from(const mat44& mat);
 
-	mat44 to_mat44_from(const dquat& q);
+	dquat to_dquat_from(const mat33& m33);
+
+	dquat to_dquat_from(const mat44& m44);
 
 	aabb transform(const mat44& mat, const aabb& inaabb);
 
@@ -51,65 +57,6 @@ namespace gml
 	inline mat44 to_mat44_from(const quat& q)
 	{
 		return (mat44)to_mat33_from(q);
-	}
-
-	inline quat to_quat_from(const mat44& mat)
-	{
-		float wsqr = mat._00 + mat._11 + mat._22;
-		float xsqr = mat._00 - mat._11 - mat._22;
-		float ysqr = mat._11 - mat._00 - mat._22;
-		float zsqr = mat._22 - mat._00 - mat._11;
-
-		int maxIndex = 0;
-		float maxSqr = wsqr;
-		if (xsqr > maxSqr)
-		{
-			maxSqr = xsqr;
-			maxIndex = 1;
-		}
-		if (ysqr > maxSqr)
-		{
-			maxSqr = ysqr;
-			maxIndex = 2;
-		}
-		if (zsqr > maxSqr)
-		{
-			maxSqr = zsqr;
-			maxIndex = 3;
-		}
-
-		maxSqr = sqrtf(maxSqr + 1) * 0.5f;
-		float base = 0.25f / maxSqr;
-		quat rst;
-		switch (maxIndex)
-		{
-		case 0:
-			rst.w = maxSqr;
-			rst.v.x = (mat._21 - mat._12) * base;
-			rst.v.y = (mat._02 - mat._20) * base;
-			rst.v.z = (mat._10 - mat._01) * base;
-			break;
-		case 1:
-			rst.v.x = maxSqr;
-			rst.w =   (mat._21 - mat._12) * base;
-			rst.v.y = (mat._10 + mat._01) * base;
-			rst.v.z = (mat._20 + mat._02) * base;
-			break;
-		case 2:
-			rst.v.y = maxSqr;
-			rst.w =   (mat._02 - mat._20) * base;
-			rst.v.x = (mat._10 + mat._01) * base;
-			rst.v.z = (mat._21 + mat._12) * base;
-			break;
-		case 3:
-			rst.v.z = maxSqr;
-			rst.w =   (mat._10 - mat._01) * base;
-			rst.v.x = (mat._20 + mat._02) * base;
-			rst.v.y = (mat._21 + mat._12) * base;
-			break;
-		}
-		rst.normalize();
-		return rst;
 	}
 
 	inline mat44 to_mat44_from(const dquat& q)
@@ -158,6 +105,98 @@ namespace gml
 		rst.row[3].set(0, 0, 0, 1);
 
 		return rst;
+	}
+
+	inline quat to_quat_impl(
+		float _00, float _01, float _02,
+		float _10, float _11, float _12,
+		float _20, float _21, float _22)
+	{
+		float wsqr = _00 + _11 + _22;
+		float xsqr = _00 - _11 - _22;
+		float ysqr = _11 - _00 - _22;
+		float zsqr = _22 - _00 - _11;
+
+		int maxIndex = 0;
+		float maxSqr = wsqr;
+		if (xsqr > maxSqr)
+		{
+			maxSqr = xsqr;
+			maxIndex = 1;
+		}
+		if (ysqr > maxSqr)
+		{
+			maxSqr = ysqr;
+			maxIndex = 2;
+		}
+		if (zsqr > maxSqr)
+		{
+			maxSqr = zsqr;
+			maxIndex = 3;
+		}
+
+		maxSqr = sqrtf(maxSqr + 1) * 0.5f;
+		float base = 0.25f / maxSqr;
+		quat rst;
+		switch (maxIndex)
+		{
+		case 0:
+			rst.w = maxSqr;
+			rst.v.x = (_21 - _12) * base;
+			rst.v.y = (_02 - _20) * base;
+			rst.v.z = (_10 - _01) * base;
+			break;
+		case 1:
+			rst.v.x = maxSqr;
+			rst.w = (_21 - _12) * base;
+			rst.v.y = (_01 + _10) * base;
+			rst.v.z = (_02 + _20) * base;
+			break;
+		case 2:
+			rst.v.y = maxSqr;
+			rst.w = (_02 - _20) * base;
+			rst.v.x = (_01 + _10) * base;
+			rst.v.z = (_12 + _21) * base;
+			break;
+		case 3:
+			rst.v.z = maxSqr;
+			rst.w = (_10 - _01) * base;
+			rst.v.x = (_02 + _20) * base;
+			rst.v.y = (_12 + _21) * base;
+			break;
+		}
+		rst.normalize();
+		return rst;
+	}
+
+	inline quat to_quat_from(const mat33& mat)
+	{
+		return to_quat_impl(
+			mat._00, mat._01, mat._02,
+			mat._10, mat._11, mat._12,
+			mat._20, mat._21, mat._22);
+	}
+
+	inline quat to_quat_from(const mat44& mat)
+	{
+		return to_quat_impl(
+			mat._00, mat._01, mat._02,
+			mat._10, mat._11, mat._12,
+			mat._20, mat._21, mat._22);
+	}
+
+	inline dquat to_dquat_from(const mat33& m33)
+	{
+		return gml::dquat(
+			to_quat_from(m33),
+			gml::vec3::zero());
+	}
+
+	inline dquat to_dquat_from(const mat44& m44)
+	{
+		return gml::dquat(
+			to_quat_from(m44),
+			(gml::vec3)m44.column(3));
 	}
 
 	inline aabb transform(const mat44& mat, const aabb& inaabb)

@@ -41,10 +41,6 @@ namespace gml
 
 		constexpr mat22(const mat22&);
 
-		constexpr explicit mat22(const mat32& m32);
-
-		constexpr explicit mat22(const mat33& m33);
-
 		mat22& operator=(const mat22& rhs);
 
 		friend bool operator== (const mat22& lhs, const mat22& rhs);
@@ -153,6 +149,12 @@ namespace gml
 		void set_column(int index, vec2 v);
 
 		inline void set_identity() { *this = identity(); }
+
+		constexpr mat22 get_rotate_matrix22() const;
+
+		constexpr mat32 get_rotate_matrix() const;
+
+		inline vec2 get_local_translation() const;
 	};
 
 	class mat33
@@ -194,8 +196,6 @@ namespace gml
 
 		constexpr explicit mat33(const mat32& m);
 
-		constexpr explicit mat33(const mat44& m);
-
 		mat33& operator=(const mat33& rhs);
 
 		friend bool operator== (const mat33& lhs, const mat33& rhs);
@@ -220,6 +220,8 @@ namespace gml
 
 		const float& operator[] (int index) const;
 
+		vec2 column2(int index) const;
+
 		vec3 column(int index) const;
 
 		void set_column(int index, vec3 v);
@@ -239,6 +241,12 @@ namespace gml
 		bool is_orthogonal() const;
 
 		constexpr float determinant() const;
+
+		constexpr mat22 get_rotate_matrix22() const;
+
+		constexpr mat33 get_rotate_matrix() const;
+
+		inline vec2 get_local_translation() const;
 	};
 
 	class mat44
@@ -312,6 +320,8 @@ namespace gml
 
 		const float& operator[] (int index) const;
 
+		vec3 column3(int index) const;
+
 		vec4 column(int index) const;
 
 		void set_column(int index, vec4 v);
@@ -331,6 +341,12 @@ namespace gml
 		bool is_orthogonal() const;
 
 		constexpr float determinant() const;
+
+		constexpr mat33 get_rotate_matrix33() const;
+
+		constexpr mat44 get_rotate_matrix() const;
+
+		vec3 get_local_translation() const;
 	};
 
 	vec2 transform_vector(const mat32& lhs, const vec2& rhs);
@@ -359,14 +375,6 @@ namespace gml
 	constexpr mat22::mat22(const mat22& m)
 		: _00(m._00), _01(m._01)
 		, _10(m._10), _11(m._11) { }
-
-	constexpr mat22::mat22(const mat32& m32)
-		: _00(m32._00), _01(m32._01)
-		, _10(m32._10), _11(m32._11) {}
-
-	constexpr mat22::mat22(const mat33& m33)
-		: _00(m33._00), _01(m33._01)
-		, _10(m33._10), _11(m33._11) {}
 
 	inline mat22& mat22::operator=(const mat22& rhs)
 	{
@@ -693,6 +701,28 @@ namespace gml
 		}
 	}
 
+	constexpr mat22 mat32::get_rotate_matrix22() const
+	{
+		return mat22(
+			_00, _01,
+			_10, _11);
+	}
+
+	constexpr mat32 mat32::get_rotate_matrix() const
+	{
+		return mat32(
+			_00, _01, 0.0f,
+			_10, _11, 0.0f);
+	}
+
+	inline vec2 mat32::get_local_translation() const
+	{
+		vec2 T = column(2);
+		return vec2(
+			dot(T, column(0)),
+			dot(T, column(1)));
+	}
+
 	constexpr mat33::mat33(
 		float _m00, float _m01, float _m02,
 		float _m10, float _m11, float _m12,
@@ -720,11 +750,6 @@ namespace gml
 		: _00(m._00), _01(m._01), _02(m._02)
 		, _10(m._10), _11(m._11), _12(m._12)
 		, _20(0.0f), _21(0.0f), _22(1.0f) { }
-
-	constexpr mat33::mat33(const mat44& m44)
-		: _00(m44._00), _01(m44._01), _02(m44._02)
-		, _10(m44._10), _11(m44._11), _12(m44._12)
-		, _20(m44._20), _21(m44._21), _22(m44._22) { }
 
 	inline mat33& mat33::operator=(const mat33& rhs)
 	{
@@ -821,6 +846,12 @@ namespace gml
 	{
 		assert(index >= 0 && index < CELL);
 		return *(&(m[0][0]) + index);
+	}
+
+	inline vec2 mat33::column2(int index) const
+	{
+		assert(index >= 0 && index < COL);
+		return vec2(m[0][index], m[1][index]);
 	}
 
 	inline vec3 mat33::column(int index) const
@@ -938,6 +969,29 @@ namespace gml
 			_00, _01, _02,
 			_10, _11, _12,
 			_20, _21, _22);
+	}
+
+	constexpr mat22 mat33::get_rotate_matrix22() const
+	{
+		return mat22(
+			_00, _01,
+			_10, _11);
+	}
+
+	constexpr mat33 mat33::get_rotate_matrix() const
+	{
+		return mat33(
+			_00, _01, 0.0f,
+			_10, _11, 0.0f,
+			0.0f, 0.0f, 1.0f);
+	}
+
+	inline vec2 mat33::get_local_translation() const
+	{
+		vec2 T = column2(2);
+		return vec2(
+			dot(T, column2(0)),
+			dot(T, column2(1)));
 	}
 
 	constexpr mat44::mat44(
@@ -1077,6 +1131,12 @@ namespace gml
 		return *(&(m[0][0]) + index);
 	}
 
+	inline vec3 mat44::column3(int index) const
+	{
+		assert(index >= 0 && index < COL);
+		return vec3(m[0][index], m[1][index], m[2][index]);
+	}
+
 	inline vec4 mat44::column(int index) const
 	{
 		assert(index >= 0 && index < COL);
@@ -1207,6 +1267,32 @@ namespace gml
 			_10, _11, _12, _13,
 			_20, _21, _22, _23,
 			_30, _31, _32, _33);
+	}
+
+	constexpr mat33 mat44::get_rotate_matrix33() const
+	{
+		return mat33(
+			_00, _01, _02,
+			_10, _11, _12,
+			_20, _21, _22);
+	}
+
+	constexpr mat44 mat44::get_rotate_matrix() const
+	{
+		return mat44(
+			_00, _01, _02, 0.0f,
+			_10, _11, _12, 0.0f,
+			_20, _21, _22, 0.0f,
+			0.0f, 0.0f, 0.0f, 1.0f);
+	}
+
+	inline vec3 mat44::get_local_translation() const
+	{
+		vec3 T = column3(3);
+		return vec3(
+			dot(T, column3(0)),
+			dot(T, column3(1)),
+			dot(T, column3(2)));
 	}
 
 	inline vec2 transform_vector(const mat32& lhs, const vec2& rhs)
