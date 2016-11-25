@@ -75,6 +75,10 @@ namespace gml
 		constexpr dquat(const quat &r, const quat& d) : real(r), dual(d) { }
 	};
 
+	dquat add(const dquat& lhs, const dquat& rhs);
+
+	void add_to(dquat& lhs, const dquat& rhs);
+
 	constexpr float dot(const dquat& lhs, const dquat& rhs);
 
 	dquat sc_lerp(const dquat& from, const dquat& to, float t);
@@ -118,15 +122,7 @@ namespace gml
 
 	inline dquat operator+ (const dquat& lhs, const dquat& rhs)
 	{
-		if (dot(lhs.real, rhs.real) >= 0)
-		{
-			return dquat(lhs.real + rhs.real, lhs.dual + rhs.dual);
-		}
-		else
-		{
-			return dquat(lhs.real - rhs.real, lhs.dual - rhs.dual);
-		}
-
+		return dquat(lhs.real + rhs.real, lhs.dual + rhs.dual);
 	}
 
 	inline dquat operator* (const dquat& lhs, const dquat& rhs)
@@ -145,16 +141,8 @@ namespace gml
 
 	inline dquat& operator+=(dquat& lhs, const dquat& rhs)
 	{
-		if (dot(lhs.real, rhs.real) >= 0)
-		{
-			lhs.real += rhs.real;
-			lhs.dual += rhs.dual;
-		}
-		else
-		{
-			lhs.real -= rhs.real;
-			lhs.dual -= rhs.dual;
-		}
+		lhs.real += rhs.real;
+		lhs.dual += rhs.dual;
 		return lhs;
 	}
 
@@ -254,6 +242,33 @@ namespace gml
 		auto result(*this);
 		result.exponent(t);
 		return result;
+	}
+
+	inline dquat add(const dquat& lhs, const dquat& rhs)
+	{
+		if (dot(lhs.real, rhs.real) >= 0)
+		{
+			return dquat(lhs.real + rhs.real, lhs.dual + rhs.dual);
+		}
+		else
+		{
+			return dquat(lhs.real - rhs.real, lhs.dual - rhs.dual);
+		}
+	}
+
+	inline void add_to(dquat& lhs, const dquat& rhs)
+	{
+		if (dot(lhs.real, rhs.real) >= 0)
+		{
+			lhs.real += rhs.real;
+			lhs.dual += rhs.dual;
+		}
+		else
+		{
+			lhs.real -= rhs.real;
+			lhs.dual -= rhs.dual;
+		}
+
 	}
 
 	constexpr float dot(const dquat& lhs, const dquat& rhs)
