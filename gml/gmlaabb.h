@@ -26,9 +26,9 @@ namespace gml
 
 		constexpr const T& extend() const { return m_extend; }
 
-		constexpr bool is_invalid() const { return m_is_invalid; }
-
 		constexpr bool is_empty() const { return m_is_empty; }
+
+		constexpr bool is_point() const { return m_is_point; }
 
 		it_mode is_intersect(const aabb_t<T>& other) const;
 
@@ -48,12 +48,12 @@ namespace gml
 
 		void move_to(const T& point);
 
-		void clear();
+		void empty();
 
 	private:
-		void test_empty();
-		bool m_is_invalid;
+		void test_is_point();
 		bool m_is_empty;
+		bool m_is_point;
 		T m_min_bound;
 		T m_max_bound;
 		T m_center;
@@ -62,12 +62,9 @@ namespace gml
 	public:
 		inline friend bool operator==(const aabb_t<T>& lhs, const aabb_t<T>& rhs)
 		{
-			if (&lhs == &rhs)
-				return true;
-			if (lhs.is_invalid() && rhs.is_invalid())
-				return true;
-			if (lhs.is_invalid() || rhs.is_invalid())
-				return false;
+			if (&lhs == &rhs ) return true;
+			if (lhs.is_empty() && rhs.is_empty()) return true;
+			if (lhs.is_empty() || rhs.is_empty()) return false;
 
 			return lhs.m_min_bound == rhs.m_min_bound
 				&& lhs.m_max_bound == rhs.m_max_bound;
@@ -82,8 +79,8 @@ namespace gml
 {
 	template<typename T>
 	constexpr aabb_t<T>::aabb_t()
-		: m_is_invalid(true)
-		, m_is_empty(true)
+		: m_is_empty(true)
+		, m_is_point(true)
 		, m_min_bound()
 		, m_max_bound()
 		, m_center()
@@ -102,8 +99,8 @@ namespace gml
 		m_max_bound = max_combine(min_bound, max_bound);
 		m_center = (m_min_bound + m_max_bound) * 0.5f;
 		m_extend = m_center - m_min_bound;
-		m_is_invalid = false;
-		test_empty();
+		m_is_empty = false;
+		test_is_point();
 	}
 
 	template<typename T>
@@ -111,9 +108,13 @@ namespace gml
 	{
 		if (*this == other)
 		{
-			return it_same;
+			return it_mode::same;
 		}
-		else if (!is_invalid() && !other.is_invalid())
+		else if (is_point() && other.is_point())
+		{
+			return (center() == other.center())? it_mode::same : it_mode::none;
+		}
+		else if (!is_empty() && !other.is_empty())
 		{
 			int minless = 0;
 			int maxless = 0;
@@ -126,40 +127,48 @@ namespace gml
 
 				if (m_min_bound[i] > other.m_max_bound[i] || m_max_bound[i] < other.m_min_bound[i])
 				{
-					return it_none;
+					return it_mode::none;
 				}
 
 			}
 
 			if (minless == T::DIMENSION && maxless == 0)
 			{
-				return it_contain;
+				return it_mode::contain;
 			}
 			else if (minless == 0 && maxless == T::DIMENSION)
 			{
-				return it_inside;
+				return it_mode::inside;
 			}
 			else
 			{
-				return it_hit;
+				return it_mode::hit;
 			}
 		}
 		else
 		{
-			return it_none;
+			return it_mode::none;
 		}
 	}
 
 	template<typename T>
 	inline bool aabb_t<T>::contains(const aabb_t<T>& other) const
 	{
-		if (is_invalid() || other.is_invalid())
+		if (is_empty() || other.is_empty())
 		{
 			return false;
 		}
-		else if (is_empty() && !other.is_empty())
+		else if (is_point())
 		{
-			return false;
+			if (other.is_point())
+			{
+				return center() == other.center();
+			}
+			else
+			{
+
+				return false;
+			}
 		}
 		else
 		{
@@ -176,9 +185,13 @@ namespace gml
 	template<typename T>
 	inline bool aabb_t<T>::contains(const T& point) const
 	{
-		if (is_invalid())
+		if (is_empty())
 		{
 			return false;
+		}
+		else if (is_point())
+		{
+			return center() == point;
 		}
 		else
 		{
@@ -194,10 +207,10 @@ namespace gml
 	template<typename T>
 	inline void aabb_t<T>::expand(const T& point)
 	{
-		if (is_invalid())
+		if (is_empty())
 		{
 			m_min_bound = m_max_bound = point;
-			m_is_invalid = false;
+			m_is_empty = false;
 		}
 		else
 		{
@@ -207,18 +220,18 @@ namespace gml
 
 		m_center = (m_min_bound + m_max_bound) * 0.5f;
 		m_extend = m_center - m_min_bound;
-		test_empty();
+		test_is_point();
 	}
 
 	template<typename T>
 	inline void aabb_t<T>::expand(const aabb_t<T>& other)
 	{
-		if (other.is_invalid())
+		if (!other.is_empty())
 		{
 			return;
 		}
 
-		if (is_invalid())
+		if (is_empty())
 		{
 			*this = other;
 		}
@@ -228,25 +241,25 @@ namespace gml
 			m_max_bound = max_combine(m_max_bound, other.m_max_bound);
 			m_center = (m_min_bound + m_max_bound) * 0.5f;
 			m_extend = m_center - m_min_bound;
-			test_empty();
+			test_is_point();
 		}
 	}
 
 	template<typename T>
-	inline void aabb_t<T>::clear()
+	inline void aabb_t<T>::empty()
 	{
 		m_min_bound = T::zero();
 		m_max_bound = T::zero();
 		m_center = T::zero();
 		m_extend = T::zero();
-		m_is_invalid = true;
 		m_is_empty = true;
+		m_is_point = true;
 	}
 
 	template<typename T>
 	inline void aabb_t<T>::scaling(float scaler)
 	{
-		if (!is_invalid())
+		if (!is_empty())
 		{
 			m_extend *= scaler;
 			m_min_bound = m_center - m_extend;
@@ -257,7 +270,7 @@ namespace gml
 	template<typename T>
 	inline void aabb_t<T>::scaling(const T& scaler)
 	{
-		if (!is_invalid())
+		if (!is_empty())
 		{
 			m_extend *= scaler;
 			m_min_bound = m_center - m_extend;
@@ -268,7 +281,7 @@ namespace gml
 	template<typename T>
 	inline void aabb_t<T>::move(const T& offset)
 	{
-		if (!is_invalid())
+		if (!is_empty())
 		{
 			m_min_bound += offset;
 			m_max_bound += offset;
@@ -279,7 +292,7 @@ namespace gml
 	template<typename T>
 	inline void aabb_t<T>::move_to(const T& point)
 	{
-		if (!is_invalid())
+		if (!is_empty())
 		{
 			auto offset = point - m_center;
 			m_min_bound += offset;
@@ -289,16 +302,16 @@ namespace gml
 	}
 
 	template<class T>
-	inline void aabb_t<T>::test_empty()
+	inline void aabb_t<T>::test_is_point()
 	{
 		for (int i = 0; i < T::DIMENSION; i++)
 		{
 			if (fequal(m_min_bound[i], m_max_bound[i]))
 			{
-				m_is_empty = true;
+				m_is_point = true;
 				return;
 			}
 		}
-		m_is_empty = false;
+		m_is_point = false;
 	}
 }

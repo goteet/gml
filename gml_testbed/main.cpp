@@ -1,6 +1,0 @@
-#include <gmlmatrix.h>
-
-int main()
-{
-	return 0;
-}

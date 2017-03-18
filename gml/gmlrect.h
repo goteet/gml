@@ -150,32 +150,32 @@ namespace gml
 	{
 		if (*this == other)
 		{
-			return it_same;
+			return it_mode::same;
 		}
 
 		int contain_count = gml_impl::get_contain_count(other, *this);
 		if (contain_count == 4)
 		{
-			return it_inside;
+			return it_mode::inside;
 		}
 		else if (contain_count > 0)
 		{
-			return it_hit;
+			return it_mode::hit;
 		}
 		else
 		{
 			contain_count = gml_impl::get_contain_count(*this, other);
 			if (contain_count == 4)
 			{
-				return it_contain;
+				return it_mode::contain;
 			}
 			else if (contain_count > 0)
 			{
-				return it_hit;
+				return it_mode::hit;
 			}
 			else
 			{
-				return it_none;
+				return it_mode::none;
 			}
 		}
 	}

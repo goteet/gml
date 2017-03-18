@@ -2,13 +2,13 @@
 
 namespace gml
 {
-	enum it_mode
+	enum class it_mode
 	{
-		it_none,
-		it_hit,
-		it_contain,
-		it_inside,
-		it_same,
+		none,
+		hit,
+		contain,
+		inside,
+		same,
 	};
 
 	struct _1 { constexpr static const int SwizzleIndex = -2; };

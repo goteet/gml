@@ -73,21 +73,21 @@ public:
 		r.set_pos(1, 1);
 		r.set_size(5, 5);
 
-		GML_IS_TRUE(mRect.hit_test(r) == it_none);
+		GML_IS_TRUE(mRect.hit_test(r) == it_mode::none);
 
 		r.enlarge(5, 5);
-		GML_IS_TRUE(mRect.hit_test(r) == it_hit);
+		GML_IS_TRUE(mRect.hit_test(r) == it_mode::hit);
 
 		r.enlarge(20, 20);
-		GML_IS_TRUE(mRect.hit_test(r) == it_inside);
+		GML_IS_TRUE(mRect.hit_test(r) == it_mode::inside);
 
 		r.move(10, 10);
 		r.enlarge(-20, -20);
-		GML_IS_TRUE(mRect.hit_test(r) == it_contain);
+		GML_IS_TRUE(mRect.hit_test(r) == it_mode::contain);
 
 		r.move(-1, -1);
 		r.enlarge(10, 10);
-		GML_IS_TRUE(mRect.hit_test(r) == it_same);
+		GML_IS_TRUE(mRect.hit_test(r) == it_mode::same);
 	}
 
 	TEST_METHOD(RectMoveTest)

@@ -22,7 +22,7 @@ public:
 	TEST_METHOD(AABBEmpty)
 	{
 		aabb bounding(vec3(-2, 5, -1), vec3(2, -5, -1));
-		GML_IS_TRUE(bounding.is_empty());
+		GML_IS_TRUE(bounding.is_point());
 	}
 
 	TEST_METHOD(AABBComparisonTest)
@@ -32,21 +32,21 @@ public:
 
 		GML_IS_FALSE(empty1 == empty2);
 		GML_IS_TRUE(empty1 != empty2);
-		GML_IS_FALSE(empty2.is_invalid());
-		GML_IS_TRUE(empty2.is_empty());
+		GML_IS_FALSE(empty2.is_empty());
+		GML_IS_TRUE(empty2.is_point());
 
 		empty2.expand(vec3(11, 1, 0));
 		empty1.expand(vec3::zero());
 		GML_IS_TRUE(empty1 != empty2);
-		GML_IS_TRUE(empty1.is_empty());
-		GML_IS_FALSE(empty1.is_invalid());
-		GML_IS_FALSE(empty2.is_empty());
+		GML_IS_TRUE(empty1.is_point());
+		GML_IS_FALSE(empty1.is_empty());
+		GML_IS_FALSE(empty2.is_point());
 
-		empty1.clear();
-		empty2.clear();
+		empty1.empty();
+		empty2.empty();
 		GML_IS_TRUE(empty1 == empty2);
-		GML_IS_TRUE(empty1.is_invalid());
-		GML_IS_TRUE(empty1.is_invalid());
+		GML_IS_TRUE(empty1.is_empty());
+		GML_IS_TRUE(empty1.is_empty());
 	}
 
 	TEST_METHOD(AABBResizeTest)
@@ -91,22 +91,22 @@ public:
 
 		GML_IS_FALSE(empty.contains(b));
 		GML_IS_FALSE(empty.contains(vec2::zero()));
-		GML_IS_TRUE(empty.is_intersect(b) == it_none);
+		GML_IS_TRUE(empty.is_intersect(b) == it_mode::none);
 
 		GML_IS_FALSE(b.contains(empty));
 		GML_IS_FALSE(b.contains(vec2::zero()));
 		GML_IS_TRUE(b.contains(vec2(10.5, 0)));
-		GML_IS_TRUE(b.is_intersect(empty) == it_none);
+		GML_IS_TRUE(b.is_intersect(empty) == it_mode::none);
 
 		auto a = b;
 		a.expand(vec2(11, 1));
 		GML_IS_FALSE(empty.contains(a));
-		GML_IS_TRUE(empty.is_intersect(a) == it_none);
+		GML_IS_TRUE(empty.is_intersect(a) == it_mode::none);
 
 		GML_IS_FALSE(a.contains(empty));
 		GML_IS_FALSE(a.contains(vec2::zero()));
 		GML_IS_TRUE(a.contains(vec2(11, 0.5)));
-		GML_IS_TRUE(a.is_intersect(empty) == it_none);
-		GML_IS_TRUE(a.is_intersect(b) == it_hit);
+		GML_IS_TRUE(a.is_intersect(empty) == it_mode::none);
+		GML_IS_TRUE(a.is_intersect(b) == it_mode::hit);
 	}
 };
