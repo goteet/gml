@@ -883,7 +883,7 @@ namespace gml
 			_00, _10, _20,
 			_01, _11, _21,
 			_02, _12, _22
-			);
+		);
 	}
 
 	inline bool mat33::can_invert() const
@@ -1172,7 +1172,7 @@ namespace gml
 			_01, _11, _21, _31,
 			_02, _12, _22, _32,
 			_03, _13, _23, _33
-			);
+		);
 	}
 
 	inline bool mat44::can_invert() const
@@ -1350,7 +1350,7 @@ namespace gml
 		static mat22 i(
 			1.0f, 0.0f,
 			0.0f, 1.0f
-			);
+		);
 		return i;
 	}
 
@@ -1396,7 +1396,7 @@ namespace gml
 		static mat32 i(
 			1.0f, 0.0f, 0.0f,
 			0.0f, 1.0f, 0.0f
-			);
+		);
 		return i;
 	}
 
@@ -1447,22 +1447,26 @@ namespace gml
 	inline mat32 mat32::inv_trs(const vec2& translate, const radian& rotation, const vec2& scale)
 	{
 		/*
-		sx,0,0 * +cos,sin,0 * 1,0,-tx
-		0,sy,0   -sin,cos,0   0,1,-ty
+		1/sx,0,0 * +cos,sin,0 * 1,0,-tx
+		0,1/sy,0   -sin,cos,0   0,1,-ty
 
-		=   sx,0,0 * +cos,sin,-cos*tx-sin*ty
-		0,sy,0	 -sin,cos,+sin*tx-cos*ty
+	=   1/sx,0,0 * +cos,sin,-cos*tx-sin*ty
+		0,1/sy,0	 -sin,cos,+sin*tx-cos*ty
 
-		=   +sx*cos, sx*sin, -sx*(cos*tx+sin*ty)
-		-sy*sin, sy*cos, +sy*(sin*tx-cos*ty)
+	=   +1/sx*cos, 1/sx*sin, -1/sx*(cos*tx+sin*ty)
+		-1/sy*sin, 1/sy*cos, +1/sy*(sin*tx-cos*ty)
 		*/
 		float cosr = cos(rotation);
 		float sinr = sin(rotation);
 
+		float inv_sx = 1.0f / scale.x;
+		float inv_sy = 1.0f / scale.y;
+
+
 		return mat32(
-			+scale.x*cosr, scale.x*sinr, -scale.x*(cosr*translate.x - sinr*translate.y),
-			-scale.y*sinr, scale.y*cosr, +scale.y*(sinr*translate.x - cosr*translate.y)
-			);
+			+inv_sy*cosr, inv_sy*sinr, -inv_sy*(cosr*translate.x - sinr*translate.y),
+			-inv_sy*sinr, inv_sy*cosr, +inv_sy*(sinr*translate.x - cosr*translate.y)
+		);
 	}
 
 	inline mat32 mat32::trs(const vec2& translate, const radian& rotation, const vec2& scale)
@@ -1471,10 +1475,10 @@ namespace gml
 		1,0,tx * cos,-sin,0 * sx,0,0
 		0,1,ty   sin, cos,0   0,sy,0
 
-		=   cos,-sin,tx * sx,0,0
+	=   cos,-sin,tx * sx,0,0
 		sin,+cos,ty   0,sy,0
 
-		=   cos*sx,-sin*sy, tx
+	=   cos*sx,-sin*sy, tx
 		sin*sx, cos*sy, ty
 		*/
 		float cosr = cos(rotation);
@@ -1483,7 +1487,7 @@ namespace gml
 		return mat32(
 			cosr*scale.x, -sinr*scale.y, translate.x,
 			sinr*scale.x, +cosr*scale.y, translate.y
-			);
+		);
 	}
 
 	inline mat32 mat32::trsp(const vec2& translate, const radian& rotation, const vec2& scale, const vec2& pivot)
@@ -1492,10 +1496,10 @@ namespace gml
 		1,0,tx * cos,-sin,0 * sx,0,0 * 1,0,-px
 		0,1,ty   sin, cos,0   0,sy,0   0,1,-py
 
-		= cos,-sin,tx * sx,0,-sx*px
+	=	cos,-sin,tx * sx,0,-sx*px
 		sin,+cos,ty   0,sy,-sy*py
 
-		= cos*sx,-sin*sy, -cos*sx*px+sin*sy*px + tx
+	=	cos*sx,-sin*sy, -cos*sx*px+sin*sy*px + tx
 		sin*sx, cos*sy, -sin*sx*px-cos*sy*py + ty
 		*/
 		float cosr = cos(rotation);
@@ -1506,7 +1510,7 @@ namespace gml
 		return mat32(
 			cosr*scale.x, -sinr*scale.y, cosr*spx - sinr*spy + translate.x,
 			sinr*scale.x, +cosr*scale.y, sinr*spx + cosr*spy + translate.y
-			);
+		);
 	}
 
 	inline mat32 mat32::trps(const vec2& translate, const radian& rotation, const vec2& pivot, const vec2& scale)
@@ -1515,10 +1519,10 @@ namespace gml
 		1,0,tx * cos,-sin,0 * 1,0,-px * sx,0,0
 		0,1,ty   sin, cos,0   0,1,-px   0,sy,0
 
-		= cos,-sin,ty * sx,0,-px
+	=	cos,-sin,ty * sx,0,-px
 		sin, cos,ty   0,sy,-px
 
-		= cos*sx,-sin*sy, -cos*px+sin*px + tx
+	=	cos*sx,-sin*sy, -cos*px+sin*px + tx
 		sin*sx,+cos*sy, -sin*px-cos*py + ty
 		*/
 		float cosr = cos(rotation);
@@ -1527,7 +1531,7 @@ namespace gml
 		return mat32(
 			cosr*scale.x, -sinr*scale.y, -cosr*pivot.x + sinr*pivot.y + translate.x,
 			sinr*scale.x, +cosr*scale.y, -sinr*pivot.x - cosr*pivot.y + translate.y
-			);
+		);
 	}
 
 	inline const mat33& mat33::identity()
@@ -1536,7 +1540,7 @@ namespace gml
 			1.0f, 0.0f, 0.0f,
 			0.0f, 1.0f, 0.0f,
 			0.0f, 0.0f, 1.0f
-			);
+		);
 		return i;
 	}
 
@@ -1549,7 +1553,7 @@ namespace gml
 			1.0f, 0.0f, 0.0f,
 			0.0f, cosr, -sinr,
 			0.0f, sinr, cosr
-			);
+		);
 	}
 
 	inline mat33 mat33::rotate_y(const radian& r)
@@ -1561,7 +1565,7 @@ namespace gml
 			cosr, 0.0f, -sinr,
 			0.0f, 1.0f, 0.0f,
 			sinr, 0.0f, cosr
-			);
+		);
 	}
 
 	inline mat33 mat33::rotate_z(const radian& r)
@@ -1573,7 +1577,7 @@ namespace gml
 			cosr, -sinr, 0.0f,
 			sinr, cosr, 0.0f,
 			0.0f, 0.0f, 1.0f
-			);
+		);
 	}
 
 	constexpr mat33 mat33::scale(float scaler)
@@ -1582,7 +1586,7 @@ namespace gml
 			scaler, 0.0f, 0.0f,
 			0.0f, scaler, 0.0f,
 			0.0f, 0.0f, scaler
-			);
+		);
 	}
 
 	constexpr mat33 mat33::scale(float sx, float sy, float sz)
@@ -1591,7 +1595,7 @@ namespace gml
 			sx, 0.0f, 0.0f,
 			0.0f, sy, 0.0f,
 			0.0f, 0.0f, sz
-			);
+		);
 	}
 
 	constexpr mat33 mat33::flip_x()
@@ -1600,7 +1604,7 @@ namespace gml
 			-1.0f, 0.0f, 0.0f,
 			0.0f, 1.0f, 0.0f,
 			0.0f, 0.0f, 1.0f
-			);
+		);
 	}
 
 	constexpr mat33 mat33::flip_y()
@@ -1609,7 +1613,7 @@ namespace gml
 			1.0f, 0.0f, 0.0f,
 			0.0f, -1.0f, 0.0f,
 			0.0f, 0.0f, 1.0f
-			);
+		);
 	}
 
 	constexpr mat33 mat33::flip_z()
@@ -1618,7 +1622,7 @@ namespace gml
 			1, 0, 0,
 			0, 1, 0,
 			0, 0, -1
-			);
+		);
 	}
 
 	inline const mat44& mat44::identity()
@@ -1628,7 +1632,7 @@ namespace gml
 			0.0f, 1.0f, 0.0f, 0.0f,
 			0.0f, 0.0f, 1.0f, 0.0f,
 			0.0f, 0.0f, 0.0f, 1.0f
-			);
+		);
 		return i;
 	}
 
@@ -1642,7 +1646,7 @@ namespace gml
 			0.0f, cosr, -sinr, 0.0f,
 			0.0f, sinr, cosr, 0.0f,
 			0.0f, 0.0f, 0.0f, 1.0f
-			);
+		);
 	}
 
 	inline mat44 mat44::rotate_y(const radian& r)
@@ -1655,7 +1659,7 @@ namespace gml
 			0.0f, 1.0f, 0.0f, 0.0f,
 			sinr, 0.0f, cosr, 0.0f,
 			0.0f, 0.0f, 0.0f, 1.0f
-			);
+		);
 	}
 
 	inline mat44 mat44::rotate_z(const radian& r)
@@ -1668,7 +1672,7 @@ namespace gml
 			sinr, cosr, 0.0f, 0.0f,
 			0.0f, 0.0f, 1.0f, 0.0f,
 			0.0f, 0.0f, 0.0f, 1.0f
-			);
+		);
 	}
 
 	constexpr mat44 mat44::scale(float scale)
@@ -1678,7 +1682,7 @@ namespace gml
 			0.0f, scale, 0.0f, 0.0f,
 			0.0f, 0.0f, scale, 0.0f,
 			0.0f, 0.0f, 0.0f, 1.0f
-			);
+		);
 	}
 
 	constexpr mat44 mat44::scale(float sx, float sy, float sz)
@@ -1688,7 +1692,7 @@ namespace gml
 			0.0f, sy, 0.0f, 0.0f,
 			0.0f, 0.0f, sz, 0.0f,
 			0.0f, 0.0f, 0.0f, 1.0f
-			);
+		);
 	}
 
 	constexpr mat44 mat44::translate(float x, float y, float z)
@@ -1698,7 +1702,7 @@ namespace gml
 			0.0f, 1.0f, 0.0f, y,
 			0.0f, 0.0f, 1.0f, z,
 			0.0f, 0.0f, 0.0f, 1.0f
-			);
+		);
 	}
 
 	constexpr mat44 mat44::flip_x()
@@ -1708,7 +1712,7 @@ namespace gml
 			0.0f, 1.0f, 0.0f, 0.0f,
 			0.0f, 0.0f, 1.0f, 0.0f,
 			0.0f, 0.0f, 0.0f, 1.0f
-			);
+		);
 	}
 
 	constexpr mat44 mat44::flip_y()
@@ -1718,7 +1722,7 @@ namespace gml
 			0.0f, -1.0f, 0.0f, 0.0f,
 			0.0f, 0.0f, 1.0f, 0.0f,
 			0.0f, 0.0f, 0.0f, 1.0f
-			);
+		);
 	}
 
 	constexpr mat44 mat44::flip_z()
@@ -1728,7 +1732,7 @@ namespace gml
 			0.0f, 1.0f, 0.0f, 0.0f,
 			0.0f, 0.0f, -1.0f, 0.0f,
 			0.0f, 0.0f, 0.0f, 1.0f
-			);
+		);
 	}
 
 	inline mat44 mat44::look_at(const vec3& eye, const vec3& look, const vec3& up)
@@ -1741,7 +1745,7 @@ namespace gml
 			vec4(real_up, -dot(eye, real_up)),
 			vec4(forward, -dot(eye, forward)),
 			vec4(0, 0, 0, 1)
-			);
+		);
 	}
 
 	inline mat44 mat44::perspective_lh(const radian& fov, float aspect, float znear, float zfar)
