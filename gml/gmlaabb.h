@@ -226,12 +226,12 @@ namespace gml
 	template<typename T>
 	inline void aabb_t<T>::expand(const aabb_t<T>& other)
 	{
-		if (!other.is_empty())
+		if (other.is_empty())
 		{
 			return;
 		}
 
-		if (is_empty())
+		if (is_point())
 		{
 			*this = other;
 		}
