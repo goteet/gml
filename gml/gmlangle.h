@@ -267,7 +267,7 @@ namespace gml
 		value *= r;
 		return *this;
 	}
-	
+
 	inline float cos(const radian& r)
 	{
 		return cosf(r.value);
@@ -276,5 +276,18 @@ namespace gml
 	inline float sin(const radian& r)
 	{
 		return sinf(r.value);
+	}
+
+	inline radian limited_rotation(const radian& r)
+	{
+		if (r.value < 0)
+		{
+			float m = -fmod(r.value, PI2) + 1;
+			return radian(r.value + m * PI2);
+		}
+		else
+		{
+			return radian(fmod(r.value, PI2));
+		}
 	}
 }

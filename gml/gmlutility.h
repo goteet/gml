@@ -16,7 +16,11 @@ namespace gml
 
 	constexpr double PI_d = 3.14159265358979323846;
 
+	constexpr double PI2_d = PI_d * 2;
+
 	constexpr float PI = static_cast<float>(PI_d);
+
+	constexpr float PI2 = static_cast<float>(PI2_d);
 
 	bool fequal(float lhs, float rhs);
 
