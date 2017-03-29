@@ -28,12 +28,12 @@ namespace gml
 	public:
 		union
 		{
-			float m[ROW][COL] = { 0.0f, 0.0f, 0.0f, 0.0f };
+			float m[ROW][COL];
 			struct { float _00, _01, _10, _11; };
 			struct { vec2 row[ROW]; };
 		};
 
-		constexpr mat22() { }
+		constexpr mat22();
 
 		constexpr mat22(float _m00, float _m01, float _m10, float _m11);
 
@@ -107,12 +107,12 @@ namespace gml
 	public:
 		union
 		{
-			float m[ROW][COL] = { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f };
+			float m[ROW][COL];
 			struct { float _00, _01, _02, _10, _11, _12; };
 			vec3 row[ROW];
 		};
 
-		constexpr mat32() { }
+		constexpr mat32();
 
 		constexpr mat32(float _m00, float _m01, float _m02, float _m10, float _m11, float _m12);
 
@@ -176,12 +176,12 @@ namespace gml
 	public:
 		union
 		{
-			float m[ROW][COL] = { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f };
+			float m[ROW][COL];
 			struct { float _00, _01, _02, _10, _11, _12, _20, _21, _22; };
 			struct { vec3 row[ROW]; };
 		};
 
-		constexpr mat33() { }
+		constexpr mat33();
 
 		constexpr mat33(
 			float _m00, float _m01, float _m02,
@@ -267,18 +267,18 @@ namespace gml
 		constexpr static mat44 flip_z();
 		static mat44 look_at(const vec3& eye, const vec3& look, const vec3& up);
 		static mat44 perspective_lh(const radian& fov, float aspect, float znear, float zfar);
-		static mat44 center_ortho_lh(float width, float height, float znear, float zfar);
 		static mat44 ortho2d_lh(float width, float height, float znear, float zfar);
+		static mat44 ortho2d_ui(float width, float height, float znear, float zfar);
 
 	public:
 		union
 		{
-			float m[ROW][COL] = { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f };
+			float m[ROW][COL];
 			struct { float _00, _01, _02, _03, _10, _11, _12, _13, _20, _21, _22, _23, _30, _31, _32, _33; };
 			struct { vec4 row[ROW]; };
 		};
 
-		constexpr mat44() {}
+		constexpr mat44();
 
 		constexpr mat44(
 			float _m00, float _m01, float _m02, float _m03,
@@ -367,6 +367,10 @@ namespace gml
 	constexpr mat22::mat22(float _m00, float _m01, float _m10, float _m11)
 		: _00(_m00), _01(_m01)
 		, _10(_m10), _11(_m11) { }
+
+	constexpr mat22::mat22() : mat22(
+		1.0f, 0.0f,
+		0.0f, 1.0f) { }
 
 	constexpr mat22::mat22(const vec2& row1, const vec2& row2)
 		: _00(row1.x), _01(row1.y)
@@ -580,6 +584,10 @@ namespace gml
 		: _00(_m00), _01(_m01), _02(_m02)
 		, _10(_m10), _11(_m11), _12(_m12) { }
 
+	constexpr mat32::mat32() : mat32(
+		1.0f, 0.0f, 0.0f,
+		0.0f, 1.0f, 0.0f) { }
+
 	constexpr mat32::mat32(const vec3& row1, const vec3& row2)
 		: _00(row1.x), _01(row1.y), _02(row1.z)
 		, _10(row2.x), _11(row2.y), _12(row2.z) { }
@@ -730,6 +738,11 @@ namespace gml
 		: _00(_m00), _01(_m01), _02(_m02)
 		, _10(_m10), _11(_m11), _12(_m12)
 		, _20(_m20), _21(_m21), _22(_m22) { }
+
+	constexpr mat33::mat33() : mat33(
+		1.0f, 0.0f, 0.0f,
+		0.0f, 1.0f, 0.0f,
+		0.0f, 0.0f, 1.0f) { }
 
 	constexpr mat33::mat33(const vec3& row1, const vec3& row2, const vec3& row3)
 		: _00(row1.x), _01(row1.y), _02(row1.z)
@@ -1003,6 +1016,12 @@ namespace gml
 		, _10(_m10), _11(_m11), _12(_m12), _13(_m13)
 		, _20(_m20), _21(_m21), _22(_m22), _23(_m23)
 		, _30(_m30), _31(_m31), _32(_m32), _33(_m33) { }
+
+	constexpr mat44::mat44() : mat44(
+		1.0f, 0.0f, 0.0f, 0.0f,
+		0.0f, 1.0f, 0.0f, 0.0f,
+		0.0f, 0.0f, 1.0f, 0.0f,
+		0.0f, 0.0f, 0.0f, 1.0f) { }
 
 	constexpr mat44::mat44(const vec4& row1, const vec4& row2, const vec4& row3, const vec4& row4)
 		: _00(row1.x), _01(row1.y), _02(row1.z), _03(row1.w)
@@ -1761,17 +1780,17 @@ namespace gml
 			0, 0, 1, 0);
 	}
 
-	inline mat44 mat44::center_ortho_lh(float width, float height, float znear, float zfar)
+	inline mat44 mat44::ortho2d_lh(float width, float height, float znear, float zfar)
 	{
 		float zRangeInv = 1.0f / (zfar - znear);
 		return mat44(
 			2.0f / width, 0, 0, 0,
-			0, -2.0f / height, 0, 0,
-			0, 0, 1.0f / (zfar - znear), znear / (znear - zfar),
+			0, 2.0f / height, 0, 0,
+			0, 0, zRangeInv, -znear * zRangeInv,
 			0, 0, 0, 1);
 	}
 
-	inline mat44 mat44::ortho2d_lh(float width, float height, float znear, float zfar)
+	inline mat44 mat44::ortho2d_ui(float width, float height, float znear, float zfar)
 	{
 		float zRangeInv = 1.0f / (zfar - znear);
 		return mat44(
