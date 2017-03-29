@@ -282,8 +282,8 @@ namespace gml
 	{
 		if (r.value < 0)
 		{
-			float m = -fmod(r.value, PI2) + 1;
-			return radian(r.value + m * PI2);
+			float vtrunc = -trunc(r.value / PI2) + 1.0f;
+			return radian(r.value + vtrunc * PI2);
 		}
 		else
 		{
