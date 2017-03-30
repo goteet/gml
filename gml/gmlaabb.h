@@ -1,6 +1,6 @@
 #pragma once
-#include <gmlutility.h>
-#include <gmlvector.h>
+#include "gmlutility.h"
+#include "gmlvector.h"
 
 namespace gml
 {

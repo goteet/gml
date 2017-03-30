@@ -1,7 +1,7 @@
 #pragma once
-#include <gmlutility.h>
-#include <gmlrotation.h>
-#include <gmlangle.h>
+#include "gmlutility.h"
+#include "gmlrotation.h"
+#include "gmlangle.h"
 
 namespace gml
 {

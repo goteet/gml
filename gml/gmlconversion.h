@@ -1,8 +1,8 @@
 #pragma once
-#include <gmlaabb.h>
-#include <gmlmatrix.h>
-#include <gmlrotation.h>
-#include <gmldualquat.h>
+#include "gmlaabb.h"
+#include "gmlmatrix.h"
+#include "gmlrotation.h"
+#include "gmldualquat.h"
 
 namespace gml
 {

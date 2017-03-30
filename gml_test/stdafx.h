@@ -15,17 +15,17 @@
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 
-#include <gmlaabb.h>
-#include <gmlangle.h>
-#include <gmlcolor.h>
-#include <gmlconversion.h>
-#include <gmldualquat.h>
-#include <gmlmatrix.h>
-//#include <gmlray.h>
-#include <gmlrect.h>
-#include <gmlrotation.h>
-#include <gmlutility.h>
-#include <gmlvector.h>
+#include <gml/gmlaabb.h>
+#include <gml/gmlangle.h>
+#include <gml/gmlcolor.h>
+#include <gml/gmlconversion.h>
+#include <gml/gmldualquat.h>
+#include <gml/gmlmatrix.h>
+#include <gml/gmlray.h>
+#include <gml/gmlrect.h>
+#include <gml/gmlrotation.h>
+#include <gml/gmlutility.h>
+#include <gml/gmlvector.h>
 using namespace gml;
 
 static const float EPSILON = std::numeric_limits<float>::epsilon();

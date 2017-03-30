@@ -1,7 +1,7 @@
 #pragma once
-#include <gmlutility.h>
-#include <gmlvector.h>
-#include <gmlangle.h>
+#include "gmlutility.h"
+#include "gmlvector.h"
+#include "gmlangle.h"
 #include <cassert>
 
 namespace gml
