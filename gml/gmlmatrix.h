@@ -1483,7 +1483,7 @@ namespace gml
 
 
 		return mat32(
-			+inv_sy*cosr, inv_sy*sinr, -inv_sy*(cosr*translate.x - sinr*translate.y),
+			+inv_sx*cosr, inv_sx*sinr, -inv_sx*(cosr*translate.x - sinr*translate.y),
 			-inv_sy*sinr, inv_sy*cosr, +inv_sy*(sinr*translate.x - cosr*translate.y)
 		);
 	}
