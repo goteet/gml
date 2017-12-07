@@ -225,9 +225,9 @@ namespace gml
 
 		friend constexpr vec4 operator*(float lhs, const vec4& rhs);
 
-		friend vec4 operator*=(vec4& lhs, const vec4& rhs);
+		friend vec4& operator*=(vec4& lhs, const vec4& rhs);
 
-		friend vec4 operator*=(vec4& lhs, float rhs);
+		friend vec4& operator*=(vec4& lhs, float rhs);
 
 		float& operator[](int index);//hack
 
@@ -831,7 +831,7 @@ namespace gml
 		return rhs * lhs;
 	}
 
-	inline vec4 operator*=(vec4& lhs, const vec4& rhs)
+	inline vec4& operator*=(vec4& lhs, const vec4& rhs)
 	{
 		lhs.x *= rhs.x;
 		lhs.y *= rhs.y;
@@ -840,7 +840,7 @@ namespace gml
 		return lhs;
 	}
 
-	inline vec4 operator*=(vec4& lhs, float rhs)
+	inline vec4& operator*=(vec4& lhs, float rhs)
 	{
 		lhs.x *= rhs;
 		lhs.y *= rhs;
